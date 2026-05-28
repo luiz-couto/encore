@@ -1,5 +1,5 @@
 # Encore
-Encore is a single player music-based roguelike that blends real-time rhythm gameplay with strategic card choices
+Encore is a Procedural Music Generation roguelike that blends real-time rhythm gameplay with strategic card choices.
 
 ## Core Gameplay
 The game's core mechanic is rhythm-based. The player interact with a 3D board displaying a series of notes.
