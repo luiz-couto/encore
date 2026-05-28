@@ -6,7 +6,7 @@ The game's core mechanic is rhythm-based. The player interact with a 3D board di
 
 <img width="602" height="374" alt="image" src="https://github.com/user-attachments/assets/7698a50c-e9fb-4ac9-98d8-e681d533a78e" />
 
-Each song will have a minimum score requirement, which varies based on the song's difficulty and the player's progress in the run. If the player doesn't achieve the required Hype, they get one more chance, called an "Encore," to try again during that run. If the Encore has already been used, the run ends, the player collects their rewards, and starts over.
+Each song will have a minimum score requirement, which varies based on the song's difficulty and the player's progress in the run. If the player doesn't achieve the required score, they get one more chance, called an "Encore", to try again during that run. If the Encore has already been used, the run ends, the player collects their rewards, and starts over.
 
 <img width="486" height="200" alt="image" src="https://github.com/user-attachments/assets/f23853c1-1524-494e-9ef4-e3404e27b9a2" />
 
