@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dgyatpwpv6grd"]
+
+[ext_resource type="Texture2D" uid="uid://cxduxii42ivqv" path="res://assets/board/main-board.svg" id="1_uwrxv"]
+[ext_resource type="Texture2D" uid="uid://b1sogm3wklvdx" path="res://assets/board/background.png" id="2_yqjtg"]
+
+[node name="Game" type="Node2D" unique_id=1978774684]
+
+[node name="MainBoard" type="Sprite2D" parent="." unique_id=1018557526]
+position = Vector2(570.825, 327)
+scale = Vector2(0.68269235, 0.7337279)
+texture = ExtResource("1_uwrxv")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=2090108577]
+z_index = -1
+position = Vector2(575.5, 368.75)
+scale = Vector2(1.0942857, 1.0304102)
+texture = ExtResource("2_yqjtg")

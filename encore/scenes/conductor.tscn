@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bdi10rlibs8xu"]
+
+[node name="Conductor" type="Node2D" unique_id=511162354]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1064440228]
+
+[node name="Timer" type="Timer" parent="." unique_id=1848341569]
