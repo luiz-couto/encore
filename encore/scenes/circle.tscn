@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://ceqiltna222m8"]
+
+[ext_resource type="Script" uid="uid://xrdvw7v01rfo" path="res://scripts/circle.gd" id="1_3e3c1"]
+[ext_resource type="Texture2D" uid="uid://cek5t1k6pxrhl" path="res://assets/icons/circle.svg" id="1_wcjn7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3e3c1"]
+size = Vector2(73, 70)
+
+[node name="Circle" type="AnimatableBody2D" unique_id=1163447690]
+script = ExtResource("1_3e3c1")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=692051500]
+texture = ExtResource("1_wcjn7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=587644226]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_3e3c1")

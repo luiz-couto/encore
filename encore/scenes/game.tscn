@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cxduxii42ivqv" path="res://assets/board/main-board.svg" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://b1sogm3wklvdx" path="res://assets/board/background.png" id="2_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://ceqiltna222m8" path="res://scenes/circle.tscn" id="3_lnu2h"]
 
 [node name="Game" type="Node2D" unique_id=1978774684]
 
@@ -15,3 +16,6 @@ z_index = -1
 position = Vector2(575.5, 368.75)
 scale = Vector2(1.0942857, 1.0304102)
 texture = ExtResource("2_yqjtg")
+
+[node name="Circle" parent="." unique_id=1163447690 instance=ExtResource("3_lnu2h")]
+position = Vector2(378, -45)
