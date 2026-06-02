@@ -14,6 +14,6 @@ func _process(delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	var noteInstance = NoteScene.instantiate();
-	noteInstance.initialize(1);
+	noteInstance.initialize(randi() % 4);
 	add_child(noteInstance);
 	pass # Replace with function body.
