@@ -36,7 +36,13 @@ func _physics_process(delta: float) -> void:
 		position.y += speed * delta;
 		if position.y > TARGET_Y + 20:
 			queue_free();
-	pass
+
+func destroy(score: int) -> void:
+	$Timer.start();
+	hit = true;
+
+func _on_timer_timeout() -> void:
+	queue_free();
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

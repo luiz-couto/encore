@@ -39,3 +39,9 @@ sprite_frames = SubResource("SpriteFrames_suntu")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=343642412]
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_njo4t")
+
+[node name="Timer" type="Timer" parent="." unique_id=1921750899]
+wait_time = 0.05
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -58,4 +58,10 @@ shape = SubResource("RectangleShape2D_1bdt2")
 wait_time = 0.05
 one_shot = true
 
+[connection signal="area_entered" from="PerfectArea" to="." method="_on_perfect_area_entered"]
+[connection signal="area_exited" from="PerfectArea" to="." method="_on_perfect_area_exited"]
+[connection signal="area_entered" from="GoodArea" to="." method="_on_good_area_entered"]
+[connection signal="area_exited" from="GoodArea" to="." method="_on_good_area_exited"]
+[connection signal="area_entered" from="OkayArea" to="." method="_on_okay_area_entered"]
+[connection signal="area_exited" from="OkayArea" to="." method="_on_okay_area_exited"]
 [connection signal="timeout" from="PushTimer" to="." method="_on_push_timer_timeout"]

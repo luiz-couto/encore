@@ -1,16 +1,34 @@
 [gd_scene format=3 uid="uid://ceqiltna222m8"]
 
-[ext_resource type="Script" uid="uid://xrdvw7v01rfo" path="res://scripts/circle.gd" id="1_3e3c1"]
-[ext_resource type="Texture2D" uid="uid://cek5t1k6pxrhl" path="res://assets/icons/circle.svg" id="1_wcjn7"]
+[sub_resource type="GDScript" id="GDScript_opnif"]
+script/source = "extends AnimatableBody2D
+
+var speed: float = 400.0
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	# position.y += speed * delta;
+	pass
+
+func _physics_process(delta: float) -> void:
+	position.y += speed * delta;
+"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wcjn7"]
+load_path = "res://.godot/imported/circle.svg-6b8b21179f9699fe0ed57f76bdd7027f.ctex"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3e3c1"]
 size = Vector2(73, 70)
 
 [node name="Circle" type="AnimatableBody2D" unique_id=1163447690]
-script = ExtResource("1_3e3c1")
+script = SubResource("GDScript_opnif")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=692051500]
-texture = ExtResource("1_wcjn7")
+texture = SubResource("CompressedTexture2D_wcjn7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=587644226]
 position = Vector2(0.5, 0)
