@@ -1,13 +1,53 @@
 [gd_scene format=3 uid="uid://cv1puod0pb0p1"]
 
 [ext_resource type="Texture2D" uid="uid://b3px1sg1f60fw" path="res://assets/button/button_white.svg" id="1_mi6dp"]
+[ext_resource type="Texture2D" uid="uid://dkyu28d4rpcmk" path="res://assets/button/button_faded.svg" id="2_rhj8v"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rhj8v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_mi6dp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_rhj8v")
+}],
+"loop": true,
+"name": &"pressed",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3q610"]
+size = Vector2(32.413795, 20.60345)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7y4x"]
+size = Vector2(33.10345, 48.275867)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1bdt2"]
+size = Vector2(33.10345, 93.79311)
 
 [node name="Button" type="AnimatedSprite2D" unique_id=155436911]
-sprite_frames = SubResource("SpriteFrames_rhj8v")
-
-[node name="ButtonWhite" type="Sprite2D" parent="." unique_id=239423493]
-position = Vector2(0, -5.9604645e-08)
 scale = Vector2(1.45, 1.45)
-texture = ExtResource("1_mi6dp")
+sprite_frames = SubResource("SpriteFrames_rhj8v")
+animation = &"pressed"
+
+[node name="PerfectArea" type="Area2D" parent="." unique_id=963449433]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PerfectArea" unique_id=1990540725]
+position = Vector2(1.1920929e-07, -1.1920929e-07)
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_3q610")
+
+[node name="GoodArea" type="Area2D" parent="." unique_id=1087800815]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoodArea" unique_id=213071842]
+position = Vector2(9.4545294e-07, 2.0553323e-07)
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_i7y4x")
+
+[node name="OkayArea" type="Area2D" parent="." unique_id=1409027766]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OkayArea" unique_id=1295382684]
+position = Vector2(9.4545294e-07, 1.4798394e-06)
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_1bdt2")
