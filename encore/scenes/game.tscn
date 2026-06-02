@@ -20,12 +20,16 @@ texture = ExtResource("3_lbhrr")
 
 [node name="Button" parent="." unique_id=155436911 instance=ExtResource("3_lnu2h")]
 position = Vector2(680, 713)
+input = "ui_left"
 
 [node name="Button2" parent="." unique_id=665909422 instance=ExtResource("3_lnu2h")]
 position = Vector2(862, 713)
+input = "ui_up"
 
 [node name="Button3" parent="." unique_id=810961907 instance=ExtResource("3_lnu2h")]
 position = Vector2(1040, 713)
+input = "ui_down"
 
 [node name="Button4" parent="." unique_id=1578098347 instance=ExtResource("3_lnu2h")]
 position = Vector2(1217, 713)
+input = "ui_right"

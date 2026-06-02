@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b3px1sg1f60fw" path="res://assets/button/button_white.svg" id="1_mi6dp"]
 [ext_resource type="Texture2D" uid="uid://dkyu28d4rpcmk" path="res://assets/button/button_faded.svg" id="2_rhj8v"]
+[ext_resource type="Script" uid="uid://df1ms08frtk7w" path="res://scripts/button.gd" id="3_3q610"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rhj8v"]
 animations = [{
@@ -30,6 +31,7 @@ size = Vector2(33.10345, 93.79311)
 scale = Vector2(1.45, 1.45)
 sprite_frames = SubResource("SpriteFrames_rhj8v")
 animation = &"pressed"
+script = ExtResource("3_3q610")
 
 [node name="PerfectArea" type="Area2D" parent="." unique_id=963449433]
 
@@ -51,3 +53,9 @@ shape = SubResource("RectangleShape2D_i7y4x")
 position = Vector2(9.4545294e-07, 1.4798394e-06)
 scale = Vector2(0.9999999, 0.9999999)
 shape = SubResource("RectangleShape2D_1bdt2")
+
+[node name="PushTimer" type="Timer" parent="." unique_id=202680191]
+wait_time = 0.05
+one_shot = true
+
+[connection signal="timeout" from="PushTimer" to="." method="_on_push_timer_timeout"]
