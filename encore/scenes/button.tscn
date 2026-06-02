@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cv1puod0pb0p1"]
+
+[ext_resource type="Texture2D" uid="uid://b3px1sg1f60fw" path="res://assets/button/button_white.svg" id="1_mi6dp"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rhj8v"]
+
+[node name="Button" type="AnimatedSprite2D" unique_id=155436911]
+sprite_frames = SubResource("SpriteFrames_rhj8v")
+
+[node name="ButtonWhite" type="Sprite2D" parent="." unique_id=239423493]
+position = Vector2(0, -5.9604645e-08)
+scale = Vector2(1.45, 1.45)
+texture = ExtResource("1_mi6dp")

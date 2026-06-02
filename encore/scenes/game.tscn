@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b1sogm3wklvdx" path="res://assets/board/background.png" id="2_yqjtg"]
 [ext_resource type="Texture2D" uid="uid://vyaxvn7kw74s" path="res://assets/board/main-board-2.svg" id="3_lbhrr"]
-[ext_resource type="PackedScene" uid="uid://ceqiltna222m8" path="res://scenes/circle.tscn" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://cv1puod0pb0p1" path="res://scenes/button.tscn" id="3_lnu2h"]
 
 [node name="Game" type="Node2D" unique_id=1978774684]
 
@@ -12,12 +12,20 @@ position = Vector2(959.75, 640.375)
 scale = Vector2(1.8214287, 1.806577)
 texture = ExtResource("2_yqjtg")
 
-[node name="Circle" parent="." unique_id=1163447690 instance=ExtResource("3_lnu2h")]
-position = Vector2(714.00006, -279.00003)
-scale = Vector2(1.82, 1.82)
-
 [node name="MainBoard2" type="Sprite2D" parent="." unique_id=1085503733]
 z_index = -1
-position = Vector2(1012, 435.00003)
-scale = Vector2(0.5383386, 0.5363552)
+position = Vector2(1009, 435)
+scale = Vector2(0.6008579, 0.5363552)
 texture = ExtResource("3_lbhrr")
+
+[node name="Button" parent="." unique_id=155436911 instance=ExtResource("3_lnu2h")]
+position = Vector2(680, 713)
+
+[node name="Button2" parent="." unique_id=665909422 instance=ExtResource("3_lnu2h")]
+position = Vector2(862, 713)
+
+[node name="Button3" parent="." unique_id=810961907 instance=ExtResource("3_lnu2h")]
+position = Vector2(1040, 713)
+
+[node name="Button4" parent="." unique_id=1578098347 instance=ExtResource("3_lnu2h")]
+position = Vector2(1217, 713)
