@@ -1,7 +1,11 @@
 [gd_scene format=3 uid="uid://bdi10rlibs8xu"]
 
-[node name="Conductor" type="Node2D" unique_id=511162354]
+[ext_resource type="Script" uid="uid://crpa7xjstunpn" path="res://scripts/conductor.gd" id="1_dqjak"]
+[ext_resource type="AudioStream" uid="uid://bpfmbabtg5tf0" path="res://assets/songs/song.ogg" id="1_emm5y"]
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1064440228]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" unique_id=1085495883]
+stream = ExtResource("1_emm5y")
+script = ExtResource("1_dqjak")
 
-[node name="Timer" type="Timer" parent="." unique_id=1848341569]
+[node name="Timer" type="Timer" parent="." unique_id=1637705801]
+one_shot = true

@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b1sogm3wklvdx" path="res://assets/board/background.png" id="2_yqjtg"]
 [ext_resource type="Texture2D" uid="uid://vyaxvn7kw74s" path="res://assets/board/main-board-2.svg" id="3_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://cv1puod0pb0p1" path="res://scenes/button.tscn" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://bdi10rlibs8xu" path="res://scenes/conductor.tscn" id="5_iywne"]
 
 [node name="Game" type="Node2D" unique_id=1978774684]
 script = ExtResource("1_lbhrr")
@@ -40,4 +41,7 @@ input = "ui_right"
 wait_time = 3.0
 autostart = true
 
+[node name="Conductor" parent="." unique_id=1085495883 instance=ExtResource("5_iywne")]
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="measure" from="Conductor" to="." method="_on_conductor_measure"]
