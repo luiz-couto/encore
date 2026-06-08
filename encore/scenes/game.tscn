@@ -45,8 +45,7 @@ wait_time = 3.0
 autostart = true
 
 [node name="Conductor" parent="." unique_id=1085495883 instance=ExtResource("5_iywne")]
-stream = null
-bpm = 110.0
+max_polyphony = 2
 
 [node name="ChordGenerator" type="Node2D" parent="." unique_id=2083067362]
 script = ExtResource("7_u5sy4")
@@ -56,15 +55,23 @@ script = ExtResource("8_gee14")
 
 [node name="Voice1" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1260706810]
 stream = ExtResource("8_0tnpc")
+attenuation = 2.5
+max_polyphony = 5
 
 [node name="Voice2" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=471433653]
 stream = ExtResource("8_0tnpc")
+attenuation = 2.5
+max_polyphony = 5
 
 [node name="Voice3" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1068854127]
 stream = ExtResource("8_0tnpc")
+attenuation = 2.5
+max_polyphony = 5
 
 [node name="Voice4" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1587629392]
 stream = ExtResource("8_0tnpc")
+attenuation = 2.5
+max_polyphony = 5
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="measure" from="Conductor" to="." method="_on_conductor_measure"]
