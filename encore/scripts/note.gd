@@ -26,10 +26,13 @@ const positionSelector: Dictionary[int, Vector2] = {
 var speed: float = 0;
 var hit: bool = false;
 
-func initialize(lane: int):
+var chord: int = 0
+
+func initialize(lane: int, chord_idx: int):
 	position = positionSelector[lane];
 	$AnimatedSprite2D.frame = lane;
 	speed = DIST_TO_TARGET / 2.0;
+	chord = chord_idx;
 	
 func _physics_process(delta: float) -> void:
 	if (!hit):
@@ -38,6 +41,7 @@ func _physics_process(delta: float) -> void:
 			queue_free();
 
 func destroy(score: int) -> void:
+	get_tree().get_root().get_node("Game/MusicPlayer").play_note(chord, $AnimatedSprite2D.frame);
 	$Timer.start();
 	hit = true;
 
