@@ -11,7 +11,10 @@ const CHORD_NOTES: Dictionary = {
 	6: [-1,   2,   5, 11], # B dim: B3, D4, F4, B4
 }
 
-@export var piano_sample: AudioStream;
+@export var piano_c3: AudioStream
+@export var piano_c4: AudioStream
+@export var piano_c5: AudioStream
+
 var playback: AudioStreamPlaybackPolyphonic
 
 func _ready() -> void:
@@ -19,12 +22,21 @@ func _ready() -> void:
 	$Player.play()
 	playback = $Player.get_stream_playback()
 
+func _get_stream(semitones: int) -> Array:
+	if semitones < -6:
+		return [piano_c3, semitones + 12]
+	elif semitones > 6:
+		return [piano_c5, semitones - 12]
+	else:
+		return [piano_c4, semitones]
+
 func play_chord(chord_idx: int) -> void:
 	for i in 4:
-		var pitch = pow(2.0, CHORD_NOTES[chord_idx][i] / 12.0)
-		playback.play_stream(piano_sample, 0, 0, pitch)
-
+		var s = _get_stream(CHORD_NOTES[chord_idx][i])
+		var pitch = pow(2.0, float(s[1]) / 12.0)
+		playback.play_stream(s[0], 0, -4.0, pitch)
 
 func play_note(chord_idx: int, lane: int) -> void:
-	var pitch = pow(2.0, CHORD_NOTES[chord_idx][lane] / 12.0)
-	playback.play_stream(piano_sample, 0, 0, pitch)
+	var s = _get_stream(CHORD_NOTES[chord_idx][lane])
+	var pitch = pow(2.0, float(s[1]) / 12.0)
+	playback.play_stream(s[0], 0, -4.0, pitch)

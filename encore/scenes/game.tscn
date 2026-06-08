@@ -8,6 +8,9 @@
 [ext_resource type="Script" uid="uid://d4ild0tpfaeko" path="res://scripts/chord_generator.gd" id="7_u5sy4"]
 [ext_resource type="AudioStream" uid="uid://bcsrbuan637ij" path="res://assets/audio/piano_c4_long.wav" id="8_0tnpc"]
 [ext_resource type="Script" uid="uid://dbditb0w43qpw" path="res://scripts/music_player.gd" id="8_gee14"]
+[ext_resource type="AudioStream" uid="uid://cojkhbjgguu0j" path="res://assets/audio/c3-short.wav" id="8_kvpfn"]
+[ext_resource type="AudioStream" uid="uid://bs6mbq2xsftbs" path="res://assets/audio/c4-short.wav" id="9_dinhu"]
+[ext_resource type="AudioStream" uid="uid://c0sknu7dlwmh6" path="res://assets/audio/c5-short.wav" id="10_kvuet"]
 
 [node name="Game" type="Node2D" unique_id=1978774684]
 script = ExtResource("1_lbhrr")
@@ -52,7 +55,9 @@ script = ExtResource("7_u5sy4")
 
 [node name="MusicPlayer" type="Node2D" parent="." unique_id=557973983]
 script = ExtResource("8_gee14")
-piano_sample = ExtResource("8_0tnpc")
+piano_c3 = ExtResource("8_kvpfn")
+piano_c4 = ExtResource("9_dinhu")
+piano_c5 = ExtResource("10_kvuet")
 
 [node name="Voice1" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1260706810]
 stream = ExtResource("8_0tnpc")
@@ -75,7 +80,6 @@ attenuation = 2.5
 max_polyphony = 5
 
 [node name="Player" type="AudioStreamPlayer" parent="MusicPlayer" unique_id=2073853496]
-stream = ExtResource("8_0tnpc")
 volume_db = -15.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

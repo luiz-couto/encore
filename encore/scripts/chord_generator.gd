@@ -23,7 +23,7 @@ const MINOR_MATRIX = [
 ];
 
 ## 0.0 = fully C major, 1.0 = fully A minor
-@export var mode: float = 0.0;
+@export var mode: float = 0.5;
 
 var current_chord: int = Chord.C_MAJ;
 
@@ -38,7 +38,9 @@ func advance() -> int:
 func _blended_row(idx: int) -> Array:
 	var result = []
 	for i in 7:
-		result.append(lerp(MAJOR_MATRIX[idx][i], MINOR_MATRIX[idx][i], mode))
+		var res = lerp(MAJOR_MATRIX[idx][i], MINOR_MATRIX[idx][i], mode);
+		print("lerp res: ", res);
+		result.append(res);
 	return result
 
 func _weighted_sample(weights: Array) -> int:
