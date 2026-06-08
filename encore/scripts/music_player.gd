@@ -11,21 +11,20 @@ const CHORD_NOTES: Dictionary = {
 	6: [-1,   2,   5, 11], # B dim: B3, D4, F4, B4
 }
 
+@export var piano_sample: AudioStream;
+var playback: AudioStreamPlaybackPolyphonic
+
+func _ready() -> void:
+	$Player.stream = AudioStreamPolyphonic.new()
+	$Player.play()
+	playback = $Player.get_stream_playback()
+
 func play_chord(chord_idx: int) -> void:
-	var notes = CHORD_NOTES[chord_idx];
 	for i in 4:
-		var player: AudioStreamPlayer2D = get_child(i);
-		var newScale = pow(2.0, notes[i] / 12.0);
-		if not player.playing or player.pitch_scale != newScale:
-			player.pitch_scale = newScale;
-			player.volume_db = -20.0
-			player.play();
-			var tween = create_tween();
-			tween.tween_property(player, "volume_db", 0.0, 0.4)
+		var pitch = pow(2.0, CHORD_NOTES[chord_idx][i] / 12.0)
+		playback.play_stream(piano_sample, 0, 0, pitch)
 
 
 func play_note(chord_idx: int, lane: int) -> void:
-	var semitones = CHORD_NOTES[chord_idx][lane];
-	var player: AudioStreamPlayer2D = get_child(lane);
-	player.pitch_scale = pow(2.0, semitones / 12.0);
-	player.play();
+	var pitch = pow(2.0, CHORD_NOTES[chord_idx][lane] / 12.0)
+	playback.play_stream(piano_sample, 0, 0, pitch)

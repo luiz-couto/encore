@@ -52,6 +52,7 @@ script = ExtResource("7_u5sy4")
 
 [node name="MusicPlayer" type="Node2D" parent="." unique_id=557973983]
 script = ExtResource("8_gee14")
+piano_sample = ExtResource("8_0tnpc")
 
 [node name="Voice1" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1260706810]
 stream = ExtResource("8_0tnpc")
@@ -72,6 +73,10 @@ max_polyphony = 5
 stream = ExtResource("8_0tnpc")
 attenuation = 2.5
 max_polyphony = 5
+
+[node name="Player" type="AudioStreamPlayer" parent="MusicPlayer" unique_id=2073853496]
+stream = ExtResource("8_0tnpc")
+volume_db = -15.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="measure" from="Conductor" to="." method="_on_conductor_measure"]

@@ -1,6 +1,6 @@
 extends Node
 
-@export var bpm: float = 45:
+@export var bpm: float = 60:
 	set(value):
 		bpm = value
 		secondsPerBeat = 60.0 / bpm
