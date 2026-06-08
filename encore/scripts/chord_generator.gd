@@ -39,7 +39,6 @@ func _blended_row(idx: int) -> Array:
 	var result = []
 	for i in 7:
 		var res = lerp(MAJOR_MATRIX[idx][i], MINOR_MATRIX[idx][i], mode);
-		print("lerp res: ", res);
 		result.append(res);
 	return result
 

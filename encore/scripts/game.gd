@@ -11,5 +11,6 @@ func _on_conductor_measure(position: int) -> void:
 
 func spawnNote(chord: int) -> void:
 	var noteInstance = NoteScene.instantiate();
-	noteInstance.initialize(randi() % 4, chord);
+	var seconds_per_measure = $Conductor.secondsPerBeat * $Conductor.measures;
+	noteInstance.initialize(randi() % 4, chord, seconds_per_measure);
 	add_child(noteInstance);

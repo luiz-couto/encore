@@ -32,11 +32,11 @@ func _get_stream(semitones: int) -> Array:
 
 func play_chord(chord_idx: int) -> void:
 	for i in 4:
-		var s = _get_stream(CHORD_NOTES[chord_idx][i])
-		var pitch = pow(2.0, float(s[1]) / 12.0)
-		playback.play_stream(s[0], 0, -4.0, pitch)
+		var selectedStream = _get_stream(CHORD_NOTES[chord_idx][i])
+		var pitch = pow(2.0, float(selectedStream[1]) / 12.0)
+		playback.play_stream(selectedStream[0], 0, -6.0, pitch)
 
 func play_note(chord_idx: int, lane: int) -> void:
-	var s = _get_stream(CHORD_NOTES[chord_idx][lane])
-	var pitch = pow(2.0, float(s[1]) / 12.0)
-	playback.play_stream(s[0], 0, -4.0, pitch)
+	var selectedStream = _get_stream(CHORD_NOTES[chord_idx][lane])
+	var pitch = pow(2.0, float(selectedStream[1]) / 12.0)
+	playback.play_stream(selectedStream[0], 0, -4.0, pitch)

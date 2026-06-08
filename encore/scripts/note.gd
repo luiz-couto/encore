@@ -28,11 +28,11 @@ var hit: bool = false;
 
 var chord: int = 0
 
-func initialize(lane: int, chord_idx: int):
+func initialize(lane: int, chord_idx: int, seconds_per_measure: float):
 	position = positionSelector[lane];
 	$AnimatedSprite2D.frame = lane;
-	speed = DIST_TO_TARGET / 2.0;
 	chord = chord_idx;
+	speed = ((DIST_TO_TARGET + 100) / seconds_per_measure);
 	
 func _physics_process(delta: float) -> void:
 	if (!hit):
