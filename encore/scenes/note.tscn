@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://6gbk63bd1kdn" path="res://assets/button/button_green.svg" id="3_ixjtm"]
 [ext_resource type="Texture2D" uid="uid://d34rw81limwm5" path="res://assets/button/button_yellow.svg" id="4_s1bem"]
 [ext_resource type="Texture2D" uid="uid://sdm6ejkikxhq" path="res://assets/particles/star-1.png" id="6_ixjtm"]
+[ext_resource type="FontFile" uid="uid://o7n5xnnd4w71" path="res://assets/fonts/HeartbitXX2Px.ttf" id="7_s1bem"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_suntu"]
 animations = [{
@@ -32,6 +33,12 @@ animations = [{
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_njo4t"]
 size = Vector2(50, 37)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ixjtm"]
+font = ExtResource("7_s1bem")
+font_size = 60
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 1)
 
 [node name="Note" type="Area2D" unique_id=1758944916 groups=["note"]]
 script = ExtResource("1_8ibmt")
@@ -68,5 +75,16 @@ scale_amount_max = 0.2
 color = Color(0.90656847, 0.82589096, 0.41761777, 1)
 hue_variation_min = 0.51
 hue_variation_max = 0.51
+
+[node name="Node2D" type="Node2D" parent="." unique_id=771425515]
+
+[node name="Label" type="Label" parent="Node2D" unique_id=2086540100]
+z_index = 3
+offset_left = -76.0
+offset_top = -56.0
+offset_right = 81.0
+offset_bottom = 13.0
+label_settings = SubResource("LabelSettings_ixjtm")
+horizontal_alignment = 1
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

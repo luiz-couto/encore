@@ -39,11 +39,14 @@ func _physics_process(delta: float) -> void:
 		position.y += speed * delta;
 		if position.y > TARGET_Y + 20:
 			queue_free();
+	else:
+		$Node2D.position.y -= speed * delta
 
 func destroy(score: int) -> void:
+	#get_tree().get_root().get_node("Game/MusicPlayer").play_note(chord, $AnimatedSprite2D.frame);
 	$CPUParticles2D.emitting = true;
-	get_tree().get_root().get_node("Game/MusicPlayer").play_note(chord, $AnimatedSprite2D.frame);
 	$Timer.start();
+	$Node2D/Label.text = "GREAT";
 	$AnimatedSprite2D.frame = 4; # empty frame
 	hit = true;
 
