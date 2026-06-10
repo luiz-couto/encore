@@ -41,8 +41,10 @@ func _physics_process(delta: float) -> void:
 			queue_free();
 
 func destroy(score: int) -> void:
-	#get_tree().get_root().get_node("Game/MusicPlayer").play_note(chord, $AnimatedSprite2D.frame);
+	$CPUParticles2D.emitting = true;
+	get_tree().get_root().get_node("Game/MusicPlayer").play_note(chord, $AnimatedSprite2D.frame);
 	$Timer.start();
+	$AnimatedSprite2D.frame = 4; # empty frame
 	hit = true;
 
 func _on_timer_timeout() -> void:
