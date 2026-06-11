@@ -28,6 +28,8 @@ var hit: bool = false;
 
 var chord: int = 0
 
+signal scoreEvent(score);
+
 func initialize(lane: int, chord_idx: int, seconds_per_measure: float):
 	position = positionSelector[lane];
 	$AnimatedSprite2D.frame = lane;
@@ -48,6 +50,7 @@ func destroy(score: int) -> void:
 	$Timer.start();
 	$Node2D/Label.text = "GREAT";
 	$AnimatedSprite2D.frame = 4; # empty frame
+	scoreEvent.emit(100);
 	hit = true;
 
 func _on_timer_timeout() -> void:
