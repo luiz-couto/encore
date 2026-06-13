@@ -11,6 +11,12 @@
 [ext_resource type="AudioStream" uid="uid://cojkhbjgguu0j" path="res://assets/audio/c3-short.wav" id="8_kvpfn"]
 [ext_resource type="AudioStream" uid="uid://bs6mbq2xsftbs" path="res://assets/audio/c4-short.wav" id="9_dinhu"]
 [ext_resource type="AudioStream" uid="uid://c0sknu7dlwmh6" path="res://assets/audio/c5-short.wav" id="10_kvuet"]
+[ext_resource type="Script" uid="uid://d140tki0nsxth" path="res://scripts/score_node_2d.gd" id="12_dinhu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kvpfn"]
+font_size = 60
+outline_size = 11
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Game" type="Node2D" unique_id=1978774684]
 script = ExtResource("1_lbhrr")
@@ -81,6 +87,20 @@ max_polyphony = 5
 
 [node name="Player" type="AudioStreamPlayer" parent="MusicPlayer" unique_id=2073853496]
 volume_db = -15.0
+
+[node name="ScoreNode2D" type="Node2D" parent="." unique_id=218924862]
+position = Vector2(68, 76)
+script = ExtResource("12_dinhu")
+
+[node name="ScoreLabelNum" type="Label" parent="ScoreNode2D" unique_id=529271551]
+offset_left = -38.0
+offset_top = -32.0
+offset_right = 271.0
+offset_bottom = 70.0
+text = "SCORE"
+label_settings = SubResource("LabelSettings_kvpfn")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="measure" from="Conductor" to="." method="_on_conductor_measure"]

@@ -28,6 +28,8 @@ var hit: bool = false;
 
 var chord: int = 0
 
+signal scoreEvent(score);
+
 func initialize(lane: int, chord_idx: int, seconds_per_measure: float):
 	position = positionSelector[lane];
 	$AnimatedSprite2D.frame = lane;
@@ -39,10 +41,16 @@ func _physics_process(delta: float) -> void:
 		position.y += speed * delta;
 		if position.y > TARGET_Y + 20:
 			queue_free();
+	else:
+		$Node2D.position.y -= speed * delta
 
 func destroy(score: int) -> void:
 	#get_tree().get_root().get_node("Game/MusicPlayer").play_note(chord, $AnimatedSprite2D.frame);
+	$CPUParticles2D.emitting = true;
 	$Timer.start();
+	$Node2D/Label.text = "GREAT";
+	$AnimatedSprite2D.frame = 4; # empty frame
+	scoreEvent.emit(100);
 	hit = true;
 
 func _on_timer_timeout() -> void:
