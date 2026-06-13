@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://cojkhbjgguu0j" path="res://assets/audio/c3-short.wav" id="8_kvpfn"]
 [ext_resource type="AudioStream" uid="uid://bs6mbq2xsftbs" path="res://assets/audio/c4-short.wav" id="9_dinhu"]
 [ext_resource type="AudioStream" uid="uid://c0sknu7dlwmh6" path="res://assets/audio/c5-short.wav" id="10_kvuet"]
+[ext_resource type="AudioStream" uid="uid://dbwmyn7cw48by" path="res://assets/audio/keys/rhodes_c4.wav" id="11_kvuet"]
 [ext_resource type="Script" uid="uid://d140tki0nsxth" path="res://scripts/score_node_2d.gd" id="12_dinhu"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kvpfn"]
@@ -64,6 +65,7 @@ script = ExtResource("8_gee14")
 piano_c3 = ExtResource("8_kvpfn")
 piano_c4 = ExtResource("9_dinhu")
 piano_c5 = ExtResource("10_kvuet")
+rhodes_c4 = ExtResource("11_kvuet")
 
 [node name="Voice1" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1260706810]
 stream = ExtResource("8_0tnpc")

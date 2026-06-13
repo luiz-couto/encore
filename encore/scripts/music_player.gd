@@ -1,21 +1,30 @@
 extends Node
 
-# Semitone offsets from C4 for each chord (root, third, fifth)
+# Semitone offsets from C4 for each chord (root, third, fifth, seventh)
 const CHORD_NOTES: Dictionary = {
-	0: [0,   4,   7,  12], # C maj: C4, E4, G4, C5
-	1: [-10, -7,  -3,  2], # D min: D3, F3, A3, D4
-	2: [-8,  -5,  -1,  4], # E min: E3, G3, B3, E4
-	3: [-7,  -3,   0,  5], # F maj: F3, A3, C4, F4
-	4: [-5,  -1,   2,  7], # G maj: G3, B3, D4, G4
-	5: [-3,   0,   4,  9], # A min: A3, C4, E4, A4
-	6: [-1,   2,   5, 11], # B dim: B3, D4, F4, B4
+	0: [0,  4,  7, 11],
+	1: [-10, -7, -3,  0],
+	2: [-8, -5, -1,  2],
+	3: [-7, -3,  0,  4],
+	4: [-5, -1,  2,  5],
+	5: [-3,  0,  4,  7],
+	6: [-1,  2,  5,  8],
 }
 
 @export var piano_c3: AudioStream
 @export var piano_c4: AudioStream
 @export var piano_c5: AudioStream
 
+@export var rhodes_c4: AudioStream
+
 var playback: AudioStreamPlaybackPolyphonic
+
+func _get_chord_stream(semitones: int) -> Array:
+	if semitones < -9:  
+		return [piano_c3, semitones + 12];
+	else: 
+		return [rhodes_c4, semitones];
+
 
 func _ready() -> void:
 	$Player.stream = AudioStreamPolyphonic.new()
@@ -32,7 +41,7 @@ func _get_stream(semitones: int) -> Array:
 
 func play_chord(chord_idx: int) -> void:
 	for i in 4:
-		var selectedStream = _get_stream(CHORD_NOTES[chord_idx][i])
+		var selectedStream = _get_chord_stream(CHORD_NOTES[chord_idx][i])
 		var pitch = pow(2.0, float(selectedStream[1]) / 12.0)
 		playback.play_stream(selectedStream[0], 0, -6.0, pitch)
 
