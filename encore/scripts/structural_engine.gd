@@ -4,7 +4,7 @@ enum Section { INTRO, BUILD, DROP, BREAK };
 
 const SECTION_BARS: Dictionary[Section, int] = {
 	Section.INTRO: 8,
-	Section.BUILD: 8,
+	Section.BUILD: 16,
 	Section.DROP: 16,
 	Section.BREAK: 8
 }
@@ -43,3 +43,6 @@ func _transition():
 		cycleCount += 1
 
 	sectionChanged.emit(currentSection, intensity)
+
+func is_last_bar() -> bool:
+	return barsInSection == SECTION_BARS[currentSection] - 1

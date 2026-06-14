@@ -11,6 +11,7 @@ func _on_conductor_measure(measurePosition: int) -> void:
 		currentChord = $ChordGenerator.advance();
 		$ChordGenerator.maybeRefresh();
 		$StructuralEngine.advance_bar();
+		$MusicPlayer.set_bar($StructuralEngine.barsInSection, $StructuralEngine.is_last_bar());
 
 	$MusicPlayer.play_on_beat(currentChord, measurePosition);
 	spawnNote(currentChord);
@@ -32,7 +33,7 @@ func _on_structural_engine_section_changed(section: Variant, intensity: Variant)
 	currentSection = section
 	currentIntensity = intensity
 	$ChordGenerator.pick_progression()
-	$MusicPlayer.set_section(section, intensity)
+	$MusicPlayer.set_section(section, intensity, $StructuralEngine.cycleCount)
 	print(currentSection, " ", currentIntensity);
 
 func _on_conductor_subdivision(conductorPosition: Variant) -> void:

@@ -16,7 +16,7 @@
 [ext_resource type="Script" uid="uid://d140tki0nsxth" path="res://scripts/score_node_2d.gd" id="12_dinhu"]
 [ext_resource type="AudioStream" uid="uid://v5ewqniqcdgb" path="res://assets/audio/drums/kick.wav" id="12_ssvqc"]
 [ext_resource type="AudioStream" uid="uid://ckj5kdri011kv" path="res://assets/audio/drums/hithat_closed.wav" id="13_264po"]
-[ext_resource type="AudioStream" uid="uid://cxk5draawxbt2" path="res://assets/audio/drums/hithat_open.wav" id="14_1kice"]
+[ext_resource type="AudioStream" uid="uid://cbjjp4102v47x" path="res://assets/audio/drums/hithat_open_3.wav" id="14_ssvqc"]
 [ext_resource type="AudioStream" uid="uid://dm5fjy3kq5iha" path="res://assets/audio/drums/clap.wav" id="15_5newe"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kvpfn"]
@@ -73,7 +73,7 @@ piano_c5 = ExtResource("10_kvuet")
 rhodes_c4 = ExtResource("11_kvuet")
 kick = ExtResource("12_ssvqc")
 hihat_closed = ExtResource("13_264po")
-hihat_open = ExtResource("14_1kice")
+hihat_open = ExtResource("14_ssvqc")
 clap = ExtResource("15_5newe")
 
 [node name="Voice1" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1260706810]
