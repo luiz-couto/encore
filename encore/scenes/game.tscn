@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dgyatpwpv6grd"]
 
+[ext_resource type="Script" uid="uid://dfley4faja7so" path="res://scripts/structural_engine.gd" id="1_kvuet"]
 [ext_resource type="Script" uid="uid://bpn3xgvir8p7b" path="res://scripts/game.gd" id="1_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://b1sogm3wklvdx" path="res://assets/board/background.png" id="2_yqjtg"]
 [ext_resource type="Texture2D" uid="uid://vyaxvn7kw74s" path="res://assets/board/main-board-2.svg" id="3_lbhrr"]
@@ -104,5 +105,9 @@ label_settings = SubResource("LabelSettings_kvpfn")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="StructuralEngine" type="Node" parent="." unique_id=352973996]
+script = ExtResource("1_kvuet")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="measure" from="Conductor" to="." method="_on_conductor_measure"]
+[connection signal="sectionChanged" from="StructuralEngine" to="." method="_on_structural_engine_section_changed"]
