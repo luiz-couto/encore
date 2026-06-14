@@ -21,14 +21,17 @@ const CHORD_NOTES: Dictionary = {
 @export var hihat_closed: AudioStream
 @export var hihat_open: AudioStream
 @export var clap: AudioStream
+@export var bass: AudioStream
 
 var playback: AudioStreamPlaybackPolyphonic
 var drumPlayback: AudioStreamPlaybackPolyphonic
+var bass_playback: AudioStreamPlaybackPolyphonic
 
 var active_chord_streams: Array = []
 var currentSection: int = 0
 var currentIntensity: float = 0.2
 var currentCycle: int = 0
+var active_bass_id: int = 0
 
 var currentBar: int = 0
 var isFill: bool = false
@@ -86,6 +89,21 @@ const BUILD_RAMP_STABS: Array = [
 	[2, 4, 6, 8],  # bars 6-7
 ]
 
+const BASS_BEATS: Dictionary = {
+	0: [1],           # INTRO — root on beat 1 only
+	1: [1, 3],        # BUILD — beats 1 and 3
+	2: [1, 2, 3, 4],  # DROP — every beat
+	3: [1],           # BREAK — beat 1 only
+}
+
+func _play_bass(chord_idx: int) -> void:
+	if bass_playback.is_stream_playing(active_bass_id):
+		bass_playback.stop_stream(active_bass_id)
+	var semitones = CHORD_NOTES[chord_idx][0]  # root note of chord
+	var pitch = pow(2.0, float(semitones) / 12.0)
+	active_bass_id = bass_playback.play_stream(bass, 0, -4.0, pitch)
+
+
 func set_section(section: int, intensity: float, cycle: int):
 	currentSection = section
 	currentIntensity = intensity
@@ -95,11 +113,13 @@ func _play_drum(stream: AudioStream, volume: float) -> void:
 	var volumeRnd = volume + randf_range(-1.5, 1.5)
 	drumPlayback.play_stream(stream, 0, volumeRnd, 1.0)
 	
-func play_on_beat(_chord_idx: int, beat_pos: int) -> void:
+func play_on_beat(chord_idx: int, beat_pos: int) -> void:
 	if beat_pos in KICK_BEATS[currentSection]:
 		_play_drum(kick, -3.0)
 	if beat_pos in CLAP_BEATS[currentSection]:
 		_play_drum(clap, -5.0)
+	if beat_pos in BASS_BEATS[currentSection]:
+		_play_bass(chord_idx)
 
 func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 	if isFill:
@@ -135,6 +155,11 @@ func _ready() -> void:
 	$DrumPlayer.stream = AudioStreamPolyphonic.new()
 	$DrumPlayer.play()
 	drumPlayback = $DrumPlayer.get_stream_playback()
+
+	$BassPlayer.stream = AudioStreamPolyphonic.new()
+	$BassPlayer.play()
+	bass_playback = $BassPlayer.get_stream_playback()
+
 
 func _get_stream(semitones: int) -> Array:
 	if semitones < -6:

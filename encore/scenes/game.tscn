@@ -18,6 +18,7 @@
 [ext_resource type="AudioStream" uid="uid://ckj5kdri011kv" path="res://assets/audio/drums/hithat_closed.wav" id="13_264po"]
 [ext_resource type="AudioStream" uid="uid://cbjjp4102v47x" path="res://assets/audio/drums/hithat_open_3.wav" id="14_ssvqc"]
 [ext_resource type="AudioStream" uid="uid://dm5fjy3kq5iha" path="res://assets/audio/drums/clap.wav" id="15_5newe"]
+[ext_resource type="AudioStream" uid="uid://b5aayuu7j6pwr" path="res://assets/audio/drums/bass.wav" id="17_264po"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kvpfn"]
 font_size = 60
@@ -100,6 +101,9 @@ max_polyphony = 5
 volume_db = -15.0
 
 [node name="DrumPlayer" type="AudioStreamPlayer" parent="MusicPlayer" unique_id=946708528]
+
+[node name="BassPlayer" type="AudioStreamPlayer" parent="MusicPlayer" unique_id=2059676306]
+stream = ExtResource("17_264po")
 
 [node name="ScoreNode2D" type="Node2D" parent="." unique_id=218924862]
 position = Vector2(68, 76)
