@@ -44,7 +44,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		$Node2D.position.y -= speed * delta
 
-func destroy(score: int) -> void:
+func destroy(_score: int) -> void:
 	#get_tree().get_root().get_node("Game/MusicPlayer").play_note(chord, $AnimatedSprite2D.frame);
 	$CPUParticles2D.emitting = true;
 	$Timer.start();
@@ -61,5 +61,5 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass

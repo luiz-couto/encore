@@ -15,7 +15,7 @@ var startTime: float = 0.0;
 signal beat(position);
 signal measure(position);
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var elapsed = (Time.get_ticks_msec() / 1000.0) - startTime;
 	var currBeat = int(floor(elapsed / secondsPerBeat));
 	if (lastReportedBeat < currBeat):
@@ -41,5 +41,5 @@ func _ready() -> void:
 	startTime = Time.get_ticks_msec() / 1000.0;
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass

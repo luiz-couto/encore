@@ -19,6 +19,8 @@ const CHORD_NOTES: Dictionary = {
 
 var playback: AudioStreamPlaybackPolyphonic
 
+var active_chord_streams: Array = []
+
 func _get_chord_stream(semitones: int) -> Array:
 	if semitones < -9:  
 		return [piano_c3, semitones + 12];
@@ -40,10 +42,17 @@ func _get_stream(semitones: int) -> Array:
 		return [piano_c4, semitones]
 
 func play_chord(chord_idx: int) -> void:
+	for id in active_chord_streams:
+		if playback.is_stream_playing(id):
+			playback.stop_stream(id);
+	
+	active_chord_streams.clear()
+	
 	for i in 4:
 		var selectedStream = _get_chord_stream(CHORD_NOTES[chord_idx][i])
 		var pitch = pow(2.0, float(selectedStream[1]) / 12.0)
-		playback.play_stream(selectedStream[0], 0, -6.0, pitch)
+		var id = playback.play_stream(selectedStream[0], 0, -6.0, pitch)
+		active_chord_streams.append(id)
 
 func play_note(chord_idx: int, lane: int) -> void:
 	var selectedStream = _get_stream(CHORD_NOTES[chord_idx][lane])

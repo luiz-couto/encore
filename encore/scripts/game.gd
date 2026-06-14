@@ -4,12 +4,12 @@ const NoteScene := preload("res://scenes/note.tscn");
 
 var currentChord: int = 0;
 
-func _on_conductor_measure(position: int) -> void:
-	if position == 1:
+func _on_conductor_measure(measurePosition: int) -> void:
+	if measurePosition == 1:
 		currentChord = $ChordGenerator.advance();
-		$MusicPlayer.play_chord(currentChord);
 		$ChordGenerator.maybeRefresh();
 
+	$MusicPlayer.play_chord(currentChord);
 	spawnNote(currentChord);
 
 func spawnNote(chord: int) -> void:
