@@ -3,7 +3,7 @@ extends Node2D
 const NoteScene := preload("res://scenes/note.tscn");
 
 var currentChord: int = 0
-var currentSection = 0
+var currentSection: int = 0
 var currentIntensity: float = 0.2
 
 func _on_conductor_measure(measurePosition: int) -> void:
@@ -12,7 +12,7 @@ func _on_conductor_measure(measurePosition: int) -> void:
 		$ChordGenerator.maybeRefresh();
 		$StructuralEngine.advance_bar();
 
-	$MusicPlayer.play_chord(currentChord);
+	$MusicPlayer.play_on_beat(currentChord, measurePosition);
 	spawnNote(currentChord);
 
 func spawnNote(chord: int) -> void:
@@ -32,4 +32,8 @@ func _on_structural_engine_section_changed(section: Variant, intensity: Variant)
 	currentSection = section
 	currentIntensity = intensity
 	$ChordGenerator.pick_progression()
+	$MusicPlayer.set_section(section, intensity)
 	print(currentSection, " ", currentIntensity);
+
+func _on_conductor_subdivision(conductorPosition: Variant) -> void:
+	$MusicPlayer.play_on_subdivision(conductorPosition, currentChord)

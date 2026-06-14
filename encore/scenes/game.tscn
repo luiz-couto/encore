@@ -14,6 +14,10 @@
 [ext_resource type="AudioStream" uid="uid://c0sknu7dlwmh6" path="res://assets/audio/c5-short.wav" id="10_kvuet"]
 [ext_resource type="AudioStream" uid="uid://dbwmyn7cw48by" path="res://assets/audio/keys/rhodes_c4.wav" id="11_kvuet"]
 [ext_resource type="Script" uid="uid://d140tki0nsxth" path="res://scripts/score_node_2d.gd" id="12_dinhu"]
+[ext_resource type="AudioStream" uid="uid://v5ewqniqcdgb" path="res://assets/audio/drums/kick.wav" id="12_ssvqc"]
+[ext_resource type="AudioStream" uid="uid://ckj5kdri011kv" path="res://assets/audio/drums/hithat_closed.wav" id="13_264po"]
+[ext_resource type="AudioStream" uid="uid://cxk5draawxbt2" path="res://assets/audio/drums/hithat_open.wav" id="14_1kice"]
+[ext_resource type="AudioStream" uid="uid://dm5fjy3kq5iha" path="res://assets/audio/drums/clap.wav" id="15_5newe"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kvpfn"]
 font_size = 60
@@ -67,6 +71,10 @@ piano_c3 = ExtResource("8_kvpfn")
 piano_c4 = ExtResource("9_dinhu")
 piano_c5 = ExtResource("10_kvuet")
 rhodes_c4 = ExtResource("11_kvuet")
+kick = ExtResource("12_ssvqc")
+hihat_closed = ExtResource("13_264po")
+hihat_open = ExtResource("14_1kice")
+clap = ExtResource("15_5newe")
 
 [node name="Voice1" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1260706810]
 stream = ExtResource("8_0tnpc")
@@ -91,6 +99,8 @@ max_polyphony = 5
 [node name="Player" type="AudioStreamPlayer" parent="MusicPlayer" unique_id=2073853496]
 volume_db = -15.0
 
+[node name="DrumPlayer" type="AudioStreamPlayer" parent="MusicPlayer" unique_id=946708528]
+
 [node name="ScoreNode2D" type="Node2D" parent="." unique_id=218924862]
 position = Vector2(68, 76)
 script = ExtResource("12_dinhu")
@@ -110,4 +120,5 @@ script = ExtResource("1_kvuet")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="measure" from="Conductor" to="." method="_on_conductor_measure"]
+[connection signal="subdivision" from="Conductor" to="." method="_on_conductor_subdivision"]
 [connection signal="sectionChanged" from="StructuralEngine" to="." method="_on_structural_engine_section_changed"]
