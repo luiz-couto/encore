@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dgyatpwpv6grd"]
+[gd_scene format=4 uid="uid://dgyatpwpv6grd"]
 
 [ext_resource type="Script" uid="uid://dfley4faja7so" path="res://scripts/structural_engine.gd" id="1_kvuet"]
 [ext_resource type="Script" uid="uid://bpn3xgvir8p7b" path="res://scripts/game.gd" id="1_lbhrr"]
@@ -15,10 +15,13 @@
 [ext_resource type="AudioStream" uid="uid://dbwmyn7cw48by" path="res://assets/audio/keys/rhodes_c4.wav" id="11_kvuet"]
 [ext_resource type="Script" uid="uid://d140tki0nsxth" path="res://scripts/score_node_2d.gd" id="12_dinhu"]
 [ext_resource type="AudioStream" uid="uid://v5ewqniqcdgb" path="res://assets/audio/drums/kick.wav" id="12_ssvqc"]
-[ext_resource type="AudioStream" uid="uid://ckj5kdri011kv" path="res://assets/audio/drums/hithat_closed.wav" id="13_264po"]
 [ext_resource type="AudioStream" uid="uid://cbjjp4102v47x" path="res://assets/audio/drums/hithat_open_3.wav" id="14_ssvqc"]
 [ext_resource type="AudioStream" uid="uid://dm5fjy3kq5iha" path="res://assets/audio/drums/clap.wav" id="15_5newe"]
 [ext_resource type="AudioStream" uid="uid://b5aayuu7j6pwr" path="res://assets/audio/drums/bass.wav" id="17_264po"]
+
+[sub_resource type="AudioStreamWAV" id="AudioStreamWAV_ssvqc"]
+data = PackedByteArray("cW9hZgAACFwBAKxECFwDcAAAAAAAAAAAAAAAAOAAQADymAwE0aDE5/Grz/2LD/zF/bh+54tWG7jwZYTqD/Edp/4kvoU1rZQRgcspklErw3fwBHzmp4k+e/KUbQJj3cLl+M4fiTJK9gTy0h/pm/Kd0Pq4YCUrSJ1j2pxgFEkpd5jwWNGDSzAhSvLHSRRVKbuj/N9UZMu6pVHGiHF7nd4Pnf3SuNAXxcc88vVKxglEEEjSQSCQQDL1qfTRLOYbTe5Q4XUFKkjpiUa96+ypAWyAidDAIIj5wTaK1gzfuEwE9hzckDyCqhU0mNcb3g+rhhZez1yGN5NnsmTCmSUQCQQEO9jMYVgoM5LWziXNoxs9RCrQ1RuJ8GTK09MZlQYoytYNrrTZHoNmcOSzCWyEAhF/AbxK5BiYZViqlmUoEAggAzfOI3mh0AQWi9zC8LjSsFIIpBIT9JwHf42t1uWFBQYLqJ3aAnU+Vbngq5lVJgAAgECSAQSApeUXiK1rJYyqJjpMnCtEM6tMPU6/C9QqiAQlbKRTMg5JJCABkkAgEBDvF4ik0eIkE6iUwLYCpxAIZDQAYioAkkookDKe4XABSCEGoXontuxqIsjzjsNQhAkBOpOAmm00qAhdQo8ryqFlcYJTkCyPuEwkGHlsCsUOSUiGX427TDicpj4hiKkM2ZpchwFk7LB0g4GvlWn0NYRKCKZJcAgBXpOKrDthSAoCWSpeUXEaPTMADBoyegMdyIJXgOF2kjaI3mF0WmmtNxbKqcTTYggFR9xBUBB3GAw1GV4bqHXhcYDRIIBIJ+FosioBo/NikawGJXteSmVBBQIKqBrzUpFWl4tVi4NZWmErc/lEeVx7VTeJVBYFU5VhsWJpssBUO4Xql0QHHWRAYQIbALzCXxmNjLkMhwFV4qmqBcwKCVAjoDCqidBBUoAEkggFDvBeEgW1nY+i81Q8BanIcjKSXskMQAB8oIFFWWAm5HQOmEzTYZCZhPoBUJgpcIVghBtEHCVyKVpzaj8xjbZAJZIKSPmESjBtWotMyukwV0muEVajC4DjaIZBQmKidhjMLgNEACSSzlQrU0OYXgYIqLzKPgNEBkhFsio81rWSoxOi9SS4YRBLJMn5MAogkFMKomMiiHq4N6mS4CKJtSKKLQrSFpFOoglVF6kUwQSCCCQCQQIIBAAAAAAA")
+format = 3
 
 [sub_resource type="LabelSettings" id="LabelSettings_kvpfn"]
 font_size = 60
@@ -73,9 +76,10 @@ piano_c4 = ExtResource("9_dinhu")
 piano_c5 = ExtResource("10_kvuet")
 rhodes_c4 = ExtResource("11_kvuet")
 kick = ExtResource("12_ssvqc")
-hihat_closed = ExtResource("13_264po")
+hihat_closed = SubResource("AudioStreamWAV_ssvqc")
 hihat_open = ExtResource("14_ssvqc")
 clap = ExtResource("15_5newe")
+bass = ExtResource("17_264po")
 
 [node name="Voice1" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1260706810]
 stream = ExtResource("8_0tnpc")
@@ -104,6 +108,8 @@ volume_db = -15.0
 
 [node name="BassPlayer" type="AudioStreamPlayer" parent="MusicPlayer" unique_id=2059676306]
 stream = ExtResource("17_264po")
+
+[node name="MelodyPlayer" type="AudioStreamPlayer" parent="MusicPlayer" unique_id=611799659]
 
 [node name="ScoreNode2D" type="Node2D" parent="." unique_id=218924862]
 position = Vector2(68, 76)

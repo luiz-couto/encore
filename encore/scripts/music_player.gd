@@ -22,16 +22,25 @@ const CHORD_NOTES: Dictionary = {
 @export var hihat_open: AudioStream
 @export var clap: AudioStream
 @export var bass: AudioStream
+@export var lead_sax: AudioStream
+@export var lead_organ: AudioStream
+@export var lead_flute: AudioStream
 
 var playback: AudioStreamPlaybackPolyphonic
 var drumPlayback: AudioStreamPlaybackPolyphonic
 var bass_playback: AudioStreamPlaybackPolyphonic
+var melody_playback: AudioStreamPlaybackPolyphonic
 
 var active_chord_streams: Array = []
 var currentSection: int = 0
 var currentIntensity: float = 0.2
 var currentCycle: int = 0
 var active_bass_id: int = 0
+
+var active_melody_id: int = 0
+var leads: Array = []
+var currentLead: AudioStream = null
+var leadIdx: int = 0
 
 var currentBar: int = 0
 var isFill: bool = false
@@ -71,7 +80,7 @@ const HIHAT_OPEN_SUBDIVS: Dictionary = {
 const HIHAT_CLOSED_SUBDIVS: Dictionary = {
 	0: [1, 3, 5, 7],           # INTRO — beats only
 	1: [1, 2, 3, 5, 6, 7],     # BUILD — all except open positions
-	2: [1, 2, 3, 4, 5, 6, 7, 8],  # DROP — all except open position
+	2: [1, 2, 3, 4, 5, 6, 7],  # DROP — all except open position
 	3: [1, 3, 5, 7],           # BREAK — beats only
 }
 
@@ -96,18 +105,36 @@ const BASS_BEATS: Dictionary = {
 	3: [1],           # BREAK — beat 1 only
 }
 
+const MELODY_BEATS: Dictionary = {
+	0: [1],           # INTRO — beat 1 only
+	1: [1, 3],        # BUILD — beats 1 and 3
+	2: [1, 2, 3, 4],  # DROP — every beat
+	3: [1],           # BREAK — beat 1 only
+}
+
+const MELODY_REST_CHANCE: Dictionary = {
+	0: 0.3,   # INTRO — rest 30% of the time
+	1: 0.2,   # BUILD
+	2: 0.0,   # DROP
+	3: 0.3,   # BREAK — very sparse
+}
+
 func _play_bass(chord_idx: int) -> void:
 	if bass_playback.is_stream_playing(active_bass_id):
 		bass_playback.stop_stream(active_bass_id)
 	var semitones = CHORD_NOTES[chord_idx][0]  # root note of chord
 	var pitch = pow(2.0, float(semitones) / 12.0)
-	active_bass_id = bass_playback.play_stream(bass, 0, -4.0, pitch)
+	active_bass_id = bass_playback.play_stream(bass, 0, -10.0, pitch)
 
 
 func set_section(section: int, intensity: float, cycle: int):
 	currentSection = section
 	currentIntensity = intensity
 	currentCycle = cycle
+	if section == 1 and leads.size() > 0:  # BUILD — new cycle, new lead
+		leadIdx = randi() % leads.size()
+		currentLead = leads[leadIdx]
+
 
 func _play_drum(stream: AudioStream, volume: float) -> void:
 	var volumeRnd = volume + randf_range(-1.5, 1.5)
@@ -120,17 +147,20 @@ func play_on_beat(chord_idx: int, beat_pos: int) -> void:
 		_play_drum(clap, -5.0)
 	if beat_pos in BASS_BEATS[currentSection]:
 		_play_bass(chord_idx)
+		#pass
+	if beat_pos in MELODY_BEATS[currentSection]:
+		play_melody(chord_idx)
 
 func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 	if isFill:
-		_play_drum(hihat_closed, -8.0)  # roll on every 8th note
+		_play_drum(hihat_closed, -2.0)  # roll on every 8th note
 		if subdiv_pos == 8 || subdiv_pos == 7:
-			_play_drum(kick, -5.0) # extra kick on and-of-
+			_play_drum(kick, 8.0) # extra kick on and-of-
 	else:
 		if subdiv_pos in HIHAT_OPEN_SUBDIVS[currentSection]:
-			_play_drum(hihat_open, -8.0)
+			_play_drum(hihat_open, -16.0)
 		elif subdiv_pos in HIHAT_CLOSED_SUBDIVS[currentSection]:
-			_play_drum(hihat_closed, -10.0)
+			_play_drum(hihat_closed, -8.0)
 
 	# if currentSection == 1: # BUILD - use ramp
 	# 	var rampIdx = min(currentBar / 4, BUILD_RAMP_STABS.size() - 1)
@@ -139,6 +169,18 @@ func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 	# else:
 	if subdiv_pos in CHORD_STAB_SUBDIVS[currentSection]:
 		play_chord(chord_idx)
+
+
+func play_melody(chord_idx: int) -> void:
+	if currentLead == null: return
+	if randf() < MELODY_REST_CHANCE[currentSection]: return
+	#if melody_playback.is_stream_playing(active_melody_id):
+		#melody_playback.stop_stream(active_melody_id)
+	
+	var note_idx = randi() % 3 + 1  # indices 1-3 (third, fifth, seventh — skip root, bass has that)
+	var semitones = CHORD_NOTES[chord_idx][note_idx]
+	var pitch = pow(2.0, float(semitones) / 12.0)
+	active_melody_id = melody_playback.play_stream(currentLead, 0, 2.0, pitch)
 
 
 func _get_chord_stream(semitones: int) -> Array:
@@ -160,6 +202,16 @@ func _ready() -> void:
 	$BassPlayer.play()
 	bass_playback = $BassPlayer.get_stream_playback()
 
+	$MelodyPlayer.stream = AudioStreamPolyphonic.new()
+	$MelodyPlayer.play()
+	melody_playback = $MelodyPlayer.get_stream_playback()
+
+	for lead in [lead_sax, lead_organ, lead_flute]:
+		if lead != null:
+			leads.append(lead)
+	if leads.size() > 0:
+		currentLead = leads[0]
+
 
 func _get_stream(semitones: int) -> Array:
 	if semitones < -6:
@@ -179,7 +231,7 @@ func play_chord(chord_idx: int) -> void:
 	for i in 4:
 		var selectedStream = _get_chord_stream(CHORD_NOTES[chord_idx][i])
 		var pitch = pow(2.0, float(selectedStream[1]) / 12.0)
-		var id = playback.play_stream(selectedStream[0], 0, -2.0, pitch)
+		var id = playback.play_stream(selectedStream[0], 0, 1.0, pitch)
 		active_chord_streams.append(id)
 
 func play_note(chord_idx: int, lane: int) -> void:
