@@ -4,7 +4,7 @@ enum Section { INTRO, BUILD, DROP, BREAK };
 
 const SECTION_BARS: Dictionary[Section, int] = {
 	Section.INTRO: 8,
-	Section.BUILD: 16,
+	Section.BUILD: 8,
 	Section.DROP: 16,
 	Section.BREAK: 8
 }

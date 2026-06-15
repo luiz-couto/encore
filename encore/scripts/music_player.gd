@@ -44,6 +44,7 @@ var leadIdx: int = 0
 
 var currentBar: int = 0
 var isFill: bool = false
+var isBreakdown: bool = false
 
 var kickPattern: Array = []
 var clapPattern: Array = []
@@ -82,6 +83,13 @@ const CHORD_STAB_VARIANTS: Array = [
 	[[4, 8], [8], [6, 8], [2, 8]],                   # BUILD
 	[[2, 4, 6, 8], [4, 8], [2, 6, 8], [4, 6, 8]],   # DROP
 	[[4], [8], []],                                  # BREAK
+]
+
+# Atmospheric chord patterns for full breakdowns (no drums/bass)
+const BREAKDOWN_CHORD_VARIANTS: Array = [
+	[2, 6],       # off-beat, floating
+	[1, 5],       # every half-bar, anchored
+	[4, 8],       # syncopated — the "and" of each half
 ]
 
 const BUILD_RAMP_STABS: Array = [
@@ -134,10 +142,14 @@ func set_section(section: int, intensity: float, cycle: int):
 	currentSection = section
 	currentIntensity = intensity
 	currentCycle = cycle
+	isBreakdown = false
 	_pick_patterns()
 	if section == 1 and leads.size() > 0:  # BUILD — new cycle, new lead
 		leadIdx = randi() % leads.size()
 		currentLead = leads[leadIdx]
+	if section == 3 and randf() < 0.5:  # BREAK — 50% chance of full breakdown
+		isBreakdown = true
+		chordStabPattern = BREAKDOWN_CHORD_VARIANTS[randi() % BREAKDOWN_CHORD_VARIANTS.size()]
 
 
 func _play_drum(stream: AudioStream, volume: float) -> void:
@@ -145,13 +157,14 @@ func _play_drum(stream: AudioStream, volume: float) -> void:
 	drumPlayback.play_stream(stream, 0, volumeRnd, 1.0)
 
 func play_on_beat(chord_idx: int, beat_pos: int) -> void:
+	if isBreakdown:
+		return
 	if beat_pos in kickPattern:
 		_play_drum(kick, -3.0)
 	if beat_pos in clapPattern:
 		_play_drum(clap, -5.0)
 	if beat_pos in BASS_BEATS[currentSection]:
 		_play_bass(chord_idx)
-		#pass
 	if beat_pos in MELODY_BEATS[currentSection]:
 		play_melody(chord_idx)
 
@@ -160,7 +173,7 @@ func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 		_play_drum(hihat_closed, -2.0)
 		if subdiv_pos == 8 || subdiv_pos == 7:
 			_play_drum(kick, 8.0)
-	else:
+	elif not isBreakdown:
 		if subdiv_pos in hihatOpenPattern:
 			_play_drum(hihat_open, -16.0)
 		elif subdiv_pos in hihatClosedPattern:
