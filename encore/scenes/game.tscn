@@ -16,7 +16,9 @@
 [ext_resource type="Script" uid="uid://d140tki0nsxth" path="res://scripts/score_node_2d.gd" id="12_dinhu"]
 [ext_resource type="AudioStream" uid="uid://v5ewqniqcdgb" path="res://assets/audio/drums/kick.wav" id="12_ssvqc"]
 [ext_resource type="AudioStream" uid="uid://cbjjp4102v47x" path="res://assets/audio/drums/hithat_open_3.wav" id="14_ssvqc"]
+[ext_resource type="AudioStream" uid="uid://drvm23e3imfbg" path="res://assets/audio/drums/snare_2.wav" id="15_1kice"]
 [ext_resource type="AudioStream" uid="uid://dm5fjy3kq5iha" path="res://assets/audio/drums/clap.wav" id="15_5newe"]
+[ext_resource type="AudioStream" uid="uid://wyiboqu2cmnr" path="res://assets/audio/drums/shaker.wav" id="16_5newe"]
 [ext_resource type="AudioStream" uid="uid://b5aayuu7j6pwr" path="res://assets/audio/drums/bass.wav" id="17_264po"]
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_ssvqc"]
@@ -79,6 +81,8 @@ kick = ExtResource("12_ssvqc")
 hihat_closed = SubResource("AudioStreamWAV_ssvqc")
 hihat_open = ExtResource("14_ssvqc")
 clap = ExtResource("15_5newe")
+snare = ExtResource("15_1kice")
+shaker = ExtResource("16_5newe")
 bass = ExtResource("17_264po")
 
 [node name="Voice1" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1260706810]

@@ -21,6 +21,8 @@ const CHORD_NOTES: Dictionary = {
 @export var hihat_closed: AudioStream
 @export var hihat_open: AudioStream
 @export var clap: AudioStream
+@export var snare: AudioStream
+@export var shaker: AudioStream
 @export var bass: AudioStream
 @export var lead_sax: AudioStream
 @export var lead_organ: AudioStream
@@ -45,11 +47,14 @@ var leadIdx: int = 0
 var currentBar: int = 0
 var isFill: bool = false
 var isBreakdown: bool = false
+var isSnareRamp: bool = false
 
 var kickPattern: Array = []
 var clapPattern: Array = []
 var hihatOpenPattern: Array = []
 var hihatClosedPattern: Array = []
+var snarePattern: Array = []
+var shakerPattern: Array = []
 var chordStabPattern: Array = []
 
 func set_bar(bar: int, fill: bool) -> void:
@@ -78,6 +83,22 @@ const HIHAT_OPEN_VARIANTS: Array = [
 	[[], [8]],                     # BREAK
 ]
 
+# Syncopated snare hits — "and-of-3" (pos 6) gives a pre-shifted rushed feel
+const SNARE_VARIANTS: Array = [
+	[[]],                    # INTRO — no snare
+	[[6], [4, 6], []],       # BUILD — sparse, anticipating
+	[[6], [2, 6], [4, 6]],   # DROP — more active
+	[[6], []],               # BREAK — occasional
+]
+
+# Off-beat shaker/rim fills — quiet background groove texture
+const SHAKER_VARIANTS: Array = [
+	[[]],                     # INTRO — silent
+	[[2, 6], [], [4, 8]],     # BUILD — sparse off-beats
+	[[2, 4, 6, 8], [2, 6, 8]],  # DROP — full groove
+	[[2, 6], []],             # BREAK — minimal
+]
+
 const CHORD_STAB_VARIANTS: Array = [
 	[[1], [1, 3]],                                   # INTRO
 	[[4, 8], [8], [6, 8], [2, 8]],                   # BUILD
@@ -99,6 +120,18 @@ const BUILD_RAMP_STABS: Array = [
 	[2, 4, 6, 8],  # bars 6-7
 ]
 
+# Snare-only BUILD variant — kick/clap drop, snare gets denser every 2 bars
+const BUILD_SNARE_RAMP: Array = [
+	[7],                       # bar 0: one pickup hit (beat 4)
+	[3, 5, 7],                    # bar 1: beats 3 and 4
+	[2, 3, 5, 7],                 # bar 2: beats 2, 3, 4
+	[2, 3, 5, 6, 7],              # bar 3: adding off-beat of 4
+	[1, 2, 3, 5, 6, 7],           # bar 4: getting tighter
+	[1, 2, 3, 4, 5, 6, 7, 8], # bar 5: full 8th note roll
+	[1, 2, 3, 4, 5, 6, 7, 8], # bar 6: full roll
+	[1, 2, 3, 4, 5, 6, 7, 8], # bar 7: full roll — right into drop
+]
+
 const BASS_BEATS: Dictionary = {
 	0: [1],           # INTRO — root on beat 1 only
 	1: [1, 3],        # BUILD — beats 1 and 3
@@ -114,10 +147,10 @@ const MELODY_BEATS: Dictionary = {
 }
 
 const MELODY_REST_CHANCE: Dictionary = {
-	0: 0.3,   # INTRO
-	1: 0.2,   # BUILD
+	0: 1.0,   # INTRO
+	1: 0.8,   # BUILD
 	2: 0.0,   # DROP
-	3: 0.3,   # BREAK
+	3: 1.0,   # BREAK
 }
 
 func _pick_patterns() -> void:
@@ -128,6 +161,8 @@ func _pick_patterns() -> void:
 	var on_beats_only = [1, 3, 5, 7]
 	var base = on_beats_only if (currentSection == 0 or currentSection == 3) else all_subdivs
 	hihatClosedPattern = base.filter(func(p): return p not in hihatOpenPattern)
+	snarePattern = SNARE_VARIANTS[currentSection][randi() % SNARE_VARIANTS[currentSection].size()]
+	shakerPattern = SHAKER_VARIANTS[currentSection][randi() % SHAKER_VARIANTS[currentSection].size()]
 	chordStabPattern = CHORD_STAB_VARIANTS[currentSection][randi() % CHORD_STAB_VARIANTS[currentSection].size()]
 
 func _play_bass(chord_idx: int) -> void:
@@ -143,26 +178,30 @@ func set_section(section: int, intensity: float, cycle: int):
 	currentIntensity = intensity
 	currentCycle = cycle
 	isBreakdown = false
+	isSnareRamp = false
 	_pick_patterns()
 	if section == 1 and leads.size() > 0:  # BUILD — new cycle, new lead
 		leadIdx = randi() % leads.size()
 		currentLead = leads[leadIdx]
+	if section == 1:  # BUILD — 50% chance of snare-roll variant
+		isSnareRamp = randf() < 0.5
 	if section == 3 and randf() < 0.5:  # BREAK — 50% chance of full breakdown
 		isBreakdown = true
 		chordStabPattern = BREAKDOWN_CHORD_VARIANTS[randi() % BREAKDOWN_CHORD_VARIANTS.size()]
 
 
-func _play_drum(stream: AudioStream, volume: float) -> void:
+func _play_drum(stream: AudioStream, volume: float, pitch: float = 1.0) -> void:
 	var volumeRnd = volume + randf_range(-1.5, 1.5)
-	drumPlayback.play_stream(stream, 0, volumeRnd, 1.0)
+	drumPlayback.play_stream(stream, 0, volumeRnd, pitch)
 
 func play_on_beat(chord_idx: int, beat_pos: int) -> void:
 	if isBreakdown:
 		return
-	if beat_pos in kickPattern:
-		_play_drum(kick, -3.0)
-	if beat_pos in clapPattern:
-		_play_drum(clap, -5.0)
+	if not isSnareRamp:
+		if beat_pos in kickPattern:
+			_play_drum(kick, -3.0)
+		if beat_pos in clapPattern:
+			_play_drum(clap, -5.0)
 	if beat_pos in BASS_BEATS[currentSection]:
 		_play_bass(chord_idx)
 	if beat_pos in MELODY_BEATS[currentSection]:
@@ -173,11 +212,20 @@ func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 		_play_drum(hihat_closed, -2.0)
 		if subdiv_pos == 8 || subdiv_pos == 7:
 			_play_drum(kick, 8.0)
+	elif isSnareRamp:
+		if snare != null:
+			var rampIdx = min(currentBar, BUILD_SNARE_RAMP.size() - 1)
+			if subdiv_pos in BUILD_SNARE_RAMP[rampIdx]:
+				_play_drum(snare, -5.0, 0.85)
 	elif not isBreakdown:
 		if subdiv_pos in hihatOpenPattern:
 			_play_drum(hihat_open, -16.0)
 		elif subdiv_pos in hihatClosedPattern:
 			_play_drum(hihat_closed, -8.0)
+		if snare != null and subdiv_pos in snarePattern:
+			_play_drum(snare, -8.0, 0.85)
+		if shaker != null and subdiv_pos in shakerPattern:
+			_play_drum(shaker, -20.0)
 
 	# if currentSection == 1: # BUILD - use ramp
 	# 	var rampIdx = min(currentBar / 4, BUILD_RAMP_STABS.size() - 1)
