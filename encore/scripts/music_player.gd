@@ -57,6 +57,12 @@ var snarePattern: Array = []
 var shakerPattern: Array = []
 var chordStabPattern: Array = []
 
+signal chordPlayed()
+signal drumKickPlayed()
+signal drumHiHatOpenPlayed()
+signal drumHiHatClosedPlayed()
+signal drumClapPlayed()
+
 func set_bar(bar: int, fill: bool) -> void:
 	currentBar = bar
 	isFill = fill
@@ -72,13 +78,13 @@ const KICK_VARIANTS: Array = [
 const CLAP_VARIANTS: Array = [
 	[[]],             # INTRO
 	[[4], [2, 4]],    # BUILD
-	[[2, 4], [4]],    # DROP
+	[[2, 4], [4], [2, 4, 6]],    # DROP
 	[[], [4]],        # BREAK
 ]
 
 const HIHAT_OPEN_VARIANTS: Array = [
 	[[]],                          # INTRO
-	[[8], [4, 8], [2, 6]],         # BUILD
+	[[8], []],         # BUILD
 	[[8], [4, 8], [2, 6, 8]],      # DROP
 	[[], [8]],                     # BREAK
 ]
@@ -200,8 +206,10 @@ func play_on_beat(chord_idx: int, beat_pos: int) -> void:
 	if not isSnareRamp:
 		if beat_pos in kickPattern:
 			_play_drum(kick, -3.0)
+			drumKickPlayed.emit()
 		if beat_pos in clapPattern:
 			_play_drum(clap, -5.0)
+			drumClapPlayed.emit()
 	if beat_pos in BASS_BEATS[currentSection]:
 		_play_bass(chord_idx)
 	if beat_pos in MELODY_BEATS[currentSection]:
@@ -210,8 +218,10 @@ func play_on_beat(chord_idx: int, beat_pos: int) -> void:
 func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 	if isFill:
 		_play_drum(hihat_closed, -2.0)
+		drumHiHatClosedPlayed.emit()
 		if subdiv_pos == 8 || subdiv_pos == 7:
 			_play_drum(kick, 8.0)
+			drumKickPlayed.emit()
 	elif isSnareRamp:
 		if snare != null:
 			var rampIdx = min(currentBar, BUILD_SNARE_RAMP.size() - 1)
@@ -220,8 +230,10 @@ func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 	elif not isBreakdown:
 		if subdiv_pos in hihatOpenPattern:
 			_play_drum(hihat_open, -16.0)
+			drumHiHatOpenPlayed.emit()
 		elif subdiv_pos in hihatClosedPattern:
 			_play_drum(hihat_closed, -8.0)
+			drumHiHatClosedPlayed.emit()
 		if snare != null and subdiv_pos in snarePattern:
 			_play_drum(snare, -8.0, 0.85)
 		if shaker != null and subdiv_pos in shakerPattern:
@@ -234,6 +246,7 @@ func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 	# else:
 	if subdiv_pos in chordStabPattern:
 		play_chord(chord_idx)
+		chordPlayed.emit()
 
 
 func play_melody(chord_idx: int) -> void:

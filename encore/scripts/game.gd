@@ -14,7 +14,6 @@ func _on_conductor_measure(measurePosition: int) -> void:
 		$MusicPlayer.set_bar($StructuralEngine.barsInSection, $StructuralEngine.is_last_bar());
 
 	$MusicPlayer.play_on_beat(currentChord, measurePosition);
-	spawnNote(currentChord);
 
 func spawnNote(chord: int) -> void:
 	var noteInstance = NoteScene.instantiate();
@@ -38,3 +37,23 @@ func _on_structural_engine_section_changed(section: Variant, intensity: Variant)
 
 func _on_conductor_subdivision(conductorPosition: Variant) -> void:
 	$MusicPlayer.play_on_subdivision(conductorPosition, currentChord)
+
+func _on_music_player_chord_played() -> void:
+	if $OptionMenuNode2D/GameplayHandler.spawnNoteOnRhodes:
+		spawnNote(currentChord)
+
+func _on_music_player_drum_clap_played() -> void:
+	if $OptionMenuNode2D/GameplayHandler.spawnNoteOnDrumClap:
+		spawnNote(currentChord)
+
+func _on_music_player_drum_hi_hat_closed_played() -> void:
+	if $OptionMenuNode2D/GameplayHandler.spawnNoteOnDrumHiHatClose:
+		spawnNote(currentChord)
+
+func _on_music_player_drum_hi_hat_open_played() -> void:
+	if $OptionMenuNode2D/GameplayHandler.spawnNoteOnDrumHiHatOpen:
+		spawnNote(currentChord)
+
+func _on_music_player_drum_kick_played() -> void:
+	if $OptionMenuNode2D/GameplayHandler.spawnNoteOnDrumKick:
+		spawnNote(currentChord)
