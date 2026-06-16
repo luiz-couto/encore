@@ -6,6 +6,8 @@ var currentChord: int = 0
 var currentSection: int = 0
 var currentIntensity: float = 0.2
 
+var avoidDoubleNotesThreshold: float = 150
+
 func _on_conductor_measure(measurePosition: int) -> void:
 	if measurePosition == 1:
 		currentChord = $ChordGenerator.advance();
@@ -16,11 +18,23 @@ func _on_conductor_measure(measurePosition: int) -> void:
 	$MusicPlayer.play_on_beat(currentChord, measurePosition);
 
 func spawnNote(chord: int) -> void:
+	var lane = choose_lane()
+	if lane == -1:
+		return
 	var noteInstance = NoteScene.instantiate();
 	noteInstance.scoreEvent.connect(_on_score_event);
 	var seconds_per_measure = $Conductor.secondsPerBeat * $Conductor.measures;
-	noteInstance.initialize(randi() % 4, chord, seconds_per_measure);
+	noteInstance.initialize(lane, chord, seconds_per_measure);
 	add_child(noteInstance);
+
+func choose_lane() -> int:
+	var occupied: Array = []
+	for note in get_tree().get_nodes_in_group("notes"):
+		if note.position.y < avoidDoubleNotesThreshold:
+			occupied.append(note.lane)
+	var available = [0, 1, 2, 3].filter(func(l): return l not in occupied)
+	var chosen_lane = available[randi() % available.size()] if available.size() > 0 else -1
+	return chosen_lane
 
 func _on_score_event(scorePoints: int) -> void:
 	$ScoreNode2D.score += scorePoints;

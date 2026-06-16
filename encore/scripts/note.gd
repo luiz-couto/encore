@@ -25,14 +25,16 @@ const positionSelector: Dictionary[int, Vector2] = {
 
 var speed: float = 0;
 var hit: bool = false;
+var lane: int = 0;
 
 var chord: int = 0
 
 signal scoreEvent(score);
 
-func initialize(lane: int, chord_idx: int, seconds_per_measure: float):
-	position = positionSelector[lane];
-	$AnimatedSprite2D.frame = lane;
+func initialize(lane_idx: int, chord_idx: int, seconds_per_measure: float):
+	lane = lane_idx;
+	position = positionSelector[lane_idx];
+	$AnimatedSprite2D.frame = lane_idx;
 	chord = chord_idx;
 	speed = ((DIST_TO_TARGET + 100) / seconds_per_measure);
 	
@@ -58,7 +60,7 @@ func _on_timer_timeout() -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	add_to_group("notes")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
