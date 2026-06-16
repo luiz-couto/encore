@@ -8,6 +8,8 @@ var currentIntensity: float = 0.2
 
 var avoidDoubleNotesThreshold: float = 150
 
+var paused: bool = false
+
 func _on_conductor_measure(measurePosition: int) -> void:
 	if measurePosition == 1:
 		currentChord = $ChordGenerator.advance();
@@ -18,6 +20,8 @@ func _on_conductor_measure(measurePosition: int) -> void:
 	$MusicPlayer.play_on_beat(currentChord, measurePosition);
 
 func spawnNote(chord: int) -> void:
+	if paused:
+		return
 	var lane = choose_lane()
 	if lane == -1:
 		return
@@ -38,6 +42,17 @@ func choose_lane() -> int:
 
 func _on_score_event(scorePoints: int) -> void:
 	$ScoreNode2D.score += scorePoints;
+	if $ScoreNode2D.score == 1000:
+		paused = true
+		_show_options_menu()
+
+func _show_options_menu():
+	$DimOverlay.visible = true
+	$OptionMenuNode2D.visible = true
+
+func _hide_options_menu():
+	$DimOverlay.visible = false
+	$OptionMenuNode2D.visible = false
 
 func _on_timer_timeout() -> void:
 	pass # Replace with function body.
@@ -71,3 +86,9 @@ func _on_music_player_drum_hi_hat_open_played() -> void:
 func _on_music_player_drum_kick_played() -> void:
 	if $OptionMenuNode2D/GameplayHandler.spawnNoteOnDrumKick:
 		spawnNote(currentChord)
+
+
+func _on_option_1_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton && event.pressed:
+		_hide_options_menu()
+		paused = false

@@ -21,7 +21,10 @@
 [ext_resource type="AudioStream" uid="uid://wyiboqu2cmnr" path="res://assets/audio/drums/shaker.wav" id="16_5newe"]
 [ext_resource type="AudioStream" uid="uid://b5aayuu7j6pwr" path="res://assets/audio/drums/bass.wav" id="17_264po"]
 [ext_resource type="Texture2D" uid="uid://c7a63ah50gdsb" path="res://assets/board/options_menu.svg" id="21_5newe"]
+[ext_resource type="Script" uid="uid://cdk1d85ib0gl3" path="res://scripts/option_menu_node_2d.gd" id="21_pl11u"]
 [ext_resource type="Script" uid="uid://c3dluyfwld0om" path="res://scripts/gameplay_handler.gd" id="22_37s47"]
+[ext_resource type="FontFile" uid="uid://o7n5xnnd4w71" path="res://assets/fonts/HeartbitXX2Px.ttf" id="23_bt5mj"]
+[ext_resource type="Script" uid="uid://rmmdlyjx63ic" path="res://scripts/option_1.gd" id="23_e1j6l"]
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_ssvqc"]
 data = PackedByteArray("cW9hZgAACFwBAKxECFwDcAAAAAAAAAAAAAAAAOAAQADymAwE0aDE5/Grz/2LD/zF/bh+54tWG7jwZYTqD/Edp/4kvoU1rZQRgcspklErw3fwBHzmp4k+e/KUbQJj3cLl+M4fiTJK9gTy0h/pm/Kd0Pq4YCUrSJ1j2pxgFEkpd5jwWNGDSzAhSvLHSRRVKbuj/N9UZMu6pVHGiHF7nd4Pnf3SuNAXxcc88vVKxglEEEjSQSCQQDL1qfTRLOYbTe5Q4XUFKkjpiUa96+ypAWyAidDAIIj5wTaK1gzfuEwE9hzckDyCqhU0mNcb3g+rhhZez1yGN5NnsmTCmSUQCQQEO9jMYVgoM5LWziXNoxs9RCrQ1RuJ8GTK09MZlQYoytYNrrTZHoNmcOSzCWyEAhF/AbxK5BiYZViqlmUoEAggAzfOI3mh0AQWi9zC8LjSsFIIpBIT9JwHf42t1uWFBQYLqJ3aAnU+Vbngq5lVJgAAgECSAQSApeUXiK1rJYyqJjpMnCtEM6tMPU6/C9QqiAQlbKRTMg5JJCABkkAgEBDvF4ik0eIkE6iUwLYCpxAIZDQAYioAkkookDKe4XABSCEGoXontuxqIsjzjsNQhAkBOpOAmm00qAhdQo8ryqFlcYJTkCyPuEwkGHlsCsUOSUiGX427TDicpj4hiKkM2ZpchwFk7LB0g4GvlWn0NYRKCKZJcAgBXpOKrDthSAoCWSpeUXEaPTMADBoyegMdyIJXgOF2kjaI3mF0WmmtNxbKqcTTYggFR9xBUBB3GAw1GV4bqHXhcYDRIIBIJ+FosioBo/NikawGJXteSmVBBQIKqBrzUpFWl4tVi4NZWmErc/lEeVx7VTeJVBYFU5VhsWJpssBUO4Xql0QHHWRAYQIbALzCXxmNjLkMhwFV4qmqBcwKCVAjoDCqidBBUoAEkggFDvBeEgW1nY+i81Q8BanIcjKSXskMQAB8oIFFWWAm5HQOmEzTYZCZhPoBUJgpcIVghBtEHCVyKVpzaj8xjbZAJZIKSPmESjBtWotMyukwV0muEVajC4DjaIZBQmKidhjMLgNEACSSzlQrU0OYXgYIqLzKPgNEBkhFsio81rWSoxOi9SS4YRBLJMn5MAogkFMKomMiiHq4N6mS4CKJtSKKLQrSFpFOoglVF6kUwQSCCCQCQQIIBAAAAAAA")
@@ -31,6 +34,19 @@ format = 3
 font_size = 60
 outline_size = 11
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_e1j6l"]
+font = ExtResource("23_bt5mj")
+font_size = 70
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pl11u"]
+size = Vector2(524, 635)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bhx41"]
+size = Vector2(500, 605)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qnb83"]
+size = Vector2(533, 637)
 
 [node name="Game" type="Node2D" unique_id=1978774684]
 script = ExtResource("1_lbhrr")
@@ -135,15 +151,82 @@ vertical_alignment = 1
 script = ExtResource("1_kvuet")
 
 [node name="OptionMenuNode2D" type="Node2D" parent="." unique_id=1756478185]
+visible = false
+script = ExtResource("21_pl11u")
 
 [node name="OptionsMenu" type="Sprite2D" parent="OptionMenuNode2D" unique_id=1411093005]
-visible = false
+top_level = true
 position = Vector2(955, 547)
 scale = Vector2(0.48478085, 0.48478085)
 texture = ExtResource("21_5newe")
 
 [node name="GameplayHandler" type="Node" parent="OptionMenuNode2D" unique_id=1531613811]
 script = ExtResource("22_37s47")
+
+[node name="Option1" type="Area2D" parent="OptionMenuNode2D" unique_id=1619905500]
+position = Vector2(130, 300)
+script = ExtResource("23_e1j6l")
+
+[node name="Label" type="Label" parent="OptionMenuNode2D/Option1" unique_id=1010888145]
+top_level = true
+offset_left = 155.0
+offset_top = 297.0
+offset_right = 498.0
+offset_bottom = 795.0
+text = "HELLO"
+label_settings = SubResource("LabelSettings_e1j6l")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OptionMenuNode2D/Option1" unique_id=1914850492]
+z_index = 2
+position = Vector2(202, 241.5)
+shape = SubResource("RectangleShape2D_pl11u")
+
+[node name="Option2" type="Area2D" parent="OptionMenuNode2D" unique_id=801978484]
+position = Vector2(130, 300)
+
+[node name="Label" type="Label" parent="OptionMenuNode2D/Option2" unique_id=1567445834]
+top_level = true
+offset_left = 793.0
+offset_top = 305.0
+offset_right = 1131.0
+offset_bottom = 797.0
+text = "HELLO"
+label_settings = SubResource("LabelSettings_e1j6l")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OptionMenuNode2D/Option2" unique_id=475603057]
+z_index = 2
+position = Vector2(850, 239.5)
+shape = SubResource("RectangleShape2D_bhx41")
+
+[node name="Option3" type="Area2D" parent="OptionMenuNode2D" unique_id=689198691]
+position = Vector2(130, 300)
+
+[node name="Label" type="Label" parent="OptionMenuNode2D/Option3" unique_id=710318379]
+top_level = true
+offset_left = 1430.0
+offset_top = 295.0
+offset_right = 1789.0
+offset_bottom = 820.0
+text = "HELLO"
+label_settings = SubResource("LabelSettings_e1j6l")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OptionMenuNode2D/Option3" unique_id=1783116569]
+z_index = 2
+position = Vector2(1482.5, 246.5)
+shape = SubResource("RectangleShape2D_qnb83")
+
+[node name="DimOverlay" type="ColorRect" parent="." unique_id=1094256820]
+visible = false
+offset_right = 1926.0
+offset_bottom = 1282.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.827451)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="measure" from="Conductor" to="." method="_on_conductor_measure"]
@@ -154,3 +237,11 @@ script = ExtResource("22_37s47")
 [connection signal="drumHiHatOpenPlayed" from="MusicPlayer" to="." method="_on_music_player_drum_hi_hat_open_played"]
 [connection signal="drumKickPlayed" from="MusicPlayer" to="." method="_on_music_player_drum_kick_played"]
 [connection signal="sectionChanged" from="StructuralEngine" to="." method="_on_structural_engine_section_changed"]
+[connection signal="input_event" from="OptionMenuNode2D/Option1" to="." method="_on_option_1_input_event"]
+[connection signal="mouse_entered" from="OptionMenuNode2D/Option1" to="." method="_on_option_1_mouse_entered"]
+[connection signal="mouse_entered" from="OptionMenuNode2D/Option1" to="OptionMenuNode2D" method="_on_option_1_mouse_entered"]
+[connection signal="mouse_exited" from="OptionMenuNode2D/Option1" to="OptionMenuNode2D" method="_on_option_1_mouse_exited"]
+[connection signal="mouse_entered" from="OptionMenuNode2D/Option2" to="OptionMenuNode2D" method="_on_option_2_mouse_entered"]
+[connection signal="mouse_exited" from="OptionMenuNode2D/Option2" to="OptionMenuNode2D" method="_on_option_2_mouse_exited"]
+[connection signal="mouse_entered" from="OptionMenuNode2D/Option3" to="OptionMenuNode2D" method="_on_option_3_mouse_entered"]
+[connection signal="mouse_exited" from="OptionMenuNode2D/Option3" to="OptionMenuNode2D" method="_on_option_3_mouse_exited"]
