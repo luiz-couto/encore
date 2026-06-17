@@ -11,6 +11,9 @@ var avoidDoubleNotesThreshold: float = 150
 var paused: bool = false
 var options: Array = []
 
+func _process(_delta: float) -> void:
+	$Conductor.bpm = $OptionMenuNode2D/GameplayHandler.bpm
+
 func _on_conductor_measure(measurePosition: int) -> void:
 	if measurePosition == 1:
 		currentChord = $ChordGenerator.advance();
