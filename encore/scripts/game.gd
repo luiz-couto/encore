@@ -43,7 +43,7 @@ func choose_lane() -> int:
 
 func _on_score_event(scorePoints: int) -> void:
 	$ScoreNode2D.score += scorePoints;
-	if $ScoreNode2D.score == 1000:
+	if $ScoreNode2D.score % 1000 == 0:
 		paused = true
 		_show_options_menu()
 
@@ -96,5 +96,19 @@ func _on_music_player_drum_kick_played() -> void:
 func _on_option_1_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton && event.pressed:
 		options[0].action.call()
+		_hide_options_menu()
+		paused = false
+
+
+func _on_option_2_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton && event.pressed:
+		options[1].action.call()
+		_hide_options_menu()
+		paused = false
+
+
+func _on_option_3_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton && event.pressed:
+		options[2].action.call()
 		_hide_options_menu()
 		paused = false
