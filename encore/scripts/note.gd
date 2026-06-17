@@ -30,6 +30,7 @@ var lane: int = 0;
 var chord: int = 0
 
 signal scoreEvent(score);
+signal missEvent;
 
 func initialize(lane_idx: int, chord_idx: int, seconds_per_measure: float):
 	lane = lane_idx;
@@ -42,6 +43,7 @@ func _physics_process(delta: float) -> void:
 	if (!hit):
 		position.y += speed * delta;
 		if position.y > TARGET_Y + 20:
+			missEvent.emit()
 			queue_free();
 	else:
 		$Node2D.position.y -= speed * delta

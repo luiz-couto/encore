@@ -10,9 +10,7 @@ var avoidDoubleNotesThreshold: float = 150
 
 var paused: bool = false
 var options: Array = []
-
-func _process(_delta: float) -> void:
-	$Conductor.bpm = $OptionMenuNode2D/GameplayHandler.bpm
+var hitStreak: int = 0
 
 func _on_conductor_measure(measurePosition: int) -> void:
 	if measurePosition == 1:
@@ -26,29 +24,52 @@ func _on_conductor_measure(measurePosition: int) -> void:
 func spawnNote(chord: int) -> void:
 	if paused:
 		return
+	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
+	_spawn_single_note(chord)
+	if randf() < gameplayHandler.spawnTripleNotesProb:
+		_spawn_single_note(chord)
+		_spawn_single_note(chord)
+	elif randf() < gameplayHandler.spawnDoubleNotesProb:
+		_spawn_single_note(chord)
+
+func _spawn_single_note(chord: int) -> void:
 	var lane = choose_lane()
 	if lane == -1:
 		return
-	var noteInstance = NoteScene.instantiate();
-	noteInstance.scoreEvent.connect(_on_score_event);
-	var seconds_per_measure = $Conductor.secondsPerBeat * $Conductor.measures;
-	noteInstance.initialize(lane, chord, seconds_per_measure);
-	add_child(noteInstance);
+	var noteInstance = NoteScene.instantiate()
+	noteInstance.scoreEvent.connect(_on_score_event)
+	noteInstance.missEvent.connect(_on_note_missed)
+	var seconds_per_measure = $Conductor.secondsPerBeat * $Conductor.measures
+	noteInstance.initialize(lane, chord, seconds_per_measure)
+	add_child(noteInstance)
 
 func choose_lane() -> int:
+	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 	var occupied: Array = []
 	for note in get_tree().get_nodes_in_group("notes"):
 		if note.position.y < avoidDoubleNotesThreshold:
 			occupied.append(note.lane)
-	var available = [0, 1, 2, 3].filter(func(l): return l not in occupied)
+	var available = [0, 1, 2, 3].filter(func(l): return gameplayHandler.activeLanes[l] and l not in occupied)
 	var chosen_lane = available[randi() % available.size()] if available.size() > 0 else -1
 	return chosen_lane
 
 func _on_score_event(scorePoints: int) -> void:
-	$ScoreNode2D.score += scorePoints;
+	hitStreak += 1
+	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
+	$ScoreNode2D.score += int(scorePoints * gameplayHandler.scoreMultiplier * gameplayHandler.comboMultiplier * hitStreak)
 	if $ScoreNode2D.score % 1000 == 0:
 		paused = true
 		_show_options_menu()
+
+func _on_note_missed() -> void:
+	hitStreak = 0
+
+func _apply_lanes_keys() -> void:
+	var lanesKeys = $OptionMenuNode2D/GameplayHandler.lanesKeys
+	var buttons = [$Button, $Button2, $Button3, $Button4]
+	for i in 4:
+		if lanesKeys[i] != "":
+			buttons[i].input = lanesKeys[i]
 
 func _show_options_menu():
 	options = $OptionMenuNode2D/GameplayHandler.getOptions()
@@ -96,22 +117,21 @@ func _on_music_player_drum_kick_played() -> void:
 		spawnNote(currentChord)
 
 
+func _on_option_selected(option_index: int) -> void:
+	options[option_index].action.call()
+	$Conductor.bpm = $OptionMenuNode2D/GameplayHandler.bpm
+	_apply_lanes_keys()
+	_hide_options_menu()
+	paused = false
+
 func _on_option_1_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton && event.pressed:
-		options[0].action.call()
-		_hide_options_menu()
-		paused = false
-
+		_on_option_selected(0)
 
 func _on_option_2_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton && event.pressed:
-		options[1].action.call()
-		_hide_options_menu()
-		paused = false
-
+		_on_option_selected(1)
 
 func _on_option_3_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton && event.pressed:
-		options[2].action.call()
-		_hide_options_menu()
-		paused = false
+		_on_option_selected(2)
