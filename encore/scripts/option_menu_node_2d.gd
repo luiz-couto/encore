@@ -8,7 +8,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 
@@ -33,3 +33,12 @@ func _on_option_3_mouse_entered() -> void:
 
 func _on_option_3_mouse_exited() -> void:
 	Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+func set_option_1_label(newText: String) -> void:
+	$Option1/Label.text = newText
+	
+func set_option_2_label(newText: String) -> void:
+	$Option2/Label.text = newText
+
+func set_option_3_label(newText: String) -> void:
+	$Option3/Label.text = newText

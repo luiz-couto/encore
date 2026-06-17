@@ -173,10 +173,11 @@ offset_left = 155.0
 offset_top = 297.0
 offset_right = 498.0
 offset_bottom = 795.0
-text = "HELLO"
 label_settings = SubResource("LabelSettings_e1j6l")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
+uppercase = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OptionMenuNode2D/Option1" unique_id=1914850492]
 z_index = 2
@@ -192,10 +193,11 @@ offset_left = 793.0
 offset_top = 305.0
 offset_right = 1131.0
 offset_bottom = 797.0
-text = "HELLO"
 label_settings = SubResource("LabelSettings_e1j6l")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
+uppercase = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OptionMenuNode2D/Option2" unique_id=475603057]
 z_index = 2
@@ -211,10 +213,11 @@ offset_left = 1430.0
 offset_top = 295.0
 offset_right = 1789.0
 offset_bottom = 820.0
-text = "HELLO"
 label_settings = SubResource("LabelSettings_e1j6l")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
+uppercase = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OptionMenuNode2D/Option3" unique_id=1783116569]
 z_index = 2

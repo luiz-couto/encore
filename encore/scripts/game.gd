@@ -9,6 +9,7 @@ var currentIntensity: float = 0.2
 var avoidDoubleNotesThreshold: float = 150
 
 var paused: bool = false
+var options: Array = []
 
 func _on_conductor_measure(measurePosition: int) -> void:
 	if measurePosition == 1:
@@ -47,6 +48,10 @@ func _on_score_event(scorePoints: int) -> void:
 		_show_options_menu()
 
 func _show_options_menu():
+	options = $OptionMenuNode2D/GameplayHandler.getOptions()
+	$OptionMenuNode2D.set_option_1_label(options[0].label)
+	$OptionMenuNode2D.set_option_2_label(options[1].label)
+	$OptionMenuNode2D.set_option_3_label(options[2].label)
 	$DimOverlay.visible = true
 	$OptionMenuNode2D.visible = true
 
@@ -90,5 +95,6 @@ func _on_music_player_drum_kick_played() -> void:
 
 func _on_option_1_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton && event.pressed:
+		options[0].action.call()
 		_hide_options_menu()
 		paused = false
