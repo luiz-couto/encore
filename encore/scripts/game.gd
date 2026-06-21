@@ -58,8 +58,9 @@ func _on_score_event(scorePoints: int) -> void:
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 	$ScoreNode2D.score += int(scorePoints * gameplayHandler.scoreMultiplier * gameplayHandler.comboMultiplier * hitStreak)
 	if $ScoreNode2D.score % 1000 == 0:
-		paused = true
-		_show_options_menu()
+		pass
+		#paused = true
+		#_show_options_menu()
 
 func _on_note_missed() -> void:
 	hitStreak = 0
@@ -135,3 +136,12 @@ func _on_option_2_input_event(_viewport: Node, event: InputEvent, _shape_idx: in
 func _on_option_3_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton && event.pressed:
 		_on_option_selected(2)
+
+
+func _on_music_player_genre_changed(bpm: int) -> void:
+	$OptionMenuNode2D/GameplayHandler.bpm = bpm
+	$Conductor.bpm = bpm
+	$ChordGenerator.set_genre($MusicPlayer.currentGenre)
+
+func _on_ready() -> void:
+	$Conductor.bpm = $OptionMenuNode2D/GameplayHandler.bpm
