@@ -130,6 +130,39 @@ stream = ExtResource("17_264po")
 
 [node name="MelodyPlayer" type="AudioStreamPlayer" parent="MusicPlayer" unique_id=611799659]
 
+[node name="ArrowKeys" type="Node" parent="." unique_id=1270532330]
+
+[node name="Red" type="Sprite2D" parent="ArrowKeys" unique_id=1108017298]
+modulate = Color(1, 1, 1, 0.24313726)
+z_index = -1
+position = Vector2(678, 573)
+rotation = -1.5707964
+scale = Vector2(0.163086, 0.16029821)
+texture = ExtResource("24_e1j6l")
+
+[node name="Green" type="Sprite2D" parent="ArrowKeys" unique_id=1231863905]
+modulate = Color(1, 1, 1, 0.24313726)
+z_index = -1
+position = Vector2(861, 566)
+scale = Vector2(0.163086, 0.16029821)
+texture = ExtResource("24_e1j6l")
+
+[node name="Yellow" type="Sprite2D" parent="ArrowKeys" unique_id=345526923]
+modulate = Color(1, 1, 1, 0.24313726)
+z_index = -1
+position = Vector2(1038.0001, 572)
+rotation = -3.1415925
+scale = Vector2(0.163086, 0.16029821)
+texture = ExtResource("24_e1j6l")
+
+[node name="Blue" type="Sprite2D" parent="ArrowKeys" unique_id=1215729914]
+modulate = Color(1, 1, 1, 0.24313726)
+z_index = -1
+position = Vector2(1217.0001, 572)
+rotation = 1.5707964
+scale = Vector2(0.163086, 0.16029821)
+texture = ExtResource("24_e1j6l")
+
 [node name="ScoreNode2D" type="Node2D" parent="." unique_id=218924862]
 position = Vector2(68, 76)
 script = ExtResource("12_dinhu")
@@ -227,33 +260,6 @@ offset_right = 1926.0
 offset_bottom = 1282.0
 mouse_filter = 2
 color = Color(0, 0, 0, 0.827451)
-
-[node name="UpArrow" type="Sprite2D" parent="." unique_id=1108017298]
-modulate = Color(1, 1, 1, 0.24313726)
-position = Vector2(678, 573)
-rotation = -1.5707964
-scale = Vector2(0.163086, 0.16029821)
-texture = ExtResource("24_e1j6l")
-
-[node name="UpArrow2" type="Sprite2D" parent="." unique_id=1231863905]
-modulate = Color(1, 1, 1, 0.24313726)
-position = Vector2(861, 566)
-scale = Vector2(0.163086, 0.16029821)
-texture = ExtResource("24_e1j6l")
-
-[node name="UpArrow3" type="Sprite2D" parent="." unique_id=345526923]
-modulate = Color(1, 1, 1, 0.24313726)
-position = Vector2(1038.0001, 572)
-rotation = 3.1415927
-scale = Vector2(0.163086, 0.16029821)
-texture = ExtResource("24_e1j6l")
-
-[node name="UpArrow4" type="Sprite2D" parent="." unique_id=1215729914]
-modulate = Color(1, 1, 1, 0.24313726)
-position = Vector2(1217.0001, 572)
-rotation = 1.5707964
-scale = Vector2(0.163086, 0.16029821)
-texture = ExtResource("24_e1j6l")
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
