@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://bt5ngm6vw1rol"]
+
+[ext_resource type="Script" uid="uid://dmkm7pktttkh6" path="res://scripts/game_over.gd" id="1_wqhvx"]
+[ext_resource type="Texture2D" uid="uid://cu3f2qawmpt0v" path="res://assets/board/game-over-menu.png" id="1_xeevv"]
+[ext_resource type="FontFile" uid="uid://o7n5xnnd4w71" path="res://assets/fonts/HeartbitXX2Px.ttf" id="3_tbwuq"]
+[ext_resource type="Texture2D" uid="uid://cwgxhxp8ci355" path="res://assets/board/try-again-button.png" id="4_7m3ot"]
+[ext_resource type="Texture2D" uid="uid://huwfn57l3cjk" path="res://assets/board/back-to-menu-button.png" id="5_v3hpu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_racf3"]
+font = ExtResource("3_tbwuq")
+font_size = 80
+outline_color = Color(0, 0, 0, 1)
+
+[node name="GameOver" type="Node2D" unique_id=589838554]
+script = ExtResource("1_wqhvx")
+
+[node name="GameOverMenu" type="Sprite2D" parent="." unique_id=1117942438]
+position = Vector2(879, 475)
+scale = Vector2(0.5579848, 0.55798477)
+texture = ExtResource("1_xeevv")
+
+[node name="Timer" type="Timer" parent="." unique_id=1263759674]
+one_shot = true
+
+[node name="FinalScoreLabel" type="Label" parent="." unique_id=1372546719]
+offset_left = 805.0
+offset_top = 429.0
+offset_right = 1160.0
+offset_bottom = 494.0
+text = "FINAL SCORE"
+label_settings = SubResource("LabelSettings_racf3")
+vertical_alignment = 1
+
+[node name="FinalTimeLabel" type="Label" parent="." unique_id=1258722213]
+offset_left = 776.0
+offset_top = 498.0
+offset_right = 1131.0
+offset_bottom = 563.0
+text = "FINAL TIME"
+label_settings = SubResource("LabelSettings_racf3")
+vertical_alignment = 1
+
+[node name="TryAgainButton" type="Sprite2D" parent="." unique_id=1526204075]
+position = Vector2(1228.0001, 716)
+scale = Vector2(0.90588236, 0.90588236)
+texture = ExtResource("4_7m3ot")
+
+[node name="BackToMenuButton" type="Sprite2D" parent="." unique_id=744222376]
+position = Vector2(646, 711)
+texture = ExtResource("5_v3hpu")

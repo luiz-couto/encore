@@ -12,6 +12,28 @@ var avoidDoubleNotesThreshold: float = 150
 var paused: bool = false
 var options: Array = []
 var hitStreak: int = 0
+var timeElapsed: float = 0.0
+
+var _lowPassFilter: AudioEffectLowPassFilter = null
+var _lowPassTween: Tween = null
+
+const LOWPASS_CUTOFF_NORMAL: float = 20000.0
+const LOWPASS_CUTOFF_PAUSED: float = 400.0
+const LOWPASS_PAUSE_DURATION: float = 0.4
+const LOWPASS_UNPAUSE_DURATION: float = 0.2
+
+func _set_paused(value: bool) -> void:
+	paused = value
+	if _lowPassTween:
+		_lowPassTween.kill()
+	_lowPassTween = create_tween()
+	var target_cutoff = LOWPASS_CUTOFF_PAUSED if value else LOWPASS_CUTOFF_NORMAL
+	var duration = LOWPASS_PAUSE_DURATION if value else LOWPASS_UNPAUSE_DURATION
+	_lowPassTween.tween_property(_lowPassFilter, "cutoff_hz", target_cutoff, duration)
+
+func _process(delta: float) -> void:
+	if not paused:
+		timeElapsed += delta
 
 func _on_conductor_measure(measurePosition: int) -> void:
 	if measurePosition == 1:
@@ -78,20 +100,34 @@ const SHAKE_INTENSITY: float = 12.0
 const SHAKE_STEPS: int = 10
 const FLASH_DURATION: float = 0.35
 const FLASH_ALPHA: float = 0.35
+const GAME_OVER_FLASH_DURATION: float = 0.35
+const GAME_OVER_FLASH_ALPHA: float = 0.6
 
 func _on_note_missed() -> void:
 	hitStreak = 0
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 	gameplayHandler.numberOfLives = max(0, gameplayHandler.numberOfLives - 1)
 	_rebuild_hearts()
+	if gameplayHandler.numberOfLives == 0:
+		_show_game_over()
+		return
 	_play_damage_feedback()
 
-func _play_damage_feedback() -> void:
-	var flash = $DamageFlash
-	flash.color.a = FLASH_ALPHA
-	var flash_tween = create_tween()
-	flash_tween.tween_property(flash, "color:a", 0.0, FLASH_DURATION)
+func _show_game_over() -> void:
+	_set_paused(true)
+	_play_flash(GAME_OVER_FLASH_ALPHA, GAME_OVER_FLASH_DURATION)
+	$GameOver.show_results($ScoreNode2D.score, timeElapsed)
+	$GameOver.visible = true
+	$DimOverlay.visible = true
 
+func _play_flash(alpha: float, duration: float) -> void:
+	var flash = $DamageFlash
+	flash.color.a = alpha
+	var flash_tween = create_tween()
+	flash_tween.tween_property(flash, "color:a", 0.0, duration)
+
+func _play_damage_feedback() -> void:
+	_play_flash(FLASH_ALPHA, FLASH_DURATION)
 	var camera = $Camera2D
 	var shake_tween = create_tween()
 	shake_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
@@ -113,6 +149,7 @@ func _show_options_menu():
 	$OptionMenuNode2D.set_option_3_label(options[2].label)
 	$DimOverlay.visible = true
 	$OptionMenuNode2D.visible = true
+	_set_paused(true)
 
 func _hide_options_menu():
 	$DimOverlay.visible = false
@@ -185,7 +222,7 @@ func _on_option_selected(option_index: int) -> void:
 	_apply_lanes_keys()
 	_sync_player_controlled_instruments()
 	_hide_options_menu()
-	paused = false
+	_set_paused(false)
 
 func _on_option_1_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton && event.pressed:
@@ -216,5 +253,9 @@ func _on_music_player_genre_changed(bpm: int) -> void:
 
 func _on_ready() -> void:
 	$Conductor.bpm = $OptionMenuNode2D/GameplayHandler.bpm
+	$GameOver.visible = false
+	_lowPassFilter = AudioEffectLowPassFilter.new()
+	_lowPassFilter.cutoff_hz = LOWPASS_CUTOFF_NORMAL
+	AudioServer.add_bus_effect(AudioServer.get_bus_index("Master"), _lowPassFilter)
 	_sync_player_controlled_instruments()
 	_rebuild_hearts.call_deferred()

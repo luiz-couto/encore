@@ -1,7 +1,7 @@
 extends Node
 
 var bpm: int = 135
-var numberOfLives: int = 10
+var numberOfLives: int = 1
 var comboMultiplier: int = 1
 var scoreMultiplier: float = 1.0
 var activeLanes: Array[bool] = [true, true, true, true]
