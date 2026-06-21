@@ -131,7 +131,18 @@ func _sync_player_controlled_instruments() -> void:
 		musicPlayer.Instrument.CHORD_STAB,
 		musicPlayer.playerControlledInstruments.get(musicPlayer.Instrument.RHODES, false)
 	)
+	_update_instrument_icons()
 
+const ICON_ACTIVE_ALPHA: float = 1.0
+const ICON_INACTIVE_ALPHA: float = 0.25
+
+func _update_instrument_icons() -> void:
+	var controlled = $MusicPlayer.playerControlledInstruments
+	var musicPlayer = $MusicPlayer
+	$PianoIcon.modulate.a = ICON_ACTIVE_ALPHA if controlled.get(musicPlayer.Instrument.RHODES,       false) else ICON_INACTIVE_ALPHA
+	$DrumIcon.modulate.a  = ICON_ACTIVE_ALPHA if controlled.get(musicPlayer.Instrument.KICK,         false) else ICON_INACTIVE_ALPHA
+	$CongaIcon.modulate.a = ICON_ACTIVE_ALPHA if controlled.get(musicPlayer.Instrument.CONGA_SLAP,   false) else ICON_INACTIVE_ALPHA
+	$ClapIcon.modulate.a  = ICON_ACTIVE_ALPHA if controlled.get(musicPlayer.Instrument.CLAP,         false) else ICON_INACTIVE_ALPHA
 
 func _on_option_selected(option_index: int) -> void:
 	options[option_index].action.call()

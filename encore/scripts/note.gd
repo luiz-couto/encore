@@ -4,16 +4,16 @@ const SPAWN_Y: float = -16;
 const TARGET_Y: float = 1200;
 const DIST_TO_TARGET: float = TARGET_Y - SPAWN_Y;
 
-const LANE_0_X = 680;
+const LANE_0_X = 528;
 const LANE_0_SPAWN = Vector2(LANE_0_X, SPAWN_Y);
 
-const LANE_1_X = 862;
+const LANE_1_X = 710;
 const LANE_1_SPAWN = Vector2(LANE_1_X, SPAWN_Y);
 
-const LANE_2_X = 1040;
+const LANE_2_X = 888;
 const LANE_2_SPAWN = Vector2(LANE_2_X, SPAWN_Y);
 
-const LANE_3_X = 1217;
+const LANE_3_X = 1065;
 const LANE_3_SPAWN = Vector2(LANE_3_X, SPAWN_Y);
  
 const positionSelector: Dictionary[int, Vector2] = {

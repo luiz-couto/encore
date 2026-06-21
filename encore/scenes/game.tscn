@@ -24,6 +24,11 @@
 [ext_resource type="FontFile" uid="uid://o7n5xnnd4w71" path="res://assets/fonts/HeartbitXX2Px.ttf" id="23_bt5mj"]
 [ext_resource type="Script" uid="uid://rmmdlyjx63ic" path="res://scripts/option_1.gd" id="23_e1j6l"]
 [ext_resource type="Texture2D" uid="uid://cgp52b4cks1j3" path="res://assets/board/up-arrow.png" id="24_e1j6l"]
+[ext_resource type="Texture2D" uid="uid://cyk8jdwvesnn5" path="res://assets/icons/clap-icon.png" id="25_pl11u"]
+[ext_resource type="Texture2D" uid="uid://bpybxfpaov1js" path="res://assets/icons/piano-icon.png" id="25_sww3w"]
+[ext_resource type="Texture2D" uid="uid://dgp133xtcrssb" path="res://assets/icons/drum-icon.png" id="26_suyxu"]
+[ext_resource type="Texture2D" uid="uid://b7jni3tj2p2ov" path="res://assets/icons/conga-icon.png" id="27_sgl2t"]
+[ext_resource type="Texture2D" uid="uid://dj85c1lfox5gx" path="res://assets/icons/playing-now.png" id="29_suyxu"]
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_ssvqc"]
 data = PackedByteArray("cW9hZgAACFwBAKxECFwDcAAAAAAAAAAAAAAAAOAAQADymAwE0aDE5/Grz/2LD/zF/bh+54tWG7jwZYTqD/Edp/4kvoU1rZQRgcspklErw3fwBHzmp4k+e/KUbQJj3cLl+M4fiTJK9gTy0h/pm/Kd0Pq4YCUrSJ1j2pxgFEkpd5jwWNGDSzAhSvLHSRRVKbuj/N9UZMu6pVHGiHF7nd4Pnf3SuNAXxcc88vVKxglEEEjSQSCQQDL1qfTRLOYbTe5Q4XUFKkjpiUa96+ypAWyAidDAIIj5wTaK1gzfuEwE9hzckDyCqhU0mNcb3g+rhhZez1yGN5NnsmTCmSUQCQQEO9jMYVgoM5LWziXNoxs9RCrQ1RuJ8GTK09MZlQYoytYNrrTZHoNmcOSzCWyEAhF/AbxK5BiYZViqlmUoEAggAzfOI3mh0AQWi9zC8LjSsFIIpBIT9JwHf42t1uWFBQYLqJ3aAnU+Vbngq5lVJgAAgECSAQSApeUXiK1rJYyqJjpMnCtEM6tMPU6/C9QqiAQlbKRTMg5JJCABkkAgEBDvF4ik0eIkE6iUwLYCpxAIZDQAYioAkkookDKe4XABSCEGoXontuxqIsjzjsNQhAkBOpOAmm00qAhdQo8ryqFlcYJTkCyPuEwkGHlsCsUOSUiGX427TDicpj4hiKkM2ZpchwFk7LB0g4GvlWn0NYRKCKZJcAgBXpOKrDthSAoCWSpeUXEaPTMADBoyegMdyIJXgOF2kjaI3mF0WmmtNxbKqcTTYggFR9xBUBB3GAw1GV4bqHXhcYDRIIBIJ+FosioBo/NikawGJXteSmVBBQIKqBrzUpFWl4tVi4NZWmErc/lEeVx7VTeJVBYFU5VhsWJpssBUO4Xql0QHHWRAYQIbALzCXxmNjLkMhwFV4qmqBcwKCVAjoDCqidBBUoAEkggFDvBeEgW1nY+i81Q8BanIcjKSXskMQAB8oIFFWWAm5HQOmEzTYZCZhPoBUJgpcIVghBtEHCVyKVpzaj8xjbZAJZIKSPmESjBtWotMyukwV0muEVajC4DjaIZBQmKidhjMLgNEACSSzlQrU0OYXgYIqLzKPgNEBkhFsio81rWSoxOi9SS4YRBLJMn5MAogkFMKomMiiHq4N6mS4CKJtSKKLQrSFpFOoglVF6kUwQSCCCQCQQIIBAAAAAAA")
@@ -58,24 +63,24 @@ texture = ExtResource("2_yqjtg")
 
 [node name="MainBoard2" type="Sprite2D" parent="." unique_id=1085503733]
 z_index = -1
-position = Vector2(1009, 435)
+position = Vector2(857, 435)
 scale = Vector2(0.6008579, 0.5363552)
 texture = ExtResource("3_lbhrr")
 
 [node name="Button" parent="." unique_id=155436911 instance=ExtResource("3_lnu2h")]
-position = Vector2(680, 713)
+position = Vector2(528, 713)
 input = "ui_left"
 
 [node name="Button2" parent="." unique_id=665909422 instance=ExtResource("3_lnu2h")]
-position = Vector2(862, 713)
+position = Vector2(710, 713)
 input = "ui_up"
 
 [node name="Button3" parent="." unique_id=810961907 instance=ExtResource("3_lnu2h")]
-position = Vector2(1040, 713)
+position = Vector2(888, 713)
 input = "ui_down"
 
 [node name="Button4" parent="." unique_id=1578098347 instance=ExtResource("3_lnu2h")]
-position = Vector2(1217, 713)
+position = Vector2(1065, 713)
 input = "ui_right"
 
 [node name="Timer" type="Timer" parent="." unique_id=1128094179]
@@ -135,7 +140,7 @@ stream = ExtResource("17_264po")
 [node name="Red" type="Sprite2D" parent="ArrowKeys" unique_id=1108017298]
 modulate = Color(1, 1, 1, 0.24313726)
 z_index = -1
-position = Vector2(678, 573)
+position = Vector2(526, 573)
 rotation = -1.5707964
 scale = Vector2(0.163086, 0.16029821)
 texture = ExtResource("24_e1j6l")
@@ -143,14 +148,14 @@ texture = ExtResource("24_e1j6l")
 [node name="Green" type="Sprite2D" parent="ArrowKeys" unique_id=1231863905]
 modulate = Color(1, 1, 1, 0.24313726)
 z_index = -1
-position = Vector2(861, 566)
+position = Vector2(709, 566)
 scale = Vector2(0.163086, 0.16029821)
 texture = ExtResource("24_e1j6l")
 
 [node name="Yellow" type="Sprite2D" parent="ArrowKeys" unique_id=345526923]
 modulate = Color(1, 1, 1, 0.24313726)
 z_index = -1
-position = Vector2(1038.0001, 572)
+position = Vector2(886.0001, 572)
 rotation = -3.1415925
 scale = Vector2(0.163086, 0.16029821)
 texture = ExtResource("24_e1j6l")
@@ -158,7 +163,7 @@ texture = ExtResource("24_e1j6l")
 [node name="Blue" type="Sprite2D" parent="ArrowKeys" unique_id=1215729914]
 modulate = Color(1, 1, 1, 0.24313726)
 z_index = -1
-position = Vector2(1217.0001, 572)
+position = Vector2(1065.0001, 572)
 rotation = 1.5707964
 scale = Vector2(0.163086, 0.16029821)
 texture = ExtResource("24_e1j6l")
@@ -260,6 +265,31 @@ offset_right = 1926.0
 offset_bottom = 1282.0
 mouse_filter = 2
 color = Color(0, 0, 0, 0.827451)
+
+[node name="PianoIcon" type="Sprite2D" parent="." unique_id=440615939]
+position = Vector2(1612, 238)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("25_sww3w")
+
+[node name="DrumIcon" type="Sprite2D" parent="." unique_id=2063846983]
+position = Vector2(1604.0908, 336)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("26_suyxu")
+
+[node name="CongaIcon" type="Sprite2D" parent="." unique_id=2057859511]
+position = Vector2(1613, 439.99997)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("27_sgl2t")
+
+[node name="ClapIcon" type="Sprite2D" parent="." unique_id=2041990565]
+position = Vector2(1595, 547)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("25_pl11u")
+
+[node name="PlayingNow" type="Sprite2D" parent="." unique_id=533656834]
+position = Vector2(1623, 114.00001)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("29_suyxu")
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
