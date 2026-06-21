@@ -1,6 +1,7 @@
 extends Node2D
 
-const NoteScene := preload("res://scenes/note.tscn");
+const NoteScene := preload("res://scenes/note.tscn")
+const HeartScene := preload("res://scenes/heart.tscn")
 
 var currentChord: int = 0
 var currentSection: int = 0
@@ -63,8 +64,20 @@ func _on_score_event(scorePoints: int, _chord_idx: int, sound_id: int) -> void:
 		#paused = true
 		#_show_options_menu()
 
+func _rebuild_hearts() -> void:
+	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
+	var container = $GridContainer
+	container.columns = max(1, int(container.size.x / HEART_CELL_SIZE))
+	for child in container.get_children():
+		child.queue_free()
+	for i in gameplayHandler.numberOfLives:
+		container.add_child(HeartScene.instantiate())
+
 func _on_note_missed() -> void:
 	hitStreak = 0
+	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
+	gameplayHandler.numberOfLives = max(0, gameplayHandler.numberOfLives - 1)
+	_rebuild_hearts()
 
 func _apply_lanes_keys() -> void:
 	var lanesKeys = $OptionMenuNode2D/GameplayHandler.lanesKeys
@@ -133,6 +146,8 @@ func _sync_player_controlled_instruments() -> void:
 	)
 	_update_instrument_icons()
 
+const HEART_CELL_SIZE: int = 44
+
 const ICON_ACTIVE_ALPHA: float = 1.0
 const ICON_INACTIVE_ALPHA: float = 0.25
 
@@ -182,3 +197,4 @@ func _on_music_player_genre_changed(bpm: int) -> void:
 func _on_ready() -> void:
 	$Conductor.bpm = $OptionMenuNode2D/GameplayHandler.bpm
 	_sync_player_controlled_instruments()
+	_rebuild_hearts.call_deferred()

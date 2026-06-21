@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://derb1bx0iek5s"]
+
+[ext_resource type="Texture2D" uid="uid://b8m5byw872u2" path="res://assets/board/heart_animated.png" id="1_v30as"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ycbwg"]
+atlas = ExtResource("1_v30as")
+region = Rect2(0, 0, 17, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_krgnv"]
+atlas = ExtResource("1_v30as")
+region = Rect2(17, 0, 17, 15)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_txm48"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ycbwg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_krgnv")
+}],
+"loop": true,
+"name": &"tum",
+"speed": 2.0
+}]
+
+[node name="Heart" type="Control" unique_id=1520456324]
+custom_minimum_size = Vector2(44, 40)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=464799396]
+position = Vector2(27, 25)
+modulate = Color(2.5203042, 2.5203042, 2.5203042, 1)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_txm48")
+animation = &"tum"
+autoplay = "tum"
+frame_progress = 0.97493905
