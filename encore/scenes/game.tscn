@@ -68,21 +68,25 @@ position = Vector2(857, 513.7936)
 scale = Vector2(0.6008579, 0.6034993)
 texture = ExtResource("3_lbhrr")
 
-[node name="Button" parent="." unique_id=155436911 instance=ExtResource("3_lnu2h")]
+[node name="Button" parent="." unique_id=155436911 node_paths=PackedStringArray("laneFlash") instance=ExtResource("3_lnu2h")]
 position = Vector2(528, 713)
 input = "ui_left"
+laneFlash = NodePath("../RedLaneFlash")
 
-[node name="Button2" parent="." unique_id=665909422 instance=ExtResource("3_lnu2h")]
+[node name="Button2" parent="." unique_id=665909422 node_paths=PackedStringArray("laneFlash") instance=ExtResource("3_lnu2h")]
 position = Vector2(710, 713)
 input = "ui_up"
+laneFlash = NodePath("../GreenLaneFlash")
 
-[node name="Button3" parent="." unique_id=810961907 instance=ExtResource("3_lnu2h")]
+[node name="Button3" parent="." unique_id=810961907 node_paths=PackedStringArray("laneFlash") instance=ExtResource("3_lnu2h")]
 position = Vector2(888, 713)
 input = "ui_down"
+laneFlash = NodePath("../YellowLaneFlash")
 
-[node name="Button4" parent="." unique_id=1578098347 instance=ExtResource("3_lnu2h")]
+[node name="Button4" parent="." unique_id=1578098347 node_paths=PackedStringArray("laneFlash") instance=ExtResource("3_lnu2h")]
 position = Vector2(1065, 713)
 input = "ui_right"
+laneFlash = NodePath("../BlueLaneFlash")
 
 [node name="Timer" type="Timer" parent="." unique_id=1128094179]
 wait_time = 3.0
@@ -307,6 +311,34 @@ offset_right = 1926.0
 offset_bottom = 1282.0
 mouse_filter = 2
 color = Color(1, 0, 0, 0)
+
+[node name="RedLaneFlash" type="ColorRect" parent="." unique_id=185301405]
+offset_left = 434.0
+offset_top = -81.0
+offset_right = 617.0
+offset_bottom = 1240.0
+color = Color(1, 0, 1, 0)
+
+[node name="GreenLaneFlash" type="ColorRect" parent="." unique_id=1698990691]
+offset_left = 611.0
+offset_top = -88.0
+offset_right = 794.0
+offset_bottom = 1249.0
+color = Color(0, 1, 0.078431375, 0)
+
+[node name="YellowLaneFlash" type="ColorRect" parent="." unique_id=1431794481]
+offset_left = 796.0
+offset_top = -93.0
+offset_right = 979.0
+offset_bottom = 1326.0
+color = Color(1, 1, 0.03137255, 0)
+
+[node name="BlueLaneFlash" type="ColorRect" parent="." unique_id=478934072]
+offset_left = 973.0
+offset_top = -86.0
+offset_right = 1156.0
+offset_bottom = 1325.0
+color = Color(0, 1, 1, 0)
 
 [node name="GameOver" parent="." unique_id=589838554 instance=ExtResource("30_sgl2t")]
 visible = false
