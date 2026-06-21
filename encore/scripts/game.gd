@@ -109,6 +109,8 @@ func _sync_player_controlled_instruments() -> void:
 	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.HIHAT_CLOSED, gameplayHandler.spawnNoteOnDrumHiHatClose)
 	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.HIHAT_OPEN,   gameplayHandler.spawnNoteOnDrumHiHatOpen)
 	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.CLAP,         gameplayHandler.spawnNoteOnDrumClap)
+	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.CONGA_OPEN,   gameplayHandler.spawnNoteOnCongaOpen)
+	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.CONGA_SLAP,   gameplayHandler.spawnNoteOnCongaSlap)
 
 
 func _on_option_selected(option_index: int) -> void:

@@ -393,11 +393,15 @@ func _setup_instrument_handlers() -> void:
 	var shaker_func = func(_c: int, vol: float) -> void:
 		_play_drum(shaker, -20.0 + vol)
 
+	var conga_open_schedule = func(lookahead_idx: int, _s: int) -> bool:
+		return conga_open != null and congaOpenPattern.size() > 0 and congaOpenPattern[lookahead_idx]
 	var conga_open_play = func(perc_idx: int, _s: int) -> bool:
 		return conga_open != null and congaOpenPattern.size() > 0 and congaOpenPattern[perc_idx]
 	var conga_open_func = func(_c: int, vol: float) -> void:
 		_play_drum(conga_open, 0.0 + vol)
 
+	var conga_slap_schedule = func(lookahead_idx: int, _s: int) -> bool:
+		return conga_slap != null and congaSlapPattern.size() > 0 and congaSlapPattern[lookahead_idx]
 	var conga_slap_play = func(perc_idx: int, _s: int) -> bool:
 		return conga_slap != null and congaSlapPattern.size() > 0 and congaSlapPattern[perc_idx]
 	var conga_slap_func = func(_c: int, vol: float) -> void:
@@ -421,8 +425,8 @@ func _setup_instrument_handlers() -> void:
 		Instrument.CLAP:         { "schedule_check": clap_schedule,         "play_check": clap_play,          "play_func": clap_func,         "plays_in_breakdown": false },
 		Instrument.SNARE:        { "schedule_check": no_schedule,           "play_check": snare_play,         "play_func": snare_func,        "plays_in_breakdown": false },
 		Instrument.SHAKER:       { "schedule_check": no_schedule,           "play_check": shaker_play,        "play_func": shaker_func,       "plays_in_breakdown": false },
-		Instrument.CONGA_OPEN:   { "schedule_check": no_schedule,           "play_check": conga_open_play,    "play_func": conga_open_func,   "plays_in_breakdown": false },
-		Instrument.CONGA_SLAP:   { "schedule_check": no_schedule,           "play_check": conga_slap_play,    "play_func": conga_slap_func,   "plays_in_breakdown": false },
+		Instrument.CONGA_OPEN:   { "schedule_check": conga_open_schedule,   "play_check": conga_open_play,    "play_func": conga_open_func,   "plays_in_breakdown": false },
+		Instrument.CONGA_SLAP:   { "schedule_check": conga_slap_schedule,   "play_check": conga_slap_play,    "play_func": conga_slap_func,   "plays_in_breakdown": false },
 		Instrument.CHORD_STAB:   { "schedule_check": chord_stab_schedule,   "play_check": chord_stab_play,    "play_func": chord_stab_func,   "plays_in_breakdown": true  },
 	}
 
@@ -512,7 +516,7 @@ func _ready() -> void:
 	_generate_patterns()
 
 func _set_random_genre() -> void:
-	set_genre(Genre.HOUSE)
+	set_genre(Genre.AFRO_HOUSE)
 
 
 func play_chord(chord_idx: int, volume_db: float = 1.0) -> void:
