@@ -1,5 +1,7 @@
 extends Node
 
+const SUBDIVISIONS_PER_MEASURE: int = 8
+
 @export var bpm: float = 95:
 	set(value):
 		bpm = value

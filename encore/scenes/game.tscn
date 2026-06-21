@@ -9,9 +9,6 @@
 [ext_resource type="Script" uid="uid://d4ild0tpfaeko" path="res://scripts/chord_generator.gd" id="7_u5sy4"]
 [ext_resource type="AudioStream" uid="uid://bcsrbuan637ij" path="res://assets/audio/piano_c4_long.wav" id="8_0tnpc"]
 [ext_resource type="Script" uid="uid://dbditb0w43qpw" path="res://scripts/music_player.gd" id="8_gee14"]
-[ext_resource type="AudioStream" uid="uid://cojkhbjgguu0j" path="res://assets/audio/c3-short.wav" id="8_kvpfn"]
-[ext_resource type="AudioStream" uid="uid://bs6mbq2xsftbs" path="res://assets/audio/c4-short.wav" id="9_dinhu"]
-[ext_resource type="AudioStream" uid="uid://c0sknu7dlwmh6" path="res://assets/audio/c5-short.wav" id="10_kvuet"]
 [ext_resource type="AudioStream" uid="uid://dbwmyn7cw48by" path="res://assets/audio/keys/rhodes_c4.wav" id="11_kvuet"]
 [ext_resource type="Script" uid="uid://d140tki0nsxth" path="res://scripts/score_node_2d.gd" id="12_dinhu"]
 [ext_resource type="AudioStream" uid="uid://v5ewqniqcdgb" path="res://assets/audio/drums/kick.wav" id="12_ssvqc"]
@@ -21,7 +18,6 @@
 [ext_resource type="AudioStream" uid="uid://wyiboqu2cmnr" path="res://assets/audio/drums/shaker.wav" id="16_5newe"]
 [ext_resource type="AudioStream" uid="uid://b5aayuu7j6pwr" path="res://assets/audio/drums/bass.wav" id="17_264po"]
 [ext_resource type="AudioStream" uid="uid://djxrqwvjwg5jx" path="res://assets/audio/drums/conga-slap.wav" id="18_suyxu"]
-[ext_resource type="AudioStream" uid="uid://bxeiybdeh6ymc" path="res://assets/audio/drums/woodblock-one-shot.wav" id="19_sgl2t"]
 [ext_resource type="Texture2D" uid="uid://c7a63ah50gdsb" path="res://assets/board/options_menu.svg" id="21_5newe"]
 [ext_resource type="Script" uid="uid://cdk1d85ib0gl3" path="res://scripts/option_menu_node_2d.gd" id="21_pl11u"]
 [ext_resource type="Script" uid="uid://c3dluyfwld0om" path="res://scripts/gameplay_handler.gd" id="22_37s47"]
@@ -93,9 +89,6 @@ script = ExtResource("7_u5sy4")
 
 [node name="MusicPlayer" type="Node2D" parent="." unique_id=557973983]
 script = ExtResource("8_gee14")
-piano_c3 = ExtResource("8_kvpfn")
-piano_c4 = ExtResource("9_dinhu")
-piano_c5 = ExtResource("10_kvuet")
 rhodes_c4 = ExtResource("11_kvuet")
 kick = ExtResource("12_ssvqc")
 hihat_closed = SubResource("AudioStreamWAV_ssvqc")
@@ -104,7 +97,6 @@ clap = ExtResource("15_5newe")
 snare = ExtResource("15_1kice")
 shaker = ExtResource("16_5newe")
 conga_slap = ExtResource("18_suyxu")
-woodblock = ExtResource("19_sgl2t")
 bass = ExtResource("17_264po")
 
 [node name="Voice1" type="AudioStreamPlayer2D" parent="MusicPlayer" unique_id=1260706810]
@@ -239,12 +231,8 @@ color = Color(0, 0, 0, 0.827451)
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="measure" from="Conductor" to="." method="_on_conductor_measure"]
 [connection signal="subdivision" from="Conductor" to="." method="_on_conductor_subdivision"]
-[connection signal="chordPlayed" from="MusicPlayer" to="." method="_on_music_player_chord_played"]
-[connection signal="drumClapPlayed" from="MusicPlayer" to="." method="_on_music_player_drum_clap_played"]
-[connection signal="drumHiHatClosedPlayed" from="MusicPlayer" to="." method="_on_music_player_drum_hi_hat_closed_played"]
-[connection signal="drumHiHatOpenPlayed" from="MusicPlayer" to="." method="_on_music_player_drum_hi_hat_open_played"]
-[connection signal="drumKickPlayed" from="MusicPlayer" to="." method="_on_music_player_drum_kick_played"]
 [connection signal="genreChanged" from="MusicPlayer" to="." method="_on_music_player_genre_changed"]
+[connection signal="noteScheduled" from="MusicPlayer" to="." method="_on_music_player_note_scheduled"]
 [connection signal="sectionChanged" from="StructuralEngine" to="." method="_on_structural_engine_section_changed"]
 [connection signal="input_event" from="OptionMenuNode2D/Option1" to="." method="_on_option_1_input_event"]
 [connection signal="mouse_entered" from="OptionMenuNode2D/Option1" to="." method="_on_option_1_mouse_entered"]

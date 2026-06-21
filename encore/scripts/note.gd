@@ -28,15 +28,17 @@ var hit: bool = false;
 var lane: int = 0;
 
 var chord: int = 0
+var soundId: int = -1
 
-signal scoreEvent(score, chord_idx);
+signal scoreEvent(score: int, chord_idx: int, sound_id: int);
 signal missEvent;
 
-func initialize(lane_idx: int, chord_idx: int, seconds_per_measure: float):
+func initialize(lane_idx: int, chord_idx: int, seconds_per_measure: float, sound_id: int = -1):
 	lane = lane_idx;
 	position = positionSelector[lane_idx];
 	$AnimatedSprite2D.frame = lane_idx;
 	chord = chord_idx;
+	soundId = sound_id;
 	speed = (DIST_TO_TARGET / seconds_per_measure);
 	
 func _physics_process(delta: float) -> void:
@@ -54,7 +56,7 @@ func destroy(_score: int) -> void:
 	$Timer.start();
 	$Node2D/Label.text = "GREAT";
 	$AnimatedSprite2D.frame = 4; # empty frame
-	scoreEvent.emit(100, chord);
+	scoreEvent.emit(100, chord, soundId);
 	hit = true;
 
 func _on_timer_timeout() -> void:

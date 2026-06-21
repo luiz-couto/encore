@@ -1,5 +1,7 @@
 extends AnimatedSprite2D
 
+const HIT_BUTTON_Y: float = 713.0
+
 var perfectArea: bool = false;
 var goodArea: bool = false;
 var okayArea: bool = false;
