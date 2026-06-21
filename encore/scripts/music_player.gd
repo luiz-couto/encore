@@ -175,10 +175,10 @@ const CONGA_SLAP_MARKOV: Dictionary = {
 }
 
 # Markov chain state — reset at the start of each bar (subdiv_pos == 1)
-var markov_kick_prev: bool = false
 var markov_hihat_prev: bool = false
 
 # 2-bar patterns generated once per section entry, repeat every 2 bars
+var kickPattern: Array = []
 var rhodesPattern: Array = []
 var clapPattern: Array = []
 var congaOpenPattern: Array = []
@@ -301,6 +301,7 @@ func _generate_2bar_pattern(markov: Dictionary, density_table: Dictionary) -> Ar
 	return bar1 + bar2
 
 func _generate_patterns() -> void:
+	kickPattern      = _generate_2bar_pattern(KICK_MARKOV,        KICK_SECTION_DENSITY)
 	rhodesPattern    = _generate_2bar_pattern(RHODES_MARKOV,      RHODES_SECTION_DENSITY)
 	clapPattern      = _generate_2bar_pattern(CLAP_MARKOV,        CLAP_SECTION_DENSITY)
 	congaOpenPattern = _generate_2bar_pattern(CONGA_OPEN_MARKOV,  CONGA_SECTION_DENSITY)
@@ -354,10 +355,10 @@ func _setup_instrument_handlers() -> void:
 	var rhodes_func = func(chord_idx: int, vol: float) -> void:
 		play_chord(chord_idx, 1.0 + vol)
 
-	var kick_play = func(_p: int, subdiv_pos: int) -> bool:
-		var fires = _markov_fire(KICK_MARKOV[currentGenre], subdiv_pos, markov_kick_prev, KICK_SECTION_DENSITY[currentSection])
-		markov_kick_prev = fires
-		return fires
+	var kick_schedule = func(lookahead_idx: int, _s: int) -> bool:
+		return not isFill and kickPattern.size() > 0 and kickPattern[lookahead_idx]
+	var kick_play = func(perc_idx: int, _s: int) -> bool:
+		return not isFill and kickPattern.size() > 0 and kickPattern[perc_idx]
 	var kick_func = func(_c: int, vol: float) -> void:
 		_play_drum(kick, -3.0 + vol)
 
@@ -419,7 +420,7 @@ func _setup_instrument_handlers() -> void:
 
 	instrumentHandlers = {
 		Instrument.RHODES:       { "schedule_check": rhodes_schedule,      "play_check": rhodes_play,       "play_func": rhodes_func,      "plays_in_breakdown": false },
-		Instrument.KICK:         { "schedule_check": no_schedule,           "play_check": kick_play,          "play_func": kick_func,         "plays_in_breakdown": false },
+		Instrument.KICK:         { "schedule_check": kick_schedule,         "play_check": kick_play,          "play_func": kick_func,         "plays_in_breakdown": false },
 		Instrument.HIHAT_CLOSED: { "schedule_check": no_schedule,           "play_check": hihat_closed_play,  "play_func": hihat_closed_func, "plays_in_breakdown": false },
 		Instrument.HIHAT_OPEN:   { "schedule_check": no_schedule,           "play_check": hihat_open_play,    "play_func": hihat_open_func,   "plays_in_breakdown": false },
 		Instrument.CLAP:         { "schedule_check": clap_schedule,         "play_check": clap_play,          "play_func": clap_func,         "plays_in_breakdown": false },
@@ -457,7 +458,6 @@ func register_hit(sound_id: int) -> void:
 
 func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 	if subdiv_pos == 1:
-		markov_kick_prev = false
 		markov_hihat_prev = false
 
 	absoluteSubdivCounter += 1
@@ -516,7 +516,7 @@ func _ready() -> void:
 	_generate_patterns()
 
 func _set_random_genre() -> void:
-	set_genre(Genre.AFRO_HOUSE)
+	set_genre(Genre.TECHNO)
 
 
 func play_chord(chord_idx: int, volume_db: float = 1.0) -> void:

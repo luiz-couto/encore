@@ -8,12 +8,12 @@ var activeLanes: Array[bool] = [true, true, true, true]
 var lanesKeys: Array[String] = ["", "", "", ""]
 
 var spawnNoteOnRhodes: bool = false
-var spawnNoteOnDrumKick: bool = false
+var spawnNoteOnDrumKick: bool = true
 var spawnNoteOnDrumHiHatOpen: bool = false
 var spawnNoteOnDrumHiHatClose: bool = false
 var spawnNoteOnDrumClap: bool = false
 var spawnNoteOnCongaOpen: bool = false
-var spawnNoteOnCongaSlap: bool = true
+var spawnNoteOnCongaSlap: bool = false
 
 var spawnDoubleNotesProb: float = 0.0
 var spawnTripleNotesProb: float = 0.0
