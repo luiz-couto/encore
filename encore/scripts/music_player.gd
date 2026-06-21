@@ -365,7 +365,7 @@ func set_section(section: int, intensity: float, cycle: int):
 	currentCycle = cycle
 	isBreakdown = false
 	isSnareRamp = false
-	if section == 1:  # BUILD — start of a new cycle, pick new genre
+	if section == 3:  # BREAK — introduce next genre early, seeds the upcoming DROP
 		set_genre(randi() % Genre.values().size())
 	_pick_patterns()
 	_generate_patterns()
