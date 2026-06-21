@@ -1,10 +1,15 @@
 extends Node2D
 
-var _tryAgainTween: Tween = null
-var _backToMenuTween: Tween = null
-
-const HOVER_ALPHA: float = 0.65
+const HOVER_SCALE_MULTIPLIER: float = 1.15
+const HOVER_BRIGHTNESS: float = 1.4
 const HOVER_DURATION: float = 0.1
+
+var _backToMenuTween: Tween = null
+var _originalScale: Vector2
+
+func _ready() -> void:
+	get_viewport().physics_object_picking = true
+	_originalScale = $BackToMenuIcon.scale
 
 func show_results(score: int, time_seconds: float) -> void:
 	$FinalScoreLabel.text = str(score)
@@ -16,38 +21,26 @@ func show_results(score: int, time_seconds: float) -> void:
 func _process(_delta: float) -> void:
 	pass
 
-func _on_try_again_area_2d_mouse_entered() -> void:
-	if _tryAgainTween:
-		_tryAgainTween.kill()
-	_tryAgainTween = create_tween()
-	_tryAgainTween.tween_property($TryAgainButton, "modulate:a", HOVER_ALPHA, HOVER_DURATION)
-
-func _on_try_again_area_2d_mouse_exited() -> void:
-	if _tryAgainTween:
-		_tryAgainTween.kill()
-	_tryAgainTween = create_tween()
-	_tryAgainTween.tween_property($TryAgainButton, "modulate:a", 1.0, HOVER_DURATION)
-
-func _on_try_again_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		_cleanup_master_lowpass()
-		get_tree().reload_current_scene()
-
 func _on_back_to_menu_area_2d_mouse_entered() -> void:
+	DisplayServer.cursor_set_shape(DisplayServer.CURSOR_POINTING_HAND)
 	if _backToMenuTween:
 		_backToMenuTween.kill()
-	_backToMenuTween = create_tween()
-	_backToMenuTween.tween_property($BackToMenuButton, "modulate:a", HOVER_ALPHA, HOVER_DURATION)
+	_backToMenuTween = create_tween().set_parallel(true)
+	_backToMenuTween.tween_property($BackToMenuIcon, "scale", _originalScale * HOVER_SCALE_MULTIPLIER, HOVER_DURATION)
+	_backToMenuTween.tween_property($BackToMenuIcon, "modulate", Color(HOVER_BRIGHTNESS, HOVER_BRIGHTNESS, HOVER_BRIGHTNESS), HOVER_DURATION)
 
 func _on_back_to_menu_area_2d_mouse_exited() -> void:
+	DisplayServer.cursor_set_shape(DisplayServer.CURSOR_ARROW)
 	if _backToMenuTween:
 		_backToMenuTween.kill()
-	_backToMenuTween = create_tween()
-	_backToMenuTween.tween_property($BackToMenuButton, "modulate:a", 1.0, HOVER_DURATION)
+	_backToMenuTween = create_tween().set_parallel(true)
+	_backToMenuTween.tween_property($BackToMenuIcon, "scale", _originalScale, HOVER_DURATION)
+	_backToMenuTween.tween_property($BackToMenuIcon, "modulate", Color(1.0, 1.0, 1.0), HOVER_DURATION)
 
 func _on_back_to_menu_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
-		pass
+		_cleanup_master_lowpass()
+		get_tree().reload_current_scene()
 
 func _cleanup_master_lowpass() -> void:
 	var master_idx = AudioServer.get_bus_index("Master")

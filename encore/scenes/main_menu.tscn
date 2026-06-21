@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://dddgokkr6rjqm"]
+
+[ext_resource type="Script" uid="uid://bwoc7re54eayx" path="res://scripts/main_menu.gd" id="1_wu84c"]
+[ext_resource type="Texture2D" uid="uid://bkp6rjjlrgpfu" path="res://assets/board/title.png" id="2_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://dgk2j5n02cb4d" path="res://assets/board/start-icon-3.png" id="2_ekxnf"]
+[ext_resource type="Texture2D" uid="uid://b3w48f85dkkt1" path="res://assets/board/exit-button-2.png" id="3_bqqt6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bqqt6"]
+radius = 646.29065
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wu84c"]
+radius = 607.5108
+
+[node name="MainMenu" type="Node2D" unique_id=1625919702]
+script = ExtResource("1_wu84c")
+
+[node name="Title" type="Sprite2D" parent="." unique_id=688884308]
+position = Vector2(704, 317)
+scale = Vector2(0.7459259, 0.7459259)
+texture = ExtResource("2_bqqt6")
+
+[node name="StartIcon3" type="Sprite2D" parent="." unique_id=693441510]
+position = Vector2(2190, 1132.6208)
+rotation = -0.12217305
+scale = Vector2(0.4959117, 0.49489966)
+texture = ExtResource("2_ekxnf")
+
+[node name="Area2D" type="Area2D" parent="StartIcon3" unique_id=1006784897]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StartIcon3/Area2D" unique_id=242285886]
+position = Vector2(38.461487, 17.71872)
+shape = SubResource("CircleShape2D_bqqt6")
+
+[node name="ExitButton2" type="Sprite2D" parent="." unique_id=1942476761]
+position = Vector2(152, 1186.9999)
+rotation = 0.08726646
+scale = Vector2(0.496, 0.496)
+texture = ExtResource("3_bqqt6")
+
+[node name="Area2D" type="Area2D" parent="ExitButton2" unique_id=1759422782]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitButton2/Area2D" unique_id=1765036439]
+shape = SubResource("CircleShape2D_wu84c")
+
+[connection signal="input_event" from="StartIcon3/Area2D" to="." method="_on_start_icon_area_2d_input_event"]
+[connection signal="mouse_entered" from="StartIcon3/Area2D" to="." method="_on_start_icon_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="StartIcon3/Area2D" to="." method="_on_start_icon_area_2d_mouse_exited"]
+[connection signal="input_event" from="ExitButton2/Area2D" to="." method="_on_exit_area_2d_input_event"]
+[connection signal="mouse_entered" from="ExitButton2/Area2D" to="." method="_on_exit_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="ExitButton2/Area2D" to="." method="_on_exit_area_2d_mouse_exited"]

@@ -3,19 +3,15 @@
 [ext_resource type="Script" uid="uid://dmkm7pktttkh6" path="res://scripts/game_over.gd" id="1_wqhvx"]
 [ext_resource type="Texture2D" uid="uid://cu3f2qawmpt0v" path="res://assets/board/game-over-menu.png" id="1_xeevv"]
 [ext_resource type="FontFile" uid="uid://o7n5xnnd4w71" path="res://assets/fonts/HeartbitXX2Px.ttf" id="3_tbwuq"]
-[ext_resource type="Texture2D" uid="uid://cwgxhxp8ci355" path="res://assets/board/try-again-button.png" id="4_7m3ot"]
-[ext_resource type="Texture2D" uid="uid://huwfn57l3cjk" path="res://assets/board/back-to-menu-button.png" id="5_v3hpu"]
+[ext_resource type="Texture2D" uid="uid://qeni4yjc61hp" path="res://assets/board/back-to-menu-icon.png" id="4_racf3"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_racf3"]
 font = ExtResource("3_tbwuq")
 font_size = 80
 outline_color = Color(0, 0, 0, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7m3ot"]
-size = Vector2(526.55853, 177.72713)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_v3hpu"]
-size = Vector2(654.52466, 177.70403)
+[sub_resource type="CircleShape2D" id="CircleShape2D_7m3ot"]
+radius = 543.35547
 
 [node name="GameOver" type="Node2D" unique_id=589838554]
 script = ExtResource("1_wqhvx")
@@ -46,33 +42,17 @@ text = "FINAL TIME"
 label_settings = SubResource("LabelSettings_racf3")
 vertical_alignment = 1
 
-[node name="TryAgainButton" type="Sprite2D" parent="." unique_id=1526204075]
-position = Vector2(1228.0001, 716)
-scale = Vector2(0.90588236, 0.90588236)
-texture = ExtResource("4_7m3ot")
+[node name="BackToMenuIcon" type="Sprite2D" parent="." unique_id=876934189]
+position = Vector2(1206.0001, 658.00006)
+scale = Vector2(0.36742425, 0.36742422)
+texture = ExtResource("4_racf3")
 
-[node name="Area2D" type="Area2D" parent="TryAgainButton" unique_id=1404879644]
+[node name="Area2D" type="Area2D" parent="BackToMenuIcon" unique_id=1758272644]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TryAgainButton/Area2D" unique_id=1572284717]
-position = Vector2(2.7592773, -1.6557007)
-scale = Vector2(0.9999996, 0.9999996)
-shape = SubResource("RectangleShape2D_7m3ot")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BackToMenuIcon/Area2D" unique_id=1458591121]
+position = Vector2(119.75223, 152.4122)
+shape = SubResource("CircleShape2D_7m3ot")
 
-[node name="BackToMenuButton" type="Sprite2D" parent="." unique_id=744222376]
-position = Vector2(646, 711)
-scale = Vector2(0.906, 0.906)
-texture = ExtResource("5_v3hpu")
-
-[node name="Area2D" type="Area2D" parent="BackToMenuButton" unique_id=479082029]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BackToMenuButton/Area2D" unique_id=2106102649]
-position = Vector2(1.6555786, 2.7593994)
-scale = Vector2(1.0000013, 1.0000013)
-shape = SubResource("RectangleShape2D_v3hpu")
-
-[connection signal="input_event" from="TryAgainButton/Area2D" to="." method="_on_try_again_area_2d_input_event"]
-[connection signal="mouse_entered" from="TryAgainButton/Area2D" to="." method="_on_try_again_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="TryAgainButton/Area2D" to="." method="_on_try_again_area_2d_mouse_exited"]
-[connection signal="input_event" from="BackToMenuButton/Area2D" to="." method="_on_back_to_menu_area_2d_input_event"]
-[connection signal="mouse_entered" from="BackToMenuButton/Area2D" to="." method="_on_back_to_menu_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="BackToMenuButton/Area2D" to="." method="_on_back_to_menu_area_2d_mouse_exited"]
+[connection signal="input_event" from="BackToMenuIcon/Area2D" to="." method="_on_back_to_menu_area_2d_input_event"]
+[connection signal="mouse_entered" from="BackToMenuIcon/Area2D" to="." method="_on_back_to_menu_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="BackToMenuIcon/Area2D" to="." method="_on_back_to_menu_area_2d_mouse_exited"]

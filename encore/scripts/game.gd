@@ -120,6 +120,17 @@ func _show_game_over() -> void:
 	$GameOver.visible = true
 	$DimOverlay.visible = true
 
+func _show_main_menu() -> void:
+	_set_paused(true)
+	$DimOverlay.visible = true
+	$MainMenu.visible = true
+
+func _hide_main_menu() -> void:
+	$MainMenu.visible = false
+	$DimOverlay.visible = false
+	_set_paused(false)
+
+
 func _play_flash(alpha: float, duration: float) -> void:
 	var flash = $DamageFlash
 	flash.color.a = alpha
@@ -259,3 +270,6 @@ func _on_ready() -> void:
 	AudioServer.add_bus_effect(AudioServer.get_bus_index("Master"), _lowPassFilter)
 	_sync_player_controlled_instruments()
 	_rebuild_hearts.call_deferred()
+	$MainMenu.started.connect(_hide_main_menu)
+	_show_main_menu()
+	get_viewport().physics_object_picking = true

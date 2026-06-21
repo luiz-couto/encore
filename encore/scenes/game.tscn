@@ -30,6 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://b7jni3tj2p2ov" path="res://assets/icons/conga-icon.png" id="27_sgl2t"]
 [ext_resource type="Texture2D" uid="uid://dj85c1lfox5gx" path="res://assets/icons/playing-now.png" id="29_suyxu"]
 [ext_resource type="PackedScene" uid="uid://bt5ngm6vw1rol" path="res://scenes/game_over.tscn" id="30_sgl2t"]
+[ext_resource type="PackedScene" uid="uid://dddgokkr6rjqm" path="res://scenes/main_menu.tscn" id="31_qouja"]
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_ssvqc"]
 data = PackedByteArray("cW9hZgAACFwBAKxECFwDcAAAAAAAAAAAAAAAAOAAQADymAwE0aDE5/Grz/2LD/zF/bh+54tWG7jwZYTqD/Edp/4kvoU1rZQRgcspklErw3fwBHzmp4k+e/KUbQJj3cLl+M4fiTJK9gTy0h/pm/Kd0Pq4YCUrSJ1j2pxgFEkpd5jwWNGDSzAhSvLHSRRVKbuj/N9UZMu6pVHGiHF7nd4Pnf3SuNAXxcc88vVKxglEEEjSQSCQQDL1qfTRLOYbTe5Q4XUFKkjpiUa96+ypAWyAidDAIIj5wTaK1gzfuEwE9hzckDyCqhU0mNcb3g+rhhZez1yGN5NnsmTCmSUQCQQEO9jMYVgoM5LWziXNoxs9RCrQ1RuJ8GTK09MZlQYoytYNrrTZHoNmcOSzCWyEAhF/AbxK5BiYZViqlmUoEAggAzfOI3mh0AQWi9zC8LjSsFIIpBIT9JwHf42t1uWFBQYLqJ3aAnU+Vbngq5lVJgAAgECSAQSApeUXiK1rJYyqJjpMnCtEM6tMPU6/C9QqiAQlbKRTMg5JJCABkkAgEBDvF4ik0eIkE6iUwLYCpxAIZDQAYioAkkookDKe4XABSCEGoXontuxqIsjzjsNQhAkBOpOAmm00qAhdQo8ryqFlcYJTkCyPuEwkGHlsCsUOSUiGX427TDicpj4hiKkM2ZpchwFk7LB0g4GvlWn0NYRKCKZJcAgBXpOKrDthSAoCWSpeUXEaPTMADBoyegMdyIJXgOF2kjaI3mF0WmmtNxbKqcTTYggFR9xBUBB3GAw1GV4bqHXhcYDRIIBIJ+FosioBo/NikawGJXteSmVBBQIKqBrzUpFWl4tVi4NZWmErc/lEeVx7VTeJVBYFU5VhsWJpssBUO4Xql0QHHWRAYQIbALzCXxmNjLkMhwFV4qmqBcwKCVAjoDCqidBBUoAEkggFDvBeEgW1nY+i81Q8BanIcjKSXskMQAB8oIFFWWAm5HQOmEzTYZCZhPoBUJgpcIVghBtEHCVyKVpzaj8xjbZAJZIKSPmESjBtWotMyukwV0muEVajC4DjaIZBQmKidhjMLgNEACSSzlQrU0OYXgYIqLzKPgNEBkhFsio81rWSoxOi9SS4YRBLJMn5MAogkFMKomMiiHq4N6mS4CKJtSKKLQrSFpFOoglVF6kUwQSCCCQCQQIIBAAAAAAA")
@@ -271,6 +272,12 @@ offset_bottom = 1282.0
 mouse_filter = 2
 color = Color(0, 0, 0, 0.827451)
 
+[node name="DimOverlay2" type="ColorRect" parent="." unique_id=1082682203]
+offset_right = 1926.0
+offset_bottom = 1282.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.0627451)
+
 [node name="PianoIcon" type="Sprite2D" parent="." unique_id=440615939]
 position = Vector2(1612, 238)
 scale = Vector2(0.5, 0.5)
@@ -297,6 +304,7 @@ scale = Vector2(0.6, 0.6)
 texture = ExtResource("29_suyxu")
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=1036715254]
+z_index = -1
 offset_left = 1411.0
 offset_top = 709.0
 offset_right = 1846.0
@@ -343,6 +351,11 @@ color = Color(0, 1, 1, 0)
 [node name="GameOver" parent="." unique_id=589838554 instance=ExtResource("30_sgl2t")]
 visible = false
 position = Vector2(54, -14)
+
+[node name="MainMenu" parent="." unique_id=1625919702 instance=ExtResource("31_qouja")]
+visible = false
+position = Vector2(19.999996, -1.9073486e-06)
+scale = Vector2(0.8, 0.8)
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
