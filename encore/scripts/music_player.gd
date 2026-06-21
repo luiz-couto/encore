@@ -39,7 +39,6 @@ var active_bass_id: int = 0
 
 var currentBar: int = 0
 var isFill: bool = false
-var isBreakdown: bool = false
 
 enum Genre { HOUSE = 0, TECH_HOUSE = 1, TECHNO = 2, MELODIC_HOUSE = 3, AFRO_HOUSE = 4, AFRO_TECHNO = 5 }
 var currentGenre: int = Genre.TECHNO
@@ -247,12 +246,6 @@ const CHORD_STAB_VARIANTS: Array = [
 	[[4], [8], []],                                  # BREAK
 ]
 
-# Atmospheric chord patterns for full breakdowns (no drums/bass)
-const BREAKDOWN_CHORD_VARIANTS: Array = [
-	[2, 6],       # off-beat, floating
-	[1, 5],       # every half-bar, anchored
-	[4, 8],       # syncopated — the "and" of each half
-]
 
 const BASS_BEATS: Dictionary = {
 	0: [1],           # INTRO — root on beat 1 only
@@ -326,14 +319,10 @@ func set_section(section: int, intensity: float, cycle: int):
 	currentSection = section
 	currentIntensity = intensity
 	currentCycle = cycle
-	isBreakdown = false
-	if section == 3:  # BREAK — introduce next genre early, seeds the upcoming DROP
+	if section == 1 and cycle >= 2:  # BUILD after first cycle — introduce next genre
 		_set_random_genre()
 	_pick_patterns()
 	_generate_patterns()
-	if section == 3 and randf() < 0.5:  # BREAK — 50% chance of full breakdown
-		isBreakdown = true
-		chordStabPattern = BREAKDOWN_CHORD_VARIANTS[randi() % BREAKDOWN_CHORD_VARIANTS.size()]
 
 
 func _play_drum(stream: AudioStream, volume: float, pitch: float = 1.0) -> void:
@@ -341,8 +330,6 @@ func _play_drum(stream: AudioStream, volume: float, pitch: float = 1.0) -> void:
 	drumPlayback.play_stream(stream, 0, volumeRnd, pitch)
 
 func play_on_beat(chord_idx: int, beat_pos: int) -> void:
-	if isBreakdown:
-		return
 	if beat_pos in BASS_BEATS[currentSection]:
 		_play_bass(chord_idx)
 
@@ -409,27 +396,22 @@ func _setup_instrument_handlers() -> void:
 	var conga_slap_func = func(_c: int, vol: float) -> void:
 		_play_drum(conga_slap, -2.0 + vol)
 
-	# Chord stab: only fires during breakdown. Uses 1-bar subdivision positions,
-	# so schedule_check computes the lookahead within the 8-subdivision bar cycle.
-	var chord_stab_schedule = func(_l: int, subdiv_pos: int) -> bool:
-		var future_pos = (subdiv_pos - 1 + lookaheadSubdivs) % 8 + 1
-		return isBreakdown and future_pos in chordStabPattern
-	var chord_stab_play = func(_p: int, subdiv_pos: int) -> bool:
-		return isBreakdown and subdiv_pos in chordStabPattern
+	var chord_stab_schedule = func(_l: int, _s: int) -> bool: return false
+	var chord_stab_play = func(_p: int, _s: int) -> bool: return false
 	var chord_stab_func = func(chord_idx: int, vol: float) -> void:
 		play_chord(chord_idx, 1.0 + vol)
 
 	instrumentHandlers = {
-		Instrument.RHODES:       { "schedule_check": rhodes_schedule,      "play_check": rhodes_play,       "play_func": rhodes_func,      "plays_in_breakdown": false },
-		Instrument.KICK:         { "schedule_check": kick_schedule,         "play_check": kick_play,          "play_func": kick_func,         "plays_in_breakdown": false },
-		Instrument.HIHAT_CLOSED: { "schedule_check": no_schedule,           "play_check": hihat_closed_play,  "play_func": hihat_closed_func, "plays_in_breakdown": false },
-		Instrument.HIHAT_OPEN:   { "schedule_check": no_schedule,           "play_check": hihat_open_play,    "play_func": hihat_open_func,   "plays_in_breakdown": false },
-		Instrument.CLAP:         { "schedule_check": clap_schedule,         "play_check": clap_play,          "play_func": clap_func,         "plays_in_breakdown": false },
-		Instrument.SNARE:        { "schedule_check": no_schedule,           "play_check": snare_play,         "play_func": snare_func,        "plays_in_breakdown": false },
-		Instrument.SHAKER:       { "schedule_check": no_schedule,           "play_check": shaker_play,        "play_func": shaker_func,       "plays_in_breakdown": false },
-		Instrument.CONGA_OPEN:   { "schedule_check": conga_open_schedule,   "play_check": conga_open_play,    "play_func": conga_open_func,   "plays_in_breakdown": false },
-		Instrument.CONGA_SLAP:   { "schedule_check": conga_slap_schedule,   "play_check": conga_slap_play,    "play_func": conga_slap_func,   "plays_in_breakdown": false },
-		Instrument.CHORD_STAB:   { "schedule_check": chord_stab_schedule,   "play_check": chord_stab_play,    "play_func": chord_stab_func,   "plays_in_breakdown": true  },
+		Instrument.RHODES:       { "schedule_check": rhodes_schedule,      "play_check": rhodes_play,       "play_func": rhodes_func      },
+		Instrument.KICK:         { "schedule_check": kick_schedule,         "play_check": kick_play,          "play_func": kick_func         },
+		Instrument.HIHAT_CLOSED: { "schedule_check": no_schedule,           "play_check": hihat_closed_play,  "play_func": hihat_closed_func },
+		Instrument.HIHAT_OPEN:   { "schedule_check": no_schedule,           "play_check": hihat_open_play,    "play_func": hihat_open_func   },
+		Instrument.CLAP:         { "schedule_check": clap_schedule,         "play_check": clap_play,          "play_func": clap_func         },
+		Instrument.SNARE:        { "schedule_check": no_schedule,           "play_check": snare_play,         "play_func": snare_func        },
+		Instrument.SHAKER:       { "schedule_check": no_schedule,           "play_check": shaker_play,        "play_func": shaker_func       },
+		Instrument.CONGA_OPEN:   { "schedule_check": conga_open_schedule,   "play_check": conga_open_play,    "play_func": conga_open_func   },
+		Instrument.CONGA_SLAP:   { "schedule_check": conga_slap_schedule,   "play_check": conga_slap_play,    "play_func": conga_slap_func   },
+		Instrument.CHORD_STAB:   { "schedule_check": chord_stab_schedule,   "play_check": chord_stab_play,    "play_func": chord_stab_func   },
 	}
 
 func _create_scheduled_sound(instrument: int, chord_idx: int) -> ScheduledSound:
@@ -475,8 +457,6 @@ func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 
 	for instrument in instrumentHandlers:
 		var handler = instrumentHandlers[instrument]
-		if isBreakdown and not handler["plays_in_breakdown"]:
-			continue
 		if playerControlledInstruments.get(instrument, false):
 			if handler.schedule_check.call(lookahead_idx, subdiv_pos):
 				var entry = _create_scheduled_sound(instrument, chord_idx)
