@@ -11,10 +11,6 @@ const CHORD_NOTES: Dictionary = {
 	6: [-1,  2,  5,  8],
 }
 
-@export var piano_c3: AudioStream
-@export var piano_c4: AudioStream
-@export var piano_c5: AudioStream
-
 @export var rhodes_c4: AudioStream
 
 @export var kick: AudioStream
@@ -25,16 +21,11 @@ const CHORD_NOTES: Dictionary = {
 @export var shaker: AudioStream
 @export var conga_open: AudioStream
 @export var conga_slap: AudioStream
-@export var woodblock: AudioStream
 @export var bass: AudioStream
-@export var lead_sax: AudioStream
-@export var lead_organ: AudioStream
-@export var lead_flute: AudioStream
 
 var playback: AudioStreamPlaybackPolyphonic
 var drumPlayback: AudioStreamPlaybackPolyphonic
 var bass_playback: AudioStreamPlaybackPolyphonic
-var melody_playback: AudioStreamPlaybackPolyphonic
 
 var active_chord_streams: Array = []
 var currentSection: int = 0
@@ -42,16 +33,10 @@ var currentIntensity: float = 0.2
 var currentCycle: int = 0
 var active_bass_id: int = 0
 
-var active_melody_id: int = 0
-var leads: Array = []
-var currentLead: AudioStream = null
-var leadIdx: int = 0
 
 var currentBar: int = 0
 var isFill: bool = false
-var isStop: bool = false
 var isBreakdown: bool = false
-var isSnareRamp: bool = false
 
 enum Genre { HOUSE = 0, TECH_HOUSE = 1, TECHNO = 2, MELODIC_HOUSE = 3, AFRO_HOUSE = 4, AFRO_TECHNO = 5 }
 var currentGenre: int = Genre.TECHNO
@@ -188,9 +173,6 @@ var clapPattern: Array = []
 var congaOpenPattern: Array = []
 var congaSlapPattern: Array = []
 
-var testWoodblockPattern: Array = []
-
-var kickPattern: Array = []
 var hihatOpenPattern: Array = []
 var snarePattern: Array = []
 var shakerPattern: Array = []
@@ -206,22 +188,6 @@ signal genreChanged(bpm: int)
 func set_bar(bar: int, fill: bool) -> void:
 	currentBar = bar
 	isFill = fill
-	isStop = fill and currentSection in [0, 1, 3] and randf() < 0.0
-
-
-const KICK_VARIANTS: Array = [
-	[[1]],                                  # INTRO
-	[[1, 2, 3, 4], [1, 3, 4], [1, 2, 4]],  # BUILD
-	[[1, 2, 3, 4]],                         # DROP — four-on-the-floor always
-	[[1, 3], [1]],                          # BREAK
-]
-
-const CLAP_VARIANTS: Array = [
-	[[]],             # INTRO
-	[[4], [2, 4]],    # BUILD
-	[[2, 4], [4], [2, 4, 6]],    # DROP
-	[[], [4]],        # BREAK
-]
 
 const HIHAT_OPEN_VARIANTS: Array = [
 	[[]],                          # INTRO
@@ -260,25 +226,6 @@ const BREAKDOWN_CHORD_VARIANTS: Array = [
 	[4, 8],       # syncopated — the "and" of each half
 ]
 
-const BUILD_RAMP_STABS: Array = [
-	[8],           # bars 0-1
-	[4, 8],        # bars 2-3
-	[4, 6, 8],     # bars 4-5
-	[2, 4, 6, 8],  # bars 6-7
-]
-
-# Snare-only BUILD variant — kick/clap drop, snare gets denser every 2 bars
-const BUILD_SNARE_RAMP: Array = [
-	[7],                       # bar 0: one pickup hit (beat 4)
-	[3, 5, 7],                    # bar 1: beats 3 and 4
-	[2, 3, 5, 7],                 # bar 2: beats 2, 3, 4
-	[2, 3, 5, 6, 7],              # bar 3: adding off-beat of 4
-	[1, 2, 3, 5, 6, 7],           # bar 4: getting tighter
-	[1, 2, 3, 4, 5, 6, 7, 8], # bar 5: full 8th note roll
-	[1, 2, 3, 4, 5, 6, 7, 8], # bar 6: full roll
-	[1, 2, 3, 4, 5, 6, 7, 8], # bar 7: full roll — right into drop
-]
-
 const BASS_BEATS: Dictionary = {
 	0: [1],           # INTRO — root on beat 1 only
 	1: [1, 3],        # BUILD — beats 1 and 3
@@ -286,22 +233,8 @@ const BASS_BEATS: Dictionary = {
 	3: [1],           # BREAK — beat 1 only
 }
 
-const MELODY_BEATS: Dictionary = {
-	0: [1],           # INTRO — beat 1 only
-	1: [1, 3],        # BUILD — beats 1 and 3
-	2: [1, 2, 3, 4],  # DROP — every beat
-	3: [1],           # BREAK — beat 1 only
-}
-
-const MELODY_REST_CHANCE: Dictionary = {
-	0: 1.0,   # INTRO
-	1: 0.8,   # BUILD
-	2: 0.0,   # DROP
-	3: 1.0,   # BREAK
-}
 
 func _pick_patterns() -> void:
-	kickPattern = KICK_VARIANTS[currentSection][randi() % KICK_VARIANTS[currentSection].size()]
 	hihatOpenPattern = HIHAT_OPEN_VARIANTS[currentSection][randi() % HIHAT_OPEN_VARIANTS[currentSection].size()]
 	snarePattern = SNARE_VARIANTS[currentSection][randi() % SNARE_VARIANTS[currentSection].size()]
 	shakerPattern = SHAKER_VARIANTS[currentSection][randi() % SHAKER_VARIANTS[currentSection].size()]
@@ -364,16 +297,10 @@ func set_section(section: int, intensity: float, cycle: int):
 	currentIntensity = intensity
 	currentCycle = cycle
 	isBreakdown = false
-	isSnareRamp = false
 	if section == 3:  # BREAK — introduce next genre early, seeds the upcoming DROP
 		set_genre(randi() % Genre.values().size())
 	_pick_patterns()
 	_generate_patterns()
-	if section == 1 and leads.size() > 0:  # BUILD — new cycle, new lead
-		leadIdx = randi() % leads.size()
-		currentLead = leads[leadIdx]
-	if section == 1:  # BUILD — 50% chance of snare-roll variant
-		isSnareRamp = false # Force no snare ramp for now
 	if section == 3 and randf() < 0.5:  # BREAK — 50% chance of full breakdown
 		isBreakdown = true
 		chordStabPattern = BREAKDOWN_CHORD_VARIANTS[randi() % BREAKDOWN_CHORD_VARIANTS.size()]
@@ -386,17 +313,8 @@ func _play_drum(stream: AudioStream, volume: float, pitch: float = 1.0) -> void:
 func play_on_beat(chord_idx: int, beat_pos: int) -> void:
 	if isBreakdown:
 		return
-	if isStop:
-		if beat_pos == 3:
-			if bass_playback.is_stream_playing(active_bass_id):
-				bass_playback.stop_stream(active_bass_id)
-			if melody_playback.is_stream_playing(active_melody_id):
-				melody_playback.stop_stream(active_melody_id)
-		return
 	if beat_pos in BASS_BEATS[currentSection]:
 		_play_bass(chord_idx)
-	if beat_pos in MELODY_BEATS[currentSection]:
-		play_melody(chord_idx)
 
 func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 	if subdiv_pos == 1:
@@ -409,11 +327,6 @@ func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 		if subdiv_pos == 7 or subdiv_pos == 8:
 			_play_drum(kick, 8.0)
 			drumKickPlayed.emit()
-	elif isSnareRamp:
-		if snare != null:
-			var rampIdx = min(currentBar, BUILD_SNARE_RAMP.size() - 1)
-			if subdiv_pos in BUILD_SNARE_RAMP[rampIdx]:
-				_play_drum(snare, -5.0, 0.85)
 	elif isBreakdown:
 		if subdiv_pos in chordStabPattern:
 			play_chord(chord_idx)
@@ -452,9 +365,6 @@ func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 			_play_drum(conga_open, 0.0)
 		if conga_slap != null and congaSlapPattern.size() > 0 and congaSlapPattern[perc_idx]:
 			_play_drum(conga_slap, -2.0)
-		if woodblock != null and subdiv_pos in testWoodblockPattern:
-			_play_drum(woodblock, -12.0)
-
 		# Rhodes — sound plays at the scheduled subdivision
 		if rhodesPattern.size() > 0 and rhodesPattern[perc_idx]:
 			play_chord(chord_idx)
@@ -463,16 +373,6 @@ func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 		if rhodesPattern.size() > 0 and rhodesPattern[lookahead_idx]:
 			chordPlayed.emit()
 
-
-func play_melody(chord_idx: int) -> void:
-	if currentLead == null: return
-	if randf() < MELODY_REST_CHANCE[currentSection]: return
-	#if melody_playback.is_stream_playing(active_melody_id):
-		#melody_playback.stop_stream(active_melody_id)
-	var note_idx = randi() % 3 + 1
-	var semitones = CHORD_NOTES[chord_idx][note_idx] + keyOffset
-	var pitch = pow(2.0, float(semitones) / 12.0)
-	active_melody_id = melody_playback.play_stream(currentLead, 0, 2.0, pitch)
 
 
 func _get_chord_stream(semitones: int) -> Array:
@@ -493,28 +393,10 @@ func _ready() -> void:
 	$BassPlayer.play()
 	bass_playback = $BassPlayer.get_stream_playback()
 
-	$MelodyPlayer.stream = AudioStreamPolyphonic.new()
-	$MelodyPlayer.play()
-	melody_playback = $MelodyPlayer.get_stream_playback()
-
-	for lead in [lead_sax, lead_organ, lead_flute]:
-		if lead != null:
-			leads.append(lead)
-	if leads.size() > 0:
-		currentLead = leads[0]
-
 	set_genre(randi() % Genre.values().size())
 	_pick_patterns()
 	_generate_patterns()
 
-
-func _get_stream(semitones: int) -> Array:
-	if semitones < -6:
-		return [piano_c3, semitones + 12]
-	elif semitones > 6:
-		return [piano_c5, semitones - 12]
-	else:
-		return [piano_c4, semitones]
 
 func play_chord(chord_idx: int) -> void:
 	for id in active_chord_streams:
@@ -528,8 +410,3 @@ func play_chord(chord_idx: int) -> void:
 		var pitch = pow(2.0, float(selectedStream[1]) / 12.0)
 		var stream_id = playback.play_stream(selectedStream[0], 0, 1.0, pitch)
 		active_chord_streams.append(stream_id)
-
-func play_note(chord_idx: int, lane: int) -> void:
-	var selectedStream = _get_stream(CHORD_NOTES[chord_idx][lane])
-	var pitch = pow(2.0, float(selectedStream[1]) / 12.0)
-	playback.play_stream(selectedStream[0], 0, -4.0, pitch)
