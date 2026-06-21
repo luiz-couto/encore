@@ -5,6 +5,9 @@ extends Node
 		bpm = value
 		secondsPerBeat = 60.0 / bpm
 		secondsPerSubdiv = secondsPerBeat / 2
+		if startTime > 0:
+			startTime = Time.get_ticks_msec() / 1000.0 - lastReportedBeat * secondsPerBeat
+			lastReportedSubdiv = int(lastReportedBeat) * 2
 
 @export var measures: float = 4;
 

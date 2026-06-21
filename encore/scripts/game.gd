@@ -53,7 +53,7 @@ func choose_lane() -> int:
 	var chosen_lane = available[randi() % available.size()] if available.size() > 0 else -1
 	return chosen_lane
 
-func _on_score_event(scorePoints: int) -> void:
+func _on_score_event(scorePoints: int, _chord_idx: int) -> void:
 	hitStreak += 1
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 	$ScoreNode2D.score += int(scorePoints * gameplayHandler.scoreMultiplier * gameplayHandler.comboMultiplier * hitStreak)

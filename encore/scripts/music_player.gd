@@ -120,16 +120,16 @@ const HIHAT_CLOSED_MARKOV: Dictionary = {
 const RHODES_MARKOV: Dictionary = {
 	Genre.HOUSE:         {"h": [0.05, 0.20, 0.05, 0.30, 0.05, 0.20, 0.05, 0.30],  # warm stabs
 						  "n": [0.25, 0.40, 0.15, 0.55, 0.25, 0.40, 0.15, 0.55]},
-	Genre.TECH_HOUSE:    {"h": [0.00, 0.05, 0.00, 0.10, 0.00, 0.05, 0.00, 0.10],  # KVSH off-beat bias
-						  "n": [0.10, 0.15, 0.10, 0.55, 0.10, 0.15, 0.10, 0.55]},
+	Genre.TECH_HOUSE:    {"h": [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],  # silent
+						  "n": [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]},
 	Genre.TECHNO:        {"h": [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],  # silent
 						  "n": [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]},
 	Genre.MELODIC_HOUSE: {"h": [0.05, 0.10, 0.05, 0.10, 0.05, 0.10, 0.05, 0.10],  # downbeat warmth
 						  "n": [0.40, 0.15, 0.20, 0.20, 0.40, 0.15, 0.20, 0.20]},
 	Genre.AFRO_HOUSE:    {"h": [0.05, 0.15, 0.05, 0.20, 0.10, 0.25, 0.05, 0.15],  # syncopated clusters
 						  "n": [0.15, 0.30, 0.20, 0.45, 0.25, 0.50, 0.15, 0.40]},
-	Genre.AFRO_TECHNO:   {"h": [0.00, 0.05, 0.00, 0.10, 0.00, 0.15, 0.00, 0.05],  # sparse, active on 4/6
-						  "n": [0.05, 0.10, 0.10, 0.30, 0.05, 0.35, 0.10, 0.15]},
+	Genre.AFRO_TECHNO:   {"h": [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00],  # silent
+						  "n": [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]},
 }
 
 # pos 3 = beat 2, pos 7 = beat 4 in subdivision space
@@ -206,7 +206,7 @@ signal genreChanged(bpm: int)
 func set_bar(bar: int, fill: bool) -> void:
 	currentBar = bar
 	isFill = fill
-	isStop = fill and currentSection in [0, 1, 3] and randf() < 0.9
+	isStop = fill and currentSection in [0, 1, 3] and randf() < 0.0
 
 
 const KICK_VARIANTS: Array = [
@@ -455,10 +455,12 @@ func play_on_subdivision(subdiv_pos: int, chord_idx: int) -> void:
 		if woodblock != null and subdiv_pos in testWoodblockPattern:
 			_play_drum(woodblock, -12.0)
 
-		# Rhodes — 2-bar phrase, indexes across bar 1 and bar 2 then loops
-		var rhodes_idx = perc_idx
-		if rhodesPattern.size() > 0 and rhodesPattern[rhodes_idx]:
+		# Rhodes — sound plays at the scheduled subdivision
+		if rhodesPattern.size() > 0 and rhodesPattern[perc_idx]:
 			play_chord(chord_idx)
+		# Note spawns 5 subdivisions early: button is at Y=713, note travels 729/1216 of full path ≈ 4.8 subdivisions
+		var lookahead_idx = (perc_idx + 5) % 16
+		if rhodesPattern.size() > 0 and rhodesPattern[lookahead_idx]:
 			chordPlayed.emit()
 
 

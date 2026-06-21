@@ -8,7 +8,7 @@ var activeLanes: Array[bool] = [true, true, true, true]
 var lanesKeys: Array[String] = ["", "", "", ""]
 
 var spawnNoteOnRhodes: bool = true
-var spawnNoteOnDrumKick: bool = true
+var spawnNoteOnDrumKick: bool = false
 var spawnNoteOnDrumHiHatOpen: bool = false
 var spawnNoteOnDrumHiHatClose: bool = false
 var spawnNoteOnDrumClap: bool = false
