@@ -522,7 +522,7 @@ const GENRE_PLAYER_INSTRUMENTS: Dictionary = {
 	Genre.TECHNO:        [Instrument.KICK],
 	Genre.MELODIC_HOUSE: [Instrument.RHODES],
 	Genre.AFRO_HOUSE:    [Instrument.CONGA_SLAP],
-	Genre.AFRO_TECHNO:   [Instrument.KICK],
+	Genre.AFRO_TECHNO:   [Instrument.CONGA_SLAP],
 }
 
 func _set_random_genre() -> void:
