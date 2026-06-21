@@ -23,6 +23,7 @@
 [ext_resource type="Script" uid="uid://c3dluyfwld0om" path="res://scripts/gameplay_handler.gd" id="22_37s47"]
 [ext_resource type="FontFile" uid="uid://o7n5xnnd4w71" path="res://assets/fonts/HeartbitXX2Px.ttf" id="23_bt5mj"]
 [ext_resource type="Script" uid="uid://rmmdlyjx63ic" path="res://scripts/option_1.gd" id="23_e1j6l"]
+[ext_resource type="Texture2D" uid="uid://cgp52b4cks1j3" path="res://assets/board/up-arrow.png" id="24_e1j6l"]
 
 [sub_resource type="AudioStreamWAV" id="AudioStreamWAV_ssvqc"]
 data = PackedByteArray("cW9hZgAACFwBAKxECFwDcAAAAAAAAAAAAAAAAOAAQADymAwE0aDE5/Grz/2LD/zF/bh+54tWG7jwZYTqD/Edp/4kvoU1rZQRgcspklErw3fwBHzmp4k+e/KUbQJj3cLl+M4fiTJK9gTy0h/pm/Kd0Pq4YCUrSJ1j2pxgFEkpd5jwWNGDSzAhSvLHSRRVKbuj/N9UZMu6pVHGiHF7nd4Pnf3SuNAXxcc88vVKxglEEEjSQSCQQDL1qfTRLOYbTe5Q4XUFKkjpiUa96+ypAWyAidDAIIj5wTaK1gzfuEwE9hzckDyCqhU0mNcb3g+rhhZez1yGN5NnsmTCmSUQCQQEO9jMYVgoM5LWziXNoxs9RCrQ1RuJ8GTK09MZlQYoytYNrrTZHoNmcOSzCWyEAhF/AbxK5BiYZViqlmUoEAggAzfOI3mh0AQWi9zC8LjSsFIIpBIT9JwHf42t1uWFBQYLqJ3aAnU+Vbngq5lVJgAAgECSAQSApeUXiK1rJYyqJjpMnCtEM6tMPU6/C9QqiAQlbKRTMg5JJCABkkAgEBDvF4ik0eIkE6iUwLYCpxAIZDQAYioAkkookDKe4XABSCEGoXontuxqIsjzjsNQhAkBOpOAmm00qAhdQo8ryqFlcYJTkCyPuEwkGHlsCsUOSUiGX427TDicpj4hiKkM2ZpchwFk7LB0g4GvlWn0NYRKCKZJcAgBXpOKrDthSAoCWSpeUXEaPTMADBoyegMdyIJXgOF2kjaI3mF0WmmtNxbKqcTTYggFR9xBUBB3GAw1GV4bqHXhcYDRIIBIJ+FosioBo/NikawGJXteSmVBBQIKqBrzUpFWl4tVi4NZWmErc/lEeVx7VTeJVBYFU5VhsWJpssBUO4Xql0QHHWRAYQIbALzCXxmNjLkMhwFV4qmqBcwKCVAjoDCqidBBUoAEkggFDvBeEgW1nY+i81Q8BanIcjKSXskMQAB8oIFFWWAm5HQOmEzTYZCZhPoBUJgpcIVghBtEHCVyKVpzaj8xjbZAJZIKSPmESjBtWotMyukwV0muEVajC4DjaIZBQmKidhjMLgNEACSSzlQrU0OYXgYIqLzKPgNEBkhFsio81rWSoxOi9SS4YRBLJMn5MAogkFMKomMiiHq4N6mS4CKJtSKKLQrSFpFOoglVF6kUwQSCCCQCQQIIBAAAAAAA")
@@ -226,6 +227,33 @@ offset_right = 1926.0
 offset_bottom = 1282.0
 mouse_filter = 2
 color = Color(0, 0, 0, 0.827451)
+
+[node name="UpArrow" type="Sprite2D" parent="." unique_id=1108017298]
+modulate = Color(1, 1, 1, 0.24313726)
+position = Vector2(678, 573)
+rotation = -1.5707964
+scale = Vector2(0.163086, 0.16029821)
+texture = ExtResource("24_e1j6l")
+
+[node name="UpArrow2" type="Sprite2D" parent="." unique_id=1231863905]
+modulate = Color(1, 1, 1, 0.24313726)
+position = Vector2(861, 566)
+scale = Vector2(0.163086, 0.16029821)
+texture = ExtResource("24_e1j6l")
+
+[node name="UpArrow3" type="Sprite2D" parent="." unique_id=345526923]
+modulate = Color(1, 1, 1, 0.24313726)
+position = Vector2(1038.0001, 572)
+rotation = 3.1415927
+scale = Vector2(0.163086, 0.16029821)
+texture = ExtResource("24_e1j6l")
+
+[node name="UpArrow4" type="Sprite2D" parent="." unique_id=1215729914]
+modulate = Color(1, 1, 1, 0.24313726)
+position = Vector2(1217.0001, 572)
+rotation = 1.5707964
+scale = Vector2(0.163086, 0.16029821)
+texture = ExtResource("24_e1j6l")
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
