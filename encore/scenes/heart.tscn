@@ -26,10 +26,12 @@ animations = [{
 
 [node name="Heart" type="Control" unique_id=1520456324]
 custom_minimum_size = Vector2(44, 40)
+layout_mode = 3
+anchors_preset = 0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=464799396]
-position = Vector2(27, 25)
 modulate = Color(2.5203042, 2.5203042, 2.5203042, 1)
+position = Vector2(27, 25)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_txm48")
 animation = &"tum"

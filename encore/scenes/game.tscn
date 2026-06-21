@@ -63,8 +63,8 @@ texture = ExtResource("2_yqjtg")
 
 [node name="MainBoard2" type="Sprite2D" parent="." unique_id=1085503733]
 z_index = -1
-position = Vector2(857, 435)
-scale = Vector2(0.6008579, 0.5363552)
+position = Vector2(857, 513.7936)
+scale = Vector2(0.6008579, 0.6034993)
 texture = ExtResource("3_lbhrr")
 
 [node name="Button" parent="." unique_id=155436911 instance=ExtResource("3_lnu2h")]
@@ -297,6 +297,15 @@ offset_top = 709.0
 offset_right = 1846.0
 offset_bottom = 1042.0
 columns = 10
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=359964655]
+offset = Vector2(960, 540)
+
+[node name="DamageFlash" type="ColorRect" parent="." unique_id=1847392011]
+offset_right = 1926.0
+offset_bottom = 1282.0
+mouse_filter = 2
+color = Color(1, 0, 0, 0)
 
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -73,11 +73,31 @@ func _rebuild_hearts() -> void:
 	for i in gameplayHandler.numberOfLives:
 		container.add_child(HeartScene.instantiate())
 
+const SHAKE_DURATION: float = 0.3
+const SHAKE_INTENSITY: float = 12.0
+const SHAKE_STEPS: int = 10
+const FLASH_DURATION: float = 0.35
+const FLASH_ALPHA: float = 0.35
+
 func _on_note_missed() -> void:
 	hitStreak = 0
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 	gameplayHandler.numberOfLives = max(0, gameplayHandler.numberOfLives - 1)
 	_rebuild_hearts()
+	_play_damage_feedback()
+
+func _play_damage_feedback() -> void:
+	var flash = $DamageFlash
+	flash.color.a = FLASH_ALPHA
+	var flash_tween = create_tween()
+	flash_tween.tween_property(flash, "color:a", 0.0, FLASH_DURATION)
+
+	var camera = $Camera2D
+	var shake_tween = create_tween()
+	shake_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	for i in SHAKE_STEPS:
+		shake_tween.tween_property(camera, "offset", Vector2(960, 540) + Vector2(randf_range(-SHAKE_INTENSITY, SHAKE_INTENSITY), randf_range(-SHAKE_INTENSITY, SHAKE_INTENSITY)), SHAKE_DURATION / SHAKE_STEPS)
+	shake_tween.tween_property(camera, "offset", Vector2(960, 540), 0.05)
 
 func _apply_lanes_keys() -> void:
 	var lanesKeys = $OptionMenuNode2D/GameplayHandler.lanesKeys
