@@ -15,9 +15,9 @@ const LANE_FLASH_DURATION: float = 0.18
 const LANE_NUDGE_PIXELS: float = 10.0
 const LANE_NUDGE_DOWN_DURATION: float = 0.04
 const LANE_NUDGE_UP_DURATION: float = 0.1
-const LANE_SHAKE_PIXELS: float = 6.0
-const LANE_SHAKE_STEPS: int = 6
-const LANE_SHAKE_DURATION: float = 0.12
+const LANE_SHAKE_PIXELS: float = 18.0
+const LANE_SHAKE_STEPS: int = 8
+const LANE_SHAKE_DURATION: float = 0.3
 
 var _flashTween: Tween = null
 var _nudgeTween: Tween = null
