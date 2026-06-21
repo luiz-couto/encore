@@ -102,15 +102,35 @@ func _on_music_player_note_scheduled(_instrument: int, chord_idx: int, sound_id:
 	spawnNote(chord_idx, sound_id)
 
 func _sync_player_controlled_instruments() -> void:
+	var musicPlayer = $MusicPlayer
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
-	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.RHODES,       gameplayHandler.spawnNoteOnRhodes)
-	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.CHORD_STAB,  gameplayHandler.spawnNoteOnRhodes)
-	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.KICK,         gameplayHandler.spawnNoteOnDrumKick)
-	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.HIHAT_CLOSED, gameplayHandler.spawnNoteOnDrumHiHatClose)
-	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.HIHAT_OPEN,   gameplayHandler.spawnNoteOnDrumHiHatOpen)
-	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.CLAP,         gameplayHandler.spawnNoteOnDrumClap)
-	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.CONGA_OPEN,   gameplayHandler.spawnNoteOnCongaOpen)
-	$MusicPlayer.set_player_controlled($MusicPlayer.Instrument.CONGA_SLAP,   gameplayHandler.spawnNoteOnCongaSlap)
+
+	musicPlayer.set_player_controlled(musicPlayer.Instrument.RHODES,       false)
+	musicPlayer.set_player_controlled(musicPlayer.Instrument.KICK,         false)
+	musicPlayer.set_player_controlled(musicPlayer.Instrument.HIHAT_CLOSED, false)
+	musicPlayer.set_player_controlled(musicPlayer.Instrument.HIHAT_OPEN,   false)
+	musicPlayer.set_player_controlled(musicPlayer.Instrument.CLAP,         false)
+	musicPlayer.set_player_controlled(musicPlayer.Instrument.SNARE,        false)
+	musicPlayer.set_player_controlled(musicPlayer.Instrument.SHAKER,       false)
+	musicPlayer.set_player_controlled(musicPlayer.Instrument.CONGA_OPEN,   false)
+	musicPlayer.set_player_controlled(musicPlayer.Instrument.CONGA_SLAP,   false)
+	musicPlayer.set_player_controlled(musicPlayer.Instrument.CHORD_STAB,   false)
+
+	for instrument in musicPlayer.GENRE_PLAYER_INSTRUMENTS[musicPlayer.currentGenre]:
+		musicPlayer.set_player_controlled(instrument, true)
+
+	if gameplayHandler.spawnNoteOnRhodes:         musicPlayer.set_player_controlled(musicPlayer.Instrument.RHODES,       true)
+	if gameplayHandler.spawnNoteOnDrumKick:       musicPlayer.set_player_controlled(musicPlayer.Instrument.KICK,         true)
+	if gameplayHandler.spawnNoteOnDrumHiHatOpen:  musicPlayer.set_player_controlled(musicPlayer.Instrument.HIHAT_OPEN,   true)
+	if gameplayHandler.spawnNoteOnDrumHiHatClose: musicPlayer.set_player_controlled(musicPlayer.Instrument.HIHAT_CLOSED, true)
+	if gameplayHandler.spawnNoteOnDrumClap:       musicPlayer.set_player_controlled(musicPlayer.Instrument.CLAP,         true)
+	if gameplayHandler.spawnNoteOnCongaOpen:      musicPlayer.set_player_controlled(musicPlayer.Instrument.CONGA_OPEN,   true)
+	if gameplayHandler.spawnNoteOnCongaSlap:      musicPlayer.set_player_controlled(musicPlayer.Instrument.CONGA_SLAP,   true)
+
+	musicPlayer.set_player_controlled(
+		musicPlayer.Instrument.CHORD_STAB,
+		musicPlayer.playerControlledInstruments.get(musicPlayer.Instrument.RHODES, false)
+	)
 
 
 func _on_option_selected(option_index: int) -> void:
@@ -138,6 +158,15 @@ func _on_music_player_genre_changed(bpm: int) -> void:
 	$OptionMenuNode2D/GameplayHandler.bpm = bpm
 	$Conductor.bpm = bpm
 	$ChordGenerator.set_genre($MusicPlayer.currentGenre)
+	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
+	gameplayHandler.spawnNoteOnRhodes = false
+	gameplayHandler.spawnNoteOnDrumKick = false
+	gameplayHandler.spawnNoteOnDrumHiHatOpen = false
+	gameplayHandler.spawnNoteOnDrumHiHatClose = false
+	gameplayHandler.spawnNoteOnDrumClap = false
+	gameplayHandler.spawnNoteOnCongaOpen = false
+	gameplayHandler.spawnNoteOnCongaSlap = false
+	_sync_player_controlled_instruments()
 
 func _on_ready() -> void:
 	$Conductor.bpm = $OptionMenuNode2D/GameplayHandler.bpm

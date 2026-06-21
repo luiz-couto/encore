@@ -311,7 +311,8 @@ func set_genre(genre: int) -> void:
 	currentGenre = genre
 	keyOffset = GENRE_KEY_OFFSET[currentGenre]
 	genreChanged.emit(GENRE_BPM[currentGenre])
-	print("Genre: ", Genre.find_key(currentGenre))
+	var instrument_names = GENRE_PLAYER_INSTRUMENTS[currentGenre].map(func(i): return Instrument.find_key(i))
+	print("Genre: ", Genre.find_key(currentGenre), " | Player instruments: ", instrument_names)
 
 func _play_bass(chord_idx: int) -> void:
 	if bass_playback.is_stream_playing(active_bass_id):
@@ -515,8 +516,18 @@ func _ready() -> void:
 	_pick_patterns()
 	_generate_patterns()
 
+const GENRE_PLAYER_INSTRUMENTS: Dictionary = {
+	Genre.HOUSE:         [Instrument.RHODES],
+	Genre.TECH_HOUSE:    [Instrument.CLAP],
+	Genre.TECHNO:        [Instrument.KICK],
+	Genre.MELODIC_HOUSE: [Instrument.RHODES],
+	Genre.AFRO_HOUSE:    [Instrument.CONGA_SLAP],
+	Genre.AFRO_TECHNO:   [Instrument.KICK],
+}
+
 func _set_random_genre() -> void:
-	set_genre(Genre.TECHNO)
+	var genres = Genre.values()
+	set_genre(genres[randi() % genres.size()])
 
 
 func play_chord(chord_idx: int, volume_db: float = 1.0) -> void:
