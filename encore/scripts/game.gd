@@ -18,7 +18,7 @@ var _lowPassFilter: AudioEffectLowPassFilter = null
 var _lowPassTween: Tween = null
 
 const LOWPASS_CUTOFF_NORMAL: float = 20000.0
-const LOWPASS_CUTOFF_PAUSED: float = 400.0
+const LOWPASS_CUTOFF_PAUSED: float = 1000.0
 const LOWPASS_PAUSE_DURATION: float = 0.4
 const LOWPASS_UNPAUSE_DURATION: float = 0.2
 
@@ -39,7 +39,8 @@ func _on_conductor_measure(measurePosition: int) -> void:
 	if measurePosition == 1:
 		currentChord = $ChordGenerator.advance();
 		$ChordGenerator.maybeRefresh();
-		$StructuralEngine.advance_bar();
+		if not paused:
+			$StructuralEngine.advance_bar();
 		$MusicPlayer.set_bar($StructuralEngine.barsInSection, $StructuralEngine.is_last_bar());
 
 	$MusicPlayer.play_on_beat(currentChord, measurePosition);
