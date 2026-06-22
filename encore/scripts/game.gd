@@ -80,8 +80,7 @@ func choose_lane() -> int:
 func _on_score_event(scorePoints: int, _chord_idx: int, sound_id: int) -> void:
 	$MusicPlayer.register_hit(sound_id)
 	hitStreak += 1
-	if hitStreak > $ScoreNode2D.topStreak:
-		$ScoreNode2D.topStreak = hitStreak
+	$ScoreNode2D.streak = hitStreak
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 	$ScoreNode2D.score += int(scorePoints * gameplayHandler.scoreMultiplier * gameplayHandler.comboMultiplier * hitStreak)
 

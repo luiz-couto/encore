@@ -227,13 +227,12 @@ text = "STAGE: "
 label_settings = SubResource("LabelSettings_kvpfn")
 vertical_alignment = 1
 
-[node name="BestStreakLabelNum" type="Label" parent="ScoreNode2D" unique_id=242709401]
-visible = false
-offset_left = -30.0
-offset_top = 170.0
-offset_right = 318.0
-offset_bottom = 272.0
-text = "TOP STREAK: "
+[node name="StreakLabelNum" type="Label" parent="ScoreNode2D" unique_id=242709401]
+offset_left = -8.0
+offset_top = 127.0
+offset_right = 340.0
+offset_bottom = 229.0
+text = "STREAK:"
 label_settings = SubResource("LabelSettings_kvpfn")
 vertical_alignment = 1
 autowrap_mode = 3
