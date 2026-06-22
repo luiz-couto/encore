@@ -111,6 +111,7 @@ func _on_note_missed() -> void:
 
 func _show_game_over() -> void:
 	_set_paused(true)
+	_set_lane_flash_visible(false)
 	_play_flash(GAME_OVER_FLASH_ALPHA, GAME_OVER_FLASH_DURATION)
 	$GameOver.show_results($ScoreNode2D.score, timeElapsed)
 	$GameOver.visible = true
@@ -149,6 +150,10 @@ func _apply_lanes_keys() -> void:
 		if lanesKeys[i] != "":
 			buttons[i].input = lanesKeys[i]
 
+func _set_lane_flash_visible(value: bool) -> void:
+	for button in [$Button, $Button2, $Button3, $Button4]:
+		button.laneFlash.visible = value
+
 func _show_options_menu():
 	options = $OptionMenuNode2D/GameplayHandler.getOptions()
 	$OptionMenuNode2D.set_option_1_label(options[0].label)
@@ -156,11 +161,13 @@ func _show_options_menu():
 	$OptionMenuNode2D.set_option_3_label(options[2].label)
 	$DimOverlay.visible = true
 	$OptionMenuNode2D.visible = true
+	_set_lane_flash_visible(false)
 	_set_paused(true)
 
 func _hide_options_menu():
 	$DimOverlay.visible = false
 	$OptionMenuNode2D.visible = false
+	_set_lane_flash_visible(true)
 
 func _on_timer_timeout() -> void:
 	pass # Replace with function body.
