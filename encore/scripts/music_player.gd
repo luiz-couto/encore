@@ -529,11 +529,11 @@ func _ready() -> void:
 
 const GENRE_PLAYER_INSTRUMENTS: Dictionary = {
 	Genre.HOUSE:         [Instrument.RHODES,     Instrument.CLAP],
-	Genre.TECH_HOUSE:    [Instrument.CLAP,        Instrument.HIHAT_CLOSED],
+	Genre.TECH_HOUSE:    [Instrument.CLAP,       Instrument.HIHAT_CLOSED],
 	Genre.TECHNO:        [Instrument.KICK],
 	Genre.MELODIC_HOUSE: [Instrument.RHODES,     Instrument.CONGA_OPEN],
 	Genre.AFRO_HOUSE:    [Instrument.CONGA_SLAP, Instrument.RHODES],
-	Genre.AFRO_TECHNO:   [Instrument.KICK,       Instrument.CONGA_SLAP],
+	Genre.AFRO_TECHNO:   [Instrument.CONGA_SLAP, Instrument.KICK],
 }
 
 var densityMultiplier: float = 1.0

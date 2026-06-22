@@ -181,8 +181,8 @@ func _on_structural_engine_section_changed(section: Variant, intensity: Variant)
 	$MusicPlayer.set_section(section, intensity, $StructuralEngine.cycleCount)
 	$ScoreNode2D.stage = $StructuralEngine.cycleCount
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
-	gameplayHandler.bpmIncrease += 1
-	gameplayHandler.bpm += 1
+	gameplayHandler.bpmIncrease += 2
+	gameplayHandler.bpm += 2
 	$Conductor.bpm = gameplayHandler.bpm
 	if section == 3:
 		_show_options_menu()

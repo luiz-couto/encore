@@ -319,12 +319,14 @@ shape = SubResource("RectangleShape2D_qnb83")
 
 [node name="DimOverlay" type="ColorRect" parent="." unique_id=1094256820]
 visible = false
+offset_top = -92.0
 offset_right = 1926.0
 offset_bottom = 1282.0
 mouse_filter = 2
 color = Color(0, 0, 0, 0.827451)
 
 [node name="DimOverlay2" type="ColorRect" parent="." unique_id=1082682203]
+offset_top = -95.0
 offset_right = 1926.0
 offset_bottom = 1282.0
 mouse_filter = 2
