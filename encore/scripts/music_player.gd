@@ -203,6 +203,16 @@ class ScheduledSound:
 		state = p_state
 		play_subdiv = p_play_subdiv
 
+class InstrumentHandler:
+	var schedule_check: Callable
+	var play_check: Callable
+	var play_func: Callable
+
+	func _init(p_schedule_check: Callable, p_play_check: Callable, p_play_func: Callable) -> void:
+		schedule_check = p_schedule_check
+		play_check = p_play_check
+		play_func = p_play_func
+
 var scheduledSounds: Array = []
 var nextSoundId: int = 0
 var absoluteSubdivCounter: int = 0
@@ -320,7 +330,7 @@ func set_section(section: int, intensity: float, cycle: int):
 	currentSection = section
 	currentIntensity = intensity
 	currentCycle = cycle
-	if section == 1 and cycle >= 2:  # BUILD after first cycle — introduce next genre
+	if section == 1 and cycle >= 2:  # BUILD after first cycle
 		_set_random_genre()
 	_pick_patterns()
 	_generate_patterns()
@@ -335,85 +345,105 @@ func play_on_beat(chord_idx: int, beat_pos: int) -> void:
 		_play_bass(chord_idx)
 
 func _setup_instrument_handlers() -> void:
-	var no_schedule = func(_l: int, _s: int) -> bool: return false
+	instrumentHandlers = {
+		Instrument.RHODES:       _handler_rhodes(),
+		Instrument.KICK:         _handler_kick(),
+		Instrument.HIHAT_CLOSED: _handler_hihat_closed(),
+		Instrument.HIHAT_OPEN:   _handler_hihat_open(),
+		Instrument.CLAP:         _handler_clap(),
+		Instrument.SNARE:        _handler_snare(),
+		Instrument.SHAKER:       _handler_shaker(),
+		Instrument.CONGA_OPEN:   _handler_conga_open(),
+		Instrument.CONGA_SLAP:   _handler_conga_slap(),
+		Instrument.CHORD_STAB:   _handler_chord_stab(),
+	}
 
-	var rhodes_schedule = func(lookahead_idx: int, _s: int) -> bool:
-		return not isFill and rhodesPattern.size() > 0 and rhodesPattern[lookahead_idx]
-	var rhodes_play = func(perc_idx: int, _s: int) -> bool:
-		return not isFill and rhodesPattern.size() > 0 and rhodesPattern[perc_idx]
-	var rhodes_func = func(chord_idx: int, vol: float) -> void:
-		play_chord(chord_idx, 1.0 + vol)
+func _handler_rhodes() -> InstrumentHandler:
+	var fires = func(pattern_idx: int, _subdiv_pos: int) -> bool:
+		return not isFill and rhodesPattern.size() > 0 and rhodesPattern[pattern_idx]
+	return InstrumentHandler.new(
+		fires,
+		fires,
+		func(chord_idx: int, _volume_offset: float) -> void: play_chord(chord_idx, 1.0),
+	)
 
-	var kick_schedule = func(lookahead_idx: int, _s: int) -> bool:
-		return not isFill and kickPattern.size() > 0 and kickPattern[lookahead_idx]
-	var kick_play = func(perc_idx: int, _s: int) -> bool:
-		return not isFill and kickPattern.size() > 0 and kickPattern[perc_idx]
-	var kick_func = func(_c: int, vol: float) -> void:
-		_play_drum(kick, -3.0 + vol)
+func _handler_kick() -> InstrumentHandler:
+	var fires = func(pattern_idx: int, _subdiv_pos: int) -> bool:
+		return not isFill and kickPattern.size() > 0 and kickPattern[pattern_idx]
+	return InstrumentHandler.new(
+		fires,
+		fires,
+		func(_chord_idx: int, volume_offset: float) -> void: _play_drum(kick, -3.0 + volume_offset),
+	)
 
-	var hihat_closed_play = func(_p: int, subdiv_pos: int) -> bool:
+func _handler_hihat_closed() -> InstrumentHandler:
+	var play = func(_pattern_idx: int, subdiv_pos: int) -> bool:
 		if subdiv_pos in hihatOpenPattern:
 			markov_hihat_prev = true
 			return false
 		var fires = _markov_fire(HIHAT_CLOSED_MARKOV[currentGenre], subdiv_pos, markov_hihat_prev, HIHAT_SECTION_DENSITY[currentSection])
 		markov_hihat_prev = fires
 		return fires
-	var hihat_closed_func = func(_c: int, vol: float) -> void:
-		_play_drum(hihat_closed, -8.0 + vol)
+	return InstrumentHandler.new(
+		func(_pattern_idx: int, _subdiv_pos: int) -> bool: return false,
+		play,
+		func(_chord_idx: int, volume_offset: float) -> void: _play_drum(hihat_closed, -8.0 + volume_offset),
+	)
 
-	var hihat_open_play = func(_p: int, subdiv_pos: int) -> bool:
-		return subdiv_pos in hihatOpenPattern
-	var hihat_open_func = func(_c: int, vol: float) -> void:
-		_play_drum(hihat_open, -16.0 + vol)
+func _handler_hihat_open() -> InstrumentHandler:
+	return InstrumentHandler.new(
+		func(_pattern_idx: int, _subdiv_pos: int) -> bool: return false,
+		func(_pattern_idx: int, subdiv_pos: int) -> bool: return subdiv_pos in hihatOpenPattern,
+		func(_chord_idx: int, volume_offset: float) -> void: _play_drum(hihat_open, -16.0 + volume_offset),
+	)
 
-	var clap_schedule = func(lookahead_idx: int, _s: int) -> bool:
-		return clapPattern.size() > 0 and clapPattern[lookahead_idx]
-	var clap_play = func(perc_idx: int, _s: int) -> bool:
-		return clap != null and clapPattern.size() > 0 and clapPattern[perc_idx]
-	var clap_func = func(_c: int, vol: float) -> void:
-		_play_drum(clap, -5.0 + vol)
+func _handler_clap() -> InstrumentHandler:
+	var fires = func(pattern_idx: int, _subdiv_pos: int) -> bool:
+		return clap != null and clapPattern.size() > 0 and clapPattern[pattern_idx]
+	return InstrumentHandler.new(
+		fires,
+		fires,
+		func(_chord_idx: int, volume_offset: float) -> void: _play_drum(clap, -5.0 + volume_offset),
+	)
 
-	var snare_play = func(_p: int, subdiv_pos: int) -> bool:
-		return snare != null and subdiv_pos in snarePattern
-	var snare_func = func(_c: int, vol: float) -> void:
-		_play_drum(snare, -8.0 + vol, 0.85)
+func _handler_snare() -> InstrumentHandler:
+	return InstrumentHandler.new(
+		func(_pattern_idx: int, _subdiv_pos: int) -> bool: return false,
+		func(_pattern_idx: int, subdiv_pos: int) -> bool: return snare != null and subdiv_pos in snarePattern,
+		func(_chord_idx: int, volume_offset: float) -> void: _play_drum(snare, -8.0 + volume_offset, 0.85),
+	)
 
-	var shaker_play = func(_p: int, subdiv_pos: int) -> bool:
-		return shaker != null and subdiv_pos in shakerPattern
-	var shaker_func = func(_c: int, vol: float) -> void:
-		_play_drum(shaker, -20.0 + vol)
+func _handler_shaker() -> InstrumentHandler:
+	return InstrumentHandler.new(
+		func(_pattern_idx: int, _subdiv_pos: int) -> bool: return false,
+		func(_pattern_idx: int, subdiv_pos: int) -> bool: return shaker != null and subdiv_pos in shakerPattern,
+		func(_chord_idx: int, volume_offset: float) -> void: _play_drum(shaker, -20.0 + volume_offset),
+	)
 
-	var conga_open_schedule = func(lookahead_idx: int, _s: int) -> bool:
-		return conga_open != null and congaOpenPattern.size() > 0 and congaOpenPattern[lookahead_idx]
-	var conga_open_play = func(perc_idx: int, _s: int) -> bool:
-		return conga_open != null and congaOpenPattern.size() > 0 and congaOpenPattern[perc_idx]
-	var conga_open_func = func(_c: int, vol: float) -> void:
-		_play_drum(conga_open, 0.0 + vol)
+func _handler_conga_open() -> InstrumentHandler:
+	var fires = func(pattern_idx: int, _subdiv_pos: int) -> bool:
+		return conga_open != null and congaOpenPattern.size() > 0 and congaOpenPattern[pattern_idx]
+	return InstrumentHandler.new(
+		fires,
+		fires,
+		func(_chord_idx: int, volume_offset: float) -> void: _play_drum(conga_open, 0.0 + volume_offset),
+	)
 
-	var conga_slap_schedule = func(lookahead_idx: int, _s: int) -> bool:
-		return conga_slap != null and congaSlapPattern.size() > 0 and congaSlapPattern[lookahead_idx]
-	var conga_slap_play = func(perc_idx: int, _s: int) -> bool:
-		return conga_slap != null and congaSlapPattern.size() > 0 and congaSlapPattern[perc_idx]
-	var conga_slap_func = func(_c: int, vol: float) -> void:
-		_play_drum(conga_slap, -2.0 + vol)
+func _handler_conga_slap() -> InstrumentHandler:
+	var fires = func(pattern_idx: int, _subdiv_pos: int) -> bool:
+		return conga_slap != null and congaSlapPattern.size() > 0 and congaSlapPattern[pattern_idx]
+	return InstrumentHandler.new(
+		fires,
+		fires,
+		func(_chord_idx: int, volume_offset: float) -> void: _play_drum(conga_slap, -2.0 + volume_offset),
+	)
 
-	var chord_stab_schedule = func(_l: int, _s: int) -> bool: return false
-	var chord_stab_play = func(_p: int, _s: int) -> bool: return false
-	var chord_stab_func = func(chord_idx: int, vol: float) -> void:
-		play_chord(chord_idx, 1.0 + vol)
-
-	instrumentHandlers = {
-		Instrument.RHODES:       { "schedule_check": rhodes_schedule,      "play_check": rhodes_play,       "play_func": rhodes_func      },
-		Instrument.KICK:         { "schedule_check": kick_schedule,         "play_check": kick_play,          "play_func": kick_func         },
-		Instrument.HIHAT_CLOSED: { "schedule_check": no_schedule,           "play_check": hihat_closed_play,  "play_func": hihat_closed_func },
-		Instrument.HIHAT_OPEN:   { "schedule_check": no_schedule,           "play_check": hihat_open_play,    "play_func": hihat_open_func   },
-		Instrument.CLAP:         { "schedule_check": clap_schedule,         "play_check": clap_play,          "play_func": clap_func         },
-		Instrument.SNARE:        { "schedule_check": no_schedule,           "play_check": snare_play,         "play_func": snare_func        },
-		Instrument.SHAKER:       { "schedule_check": no_schedule,           "play_check": shaker_play,        "play_func": shaker_func       },
-		Instrument.CONGA_OPEN:   { "schedule_check": conga_open_schedule,   "play_check": conga_open_play,    "play_func": conga_open_func   },
-		Instrument.CONGA_SLAP:   { "schedule_check": conga_slap_schedule,   "play_check": conga_slap_play,    "play_func": conga_slap_func   },
-		Instrument.CHORD_STAB:   { "schedule_check": chord_stab_schedule,   "play_check": chord_stab_play,    "play_func": chord_stab_func   },
-	}
+func _handler_chord_stab() -> InstrumentHandler:
+	return InstrumentHandler.new(
+		func(_pattern_idx: int, _subdiv_pos: int) -> bool: return false,
+		func(_pattern_idx: int, _subdiv_pos: int) -> bool: return false,
+		func(chord_idx: int, _volume_offset: float) -> void: play_chord(chord_idx, 1.0),
+	)
 
 func _create_scheduled_sound(instrument: int, chord_idx: int) -> ScheduledSound:
 	var entry = ScheduledSound.new(nextSoundId, instrument, chord_idx, absoluteSubdivCounter + lookaheadSubdivs, SoundState.PENDING)
