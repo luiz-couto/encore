@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" uid="uid://dmkm7pktttkh6" path="res://scripts/game_over.gd" id="1_wqhvx"]
 [ext_resource type="Texture2D" uid="uid://cu3f2qawmpt0v" path="res://assets/board/game-over-menu.png" id="1_xeevv"]
-[ext_resource type="FontFile" uid="uid://o7n5xnnd4w71" path="res://assets/fonts/HeartbitXX2Px.ttf" id="3_tbwuq"]
+[ext_resource type="FontFile" uid="uid://civ86di43nk20" path="res://assets/fonts/LilitaOne-Regular.ttf" id="3_racf3"]
 [ext_resource type="Texture2D" uid="uid://qeni4yjc61hp" path="res://assets/board/back-to-menu-icon.png" id="4_racf3"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_racf3"]
-font = ExtResource("3_tbwuq")
-font_size = 80
+font = ExtResource("3_racf3")
+font_size = 50
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7m3ot"]
@@ -25,19 +25,19 @@ texture = ExtResource("1_xeevv")
 one_shot = true
 
 [node name="FinalScoreLabel" type="Label" parent="." unique_id=1372546719]
-offset_left = 805.0
-offset_top = 429.0
-offset_right = 1160.0
-offset_bottom = 494.0
+offset_left = 795.0
+offset_top = 432.0
+offset_right = 1150.0
+offset_bottom = 502.0
 text = "FINAL SCORE"
 label_settings = SubResource("LabelSettings_racf3")
 vertical_alignment = 1
 
 [node name="FinalTimeLabel" type="Label" parent="." unique_id=1258722213]
-offset_left = 776.0
-offset_top = 498.0
-offset_right = 1131.0
-offset_bottom = 563.0
+offset_left = 767.0
+offset_top = 501.0
+offset_right = 1122.0
+offset_bottom = 571.0
 text = "FINAL TIME"
 label_settings = SubResource("LabelSettings_racf3")
 vertical_alignment = 1

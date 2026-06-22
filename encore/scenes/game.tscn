@@ -18,10 +18,10 @@
 [ext_resource type="AudioStream" uid="uid://wyiboqu2cmnr" path="res://assets/audio/drums/shaker.wav" id="16_5newe"]
 [ext_resource type="AudioStream" uid="uid://b5aayuu7j6pwr" path="res://assets/audio/drums/bass.wav" id="17_264po"]
 [ext_resource type="AudioStream" uid="uid://djxrqwvjwg5jx" path="res://assets/audio/drums/conga-slap.wav" id="18_suyxu"]
+[ext_resource type="FontFile" uid="uid://civ86di43nk20" path="res://assets/fonts/LilitaOne-Regular.ttf" id="19_wljb1"]
 [ext_resource type="Texture2D" uid="uid://c7a63ah50gdsb" path="res://assets/board/options_menu.svg" id="21_5newe"]
 [ext_resource type="Script" uid="uid://cdk1d85ib0gl3" path="res://scripts/option_menu_node_2d.gd" id="21_pl11u"]
 [ext_resource type="Script" uid="uid://c3dluyfwld0om" path="res://scripts/gameplay_handler.gd" id="22_37s47"]
-[ext_resource type="FontFile" uid="uid://o7n5xnnd4w71" path="res://assets/fonts/HeartbitXX2Px.ttf" id="23_bt5mj"]
 [ext_resource type="Script" uid="uid://rmmdlyjx63ic" path="res://scripts/option_1.gd" id="23_e1j6l"]
 [ext_resource type="Texture2D" uid="uid://cgp52b4cks1j3" path="res://assets/board/up-arrow.png" id="24_e1j6l"]
 [ext_resource type="Texture2D" uid="uid://cyk8jdwvesnn5" path="res://assets/icons/clap-icon.png" id="25_pl11u"]
@@ -37,12 +37,13 @@ data = PackedByteArray("cW9hZgAACFwBAKxECFwDcAAAAAAAAAAAAAAAAOAAQADymAwE0aDE5/Gr
 format = 3
 
 [sub_resource type="LabelSettings" id="LabelSettings_kvpfn"]
-font_size = 60
+font = ExtResource("19_wljb1")
+font_size = 55
 outline_size = 11
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_e1j6l"]
-font = ExtResource("23_bt5mj")
+font = ExtResource("19_wljb1")
 font_size = 70
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pl11u"]
@@ -179,10 +180,10 @@ position = Vector2(68, 76)
 script = ExtResource("12_dinhu")
 
 [node name="ScoreLabelNum" type="Label" parent="ScoreNode2D" unique_id=529271551]
-offset_left = -38.0
-offset_top = -32.0
-offset_right = 271.0
-offset_bottom = 70.0
+offset_left = -30.0
+offset_top = -8.0
+offset_right = 279.0
+offset_bottom = 94.0
 text = "SCORE"
 label_settings = SubResource("LabelSettings_kvpfn")
 horizontal_alignment = 1
