@@ -175,6 +175,36 @@ rotation = 1.5707964
 scale = Vector2(0.163086, 0.16029821)
 texture = ExtResource("24_e1j6l")
 
+[node name="RedLaneFlash" type="ColorRect" parent="." unique_id=185301405]
+z_index = -1
+offset_left = 434.0
+offset_top = -81.0
+offset_right = 617.0
+offset_bottom = 1240.0
+color = Color(1, 0, 1, 0)
+
+[node name="GreenLaneFlash" type="ColorRect" parent="." unique_id=1698990691]
+z_index = -1
+offset_left = 611.0
+offset_top = -88.0
+offset_right = 794.0
+offset_bottom = 1249.0
+color = Color(0, 1, 0.078431375, 0)
+
+[node name="YellowLaneFlash" type="ColorRect" parent="." unique_id=1431794481]
+offset_left = 796.0
+offset_top = -93.0
+offset_right = 979.0
+offset_bottom = 1326.0
+color = Color(1, 1, 0.03137255, 0)
+
+[node name="BlueLaneFlash" type="ColorRect" parent="." unique_id=478934072]
+offset_left = 973.0
+offset_top = -86.0
+offset_right = 1156.0
+offset_bottom = 1325.0
+color = Color(0, 1, 1, 0)
+
 [node name="ScoreNode2D" type="Node2D" parent="." unique_id=218924862]
 position = Vector2(68, 76)
 script = ExtResource("12_dinhu")
@@ -206,6 +236,7 @@ texture = ExtResource("21_5newe")
 script = ExtResource("22_37s47")
 
 [node name="Option1" type="Area2D" parent="OptionMenuNode2D" unique_id=1619905500]
+z_index = 3
 position = Vector2(130, 300)
 script = ExtResource("23_e1j6l")
 
@@ -227,6 +258,7 @@ position = Vector2(202, 241.5)
 shape = SubResource("RectangleShape2D_pl11u")
 
 [node name="Option2" type="Area2D" parent="OptionMenuNode2D" unique_id=801978484]
+z_index = 3
 position = Vector2(130, 300)
 
 [node name="Label" type="Label" parent="OptionMenuNode2D/Option2" unique_id=1567445834]
@@ -247,6 +279,7 @@ position = Vector2(850, 239.5)
 shape = SubResource("RectangleShape2D_bhx41")
 
 [node name="Option3" type="Area2D" parent="OptionMenuNode2D" unique_id=689198691]
+z_index = 3
 position = Vector2(130, 300)
 
 [node name="Label" type="Label" parent="OptionMenuNode2D/Option3" unique_id=710318379]
@@ -267,7 +300,6 @@ position = Vector2(1482.5, 246.5)
 shape = SubResource("RectangleShape2D_qnb83")
 
 [node name="DimOverlay" type="ColorRect" parent="." unique_id=1094256820]
-visible = false
 offset_right = 1926.0
 offset_bottom = 1282.0
 mouse_filter = 2
@@ -320,34 +352,6 @@ offset_right = 1926.0
 offset_bottom = 1282.0
 mouse_filter = 2
 color = Color(1, 0, 0, 0)
-
-[node name="RedLaneFlash" type="ColorRect" parent="." unique_id=185301405]
-offset_left = 434.0
-offset_top = -81.0
-offset_right = 617.0
-offset_bottom = 1240.0
-color = Color(1, 0, 1, 0)
-
-[node name="GreenLaneFlash" type="ColorRect" parent="." unique_id=1698990691]
-offset_left = 611.0
-offset_top = -88.0
-offset_right = 794.0
-offset_bottom = 1249.0
-color = Color(0, 1, 0.078431375, 0)
-
-[node name="YellowLaneFlash" type="ColorRect" parent="." unique_id=1431794481]
-offset_left = 796.0
-offset_top = -93.0
-offset_right = 979.0
-offset_bottom = 1326.0
-color = Color(1, 1, 0.03137255, 0)
-
-[node name="BlueLaneFlash" type="ColorRect" parent="." unique_id=478934072]
-offset_left = 973.0
-offset_top = -86.0
-offset_right = 1156.0
-offset_bottom = 1325.0
-color = Color(0, 1, 1, 0)
 
 [node name="GameOver" parent="." unique_id=589838554 instance=ExtResource("30_sgl2t")]
 visible = false

@@ -4,12 +4,20 @@
 [ext_resource type="Texture2D" uid="uid://bkp6rjjlrgpfu" path="res://assets/board/title.png" id="2_bqqt6"]
 [ext_resource type="Texture2D" uid="uid://dgk2j5n02cb4d" path="res://assets/board/start-icon-3.png" id="2_ekxnf"]
 [ext_resource type="Texture2D" uid="uid://b3w48f85dkkt1" path="res://assets/board/exit-button-2.png" id="3_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://kr5wu6254yrh" path="res://assets/icons/arrow.png" id="5_8ln24"]
+[ext_resource type="FontFile" uid="uid://civ86di43nk20" path="res://assets/fonts/LilitaOne-Regular.ttf" id="6_rtw2f"]
+[ext_resource type="Texture2D" uid="uid://d0hnhatoe2p3b" path="res://assets/icons/arrow-2.png" id="7_oa1go"]
+[ext_resource type="Texture2D" uid="uid://dtbqd0tatfkk8" path="res://assets/icons/cards-icon.png" id="8_tbmy8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bqqt6"]
 radius = 646.29065
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wu84c"]
 radius = 607.5108
+
+[sub_resource type="LabelSettings" id="LabelSettings_oa1go"]
+font = ExtResource("6_rtw2f")
+font_size = 40
 
 [node name="MainMenu" type="Node2D" unique_id=1625919702]
 script = ExtResource("1_wu84c")
@@ -41,6 +49,92 @@ texture = ExtResource("3_bqqt6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExitButton2/Area2D" unique_id=1765036439]
 shape = SubResource("CircleShape2D_wu84c")
+
+[node name="Arrow2" type="Sprite2D" parent="." unique_id=198137971]
+modulate = Color(1, 1, 1, 0.7294118)
+position = Vector2(426, 772)
+rotation = 1.8308504
+scale = Vector2(0.3340768, 0.33514646)
+skew = -0.035793543
+texture = ExtResource("5_8ln24")
+
+[node name="Arrow" type="Sprite2D" parent="." unique_id=489896149]
+modulate = Color(1, 1, 1, 0.7294118)
+position = Vector2(1587, 428)
+rotation = 1.4835298
+scale = Vector2(0.4992738, 0.6127365)
+texture = ExtResource("5_8ln24")
+
+[node name="Label" type="Label" parent="." unique_id=1834249279]
+modulate = Color(1, 1, 1, 0.7294118)
+offset_left = 1229.0
+offset_top = 122.0
+offset_right = 1736.0
+offset_bottom = 302.0
+rotation = -0.08726646
+text = "HERE YOU CAN SEE WHICH INSTRUMENT YOU'RE PLAYING"
+label_settings = SubResource("LabelSettings_oa1go")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Label2" type="Label" parent="." unique_id=1363017350]
+modulate = Color(1, 1, 1, 0.7294118)
+offset_left = 134.0
+offset_top = 511.0
+offset_right = 641.0
+offset_bottom = 691.0
+text = "PRESS THE CORRECT ARROW KEY AT THE RIGHT TIME!"
+label_settings = SubResource("LabelSettings_oa1go")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Label4" type="Label" parent="." unique_id=408615781]
+modulate = Color(1, 1, 1, 0.7294118)
+offset_left = 896.0
+offset_top = 1182.0
+offset_right = 1929.0
+offset_bottom = 1362.0
+text = "AND CHOOSE WISELY BETWEEN BOOST CARDS!"
+label_settings = SubResource("LabelSettings_oa1go")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Label3" type="Label" parent="." unique_id=75084501]
+modulate = Color(1, 1, 1, 0.7294118)
+offset_left = 1116.0
+offset_top = 1027.0
+offset_right = 1623.0
+offset_bottom = 1207.0
+text = "MIND YOUR LIFES! THEY ARE NOT INFINITE"
+label_settings = SubResource("LabelSettings_oa1go")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Arrow3" type="Sprite2D" parent="." unique_id=1352504896]
+modulate = Color(1, 1, 1, 0.7294118)
+position = Vector2(1594.0001, 974.00006)
+rotation = 0.4712389
+scale = Vector2(0.4414721, 0.40970534)
+skew = -0.05235988
+texture = ExtResource("7_oa1go")
+
+[node name="Arrow4" type="Sprite2D" parent="." unique_id=1561201946]
+modulate = Color(1, 1, 1, 0.7294118)
+position = Vector2(1040.7843, 1189.5186)
+rotation = 1.2217305
+scale = Vector2(0.29500493, 0.2680888)
+skew = -0.05235988
+texture = ExtResource("7_oa1go")
+
+[node name="CardsIcon" type="Sprite2D" parent="." unique_id=994832144]
+modulate = Color(1, 1, 1, 0.7294118)
+position = Vector2(725, 1224)
+scale = Vector2(0.3005894, 0.30833334)
+texture = ExtResource("8_tbmy8")
 
 [connection signal="input_event" from="StartIcon3/Area2D" to="." method="_on_start_icon_area_2d_input_event"]
 [connection signal="mouse_entered" from="StartIcon3/Area2D" to="." method="_on_start_icon_area_2d_mouse_entered"]
