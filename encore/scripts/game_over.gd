@@ -11,11 +11,12 @@ func _ready() -> void:
 	get_viewport().physics_object_picking = true
 	_originalScale = $BackToMenuIcon.scale
 
-func show_results(score: int, time_seconds: float) -> void:
+func show_results(score: int, time_seconds: float, stage: int) -> void:
 	$FinalScoreLabel.text = str(score)
 	var minutes = int(time_seconds / 60)
 	var seconds = int(time_seconds) % 60
 	$FinalTimeLabel.text = "%02d:%02d" % [minutes, seconds]
+	$StageLabel.text = "STAGE: " + str(stage)
 	$Timer.start()
 
 func _process(_delta: float) -> void:

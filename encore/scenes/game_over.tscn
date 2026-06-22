@@ -7,7 +7,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_racf3"]
 font = ExtResource("3_racf3")
-font_size = 50
+font_size = 48
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7m3ot"]
@@ -39,6 +39,15 @@ offset_top = 501.0
 offset_right = 1122.0
 offset_bottom = 571.0
 text = "FINAL TIME"
+label_settings = SubResource("LabelSettings_racf3")
+vertical_alignment = 1
+
+[node name="StageLabel" type="Label" parent="." unique_id=36009472]
+offset_left = 626.0
+offset_top = 565.0
+offset_right = 981.0
+offset_bottom = 635.0
+text = "STAGE:"
 label_settings = SubResource("LabelSettings_racf3")
 vertical_alignment = 1
 

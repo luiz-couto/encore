@@ -173,7 +173,7 @@ const CONGA_SLAP_MARKOV: Dictionary = {
 						  "n": [0.10, 0.35, 0.15, 0.40, 0.10, 0.45, 0.15, 0.35]},
 }
 
-# Markov chain state — reset at the start of each bar (subdiv_pos == 1)
+# Markov chain state
 var markov_hihat_prev: bool = false
 
 # 2-bar patterns generated once per section entry, repeat every 2 bars

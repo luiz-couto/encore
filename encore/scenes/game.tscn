@@ -210,14 +210,33 @@ position = Vector2(68, 76)
 script = ExtResource("12_dinhu")
 
 [node name="ScoreLabelNum" type="Label" parent="ScoreNode2D" unique_id=529271551]
-offset_left = -30.0
-offset_top = -8.0
-offset_right = 279.0
-offset_bottom = 94.0
+offset_left = -6.0
+offset_top = -32.0
+offset_right = 303.0
+offset_bottom = 70.0
 text = "SCORE"
 label_settings = SubResource("LabelSettings_kvpfn")
-horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="StageLabelNum" type="Label" parent="ScoreNode2D" unique_id=781398950]
+offset_left = -6.0
+offset_top = 46.0
+offset_right = 303.0
+offset_bottom = 148.0
+text = "STAGE: "
+label_settings = SubResource("LabelSettings_kvpfn")
+vertical_alignment = 1
+
+[node name="BestStreakLabelNum" type="Label" parent="ScoreNode2D" unique_id=242709401]
+visible = false
+offset_left = -30.0
+offset_top = 170.0
+offset_right = 318.0
+offset_bottom = 272.0
+text = "TOP STREAK: "
+label_settings = SubResource("LabelSettings_kvpfn")
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="StructuralEngine" type="Node" parent="." unique_id=352973996]
 script = ExtResource("1_kvuet")
@@ -300,6 +319,7 @@ position = Vector2(1482.5, 246.5)
 shape = SubResource("RectangleShape2D_qnb83")
 
 [node name="DimOverlay" type="ColorRect" parent="." unique_id=1094256820]
+visible = false
 offset_right = 1926.0
 offset_bottom = 1282.0
 mouse_filter = 2

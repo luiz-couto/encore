@@ -80,6 +80,8 @@ func choose_lane() -> int:
 func _on_score_event(scorePoints: int, _chord_idx: int, sound_id: int) -> void:
 	$MusicPlayer.register_hit(sound_id)
 	hitStreak += 1
+	if hitStreak > $ScoreNode2D.topStreak:
+		$ScoreNode2D.topStreak = hitStreak
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 	$ScoreNode2D.score += int(scorePoints * gameplayHandler.scoreMultiplier * gameplayHandler.comboMultiplier * hitStreak)
 
@@ -114,7 +116,7 @@ func _show_game_over() -> void:
 	_set_paused(true)
 	_set_lane_flash_visible(false)
 	_play_flash(GAME_OVER_FLASH_ALPHA, GAME_OVER_FLASH_DURATION)
-	$GameOver.show_results($ScoreNode2D.score, timeElapsed)
+	$GameOver.show_results($ScoreNode2D.score, timeElapsed, $StructuralEngine.cycleCount)
 	$GameOver.visible = true
 	$DimOverlay.visible = true
 
@@ -178,6 +180,7 @@ func _on_structural_engine_section_changed(section: Variant, intensity: Variant)
 	currentIntensity = intensity
 	$ChordGenerator.pick_progression()
 	$MusicPlayer.set_section(section, intensity, $StructuralEngine.cycleCount)
+	$ScoreNode2D.stage = $StructuralEngine.cycleCount
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 	gameplayHandler.bpmIncrease += 1
 	gameplayHandler.bpm += 1
