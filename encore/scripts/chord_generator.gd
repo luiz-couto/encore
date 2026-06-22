@@ -1,52 +1,89 @@
 extends Node
 
 enum Chord { C_MAJ, D_MIN, E_MIN, F_MAJ, G_MAJ, A_MIN, B_DIM };
+enum Genre { HOUSE = 0, TECH_HOUSE = 1, TECHNO = 2, MELODIC_HOUSE = 3, AFRO_HOUSE = 4, AFRO_TECHNO = 5 }
 
-const MAJOR_MATRIX = [
-	[0.0,  0.0,  0.0,  0.44, 0.44, 0.0,  0.11], # C maj (I)
-	[0.31, 0.0,  0.0,  0.31, 0.31, 0.0,  0.08], # D min (II)
-	[0.31, 0.0,  0.0,  0.31, 0.31, 0.0,  0.08], # E min (III)
-	[0.44, 0.0,  0.0,  0.0,  0.44, 0.0,  0.11], # F maj (IV)
-	[0.8,  0.0,  0.0,  0.16, 0.0,  0.0,  0.04], # G maj (V)
-	[0.31, 0.0,  0.0,  0.31, 0.31, 0.0,  0.08], # A min (VI)
-	[0.71, 0.0,  0.0,  0.14, 0.14, 0.0,  0.0 ], # B dim (VII)
-];
+const PROGRESSIONS_BY_GENRE: Dictionary = {
+	Genre.HOUSE: [  # Am-heavy classics
+		[5, 4, 3, 4], # Am → G → F → G
+		[5, 3, 0, 4], # Am → F → C → G
+		[5, 1, 4, 0], # Am → Dm → G → C
+		[5, 2, 3, 4], # Am → Em → F → G
+		[1, 5, 3, 4], # Dm → Am → F → G
+		[5, 3, 4, 3], # Am → F → G → F
+	],
+	Genre.TECH_HOUSE: [  # Dark/Modal
+		[5, 2, 4, 3], # Am → Em → G → F
+		[5, 6, 0, 4], # Am → Bdim → C → G
+		[2, 1, 4, 5], # Em → Dm → G → Am
+		[1, 2, 5, 4], # Dm → Em → Am → G
+		[5, 2, 1, 4], # Am → Em → Dm → G
+		[2, 5, 1, 4], # Em → Am → Dm → G
+	],
+	Genre.TECHNO: [  # Dark/Modal
+		[5, 2, 4, 3],
+		[5, 6, 0, 4],
+		[2, 1, 4, 5],
+		[1, 2, 5, 4],
+		[5, 2, 1, 4],
+		[2, 5, 1, 4],
+	],
+	Genre.MELODIC_HOUSE: [  # Bright/Major
+		[0, 4, 5, 3], # C → G → Am → F
+		[0, 5, 3, 4], # C → Am → F → G
+		[0, 3, 4, 5], # C → F → G → Am
+		[0, 1, 3, 4], # C → Dm → F → G
+		[0, 2, 3, 4], # C → Em → F → G
+		[0, 5, 1, 4], # C → Am → Dm → G
+	],
+	Genre.AFRO_HOUSE: [  # Am-heavy, warm groove
+		[5, 4, 3, 4],
+		[5, 3, 0, 4],
+		[5, 1, 4, 0],
+		[5, 2, 3, 4],
+		[1, 5, 3, 4],
+		[5, 3, 4, 3],
+	],
+	Genre.AFRO_TECHNO: [  # Dark/Modal
+		[5, 2, 4, 3],
+		[5, 6, 0, 4],
+		[2, 1, 4, 5],
+		[1, 2, 5, 4],
+		[5, 2, 1, 4],
+		[2, 5, 1, 4],
+	],
+}
 
-const MINOR_MATRIX = [
-	[0.0, 0.31, 0.31, 0.0,  0.0,  0.31, 0.08], # C maj (III)
-	[0.0, 0.0,  0.44, 0.0,  0.0,  0.44, 0.11], # D min (IV)
-	[0.0, 0.16, 0.0,  0.0,  0.0,  0.8,  0.04], # E min (V)
-	[0.0, 0.31, 0.31, 0.0,  0.0,  0.31, 0.08], # F maj (VI)
-	[0.0, 0.31, 0.31, 0.0,  0.0,  0.31, 0.08], # G maj (VII)
-	[0.0, 0.44, 0.44, 0.0,  0.0,  0.0,  0.11], # A min (I)
-	[0.0, 0.14, 0.71, 0.0,  0.0,  0.14, 0.0 ], # B dim (II)
-];
+const LOOPS_BEFORE_REFRESH = 4;
 
-## 0.0 = fully C major, 1.0 = fully A minor
-@export var mode: float = 0.5;
+var activeProgressions: Array = PROGRESSIONS_BY_GENRE[Genre.TECHNO];
+var currentProgression: Array = [];
+var position: int = 0;
+var loopCount: int = 0;
 
-var current_chord: int = Chord.C_MAJ;
+signal chordChanged(chordIdx);
 
-signal chord_changed(chord_idx: int);
+func _ready() -> void:
+	pick_progression();
+
+func set_genre(genre: int) -> void:
+	activeProgressions = PROGRESSIONS_BY_GENRE[genre];
+	pick_progression();
+
+func pick_progression():
+	var randomIdx = randi_range(0, activeProgressions.size() - 1);
+	position = 0;
+	currentProgression = activeProgressions[randomIdx];
 
 func advance() -> int:
-	var row = _blended_row(current_chord)
-	current_chord = _weighted_sample(row)
-	chord_changed.emit(current_chord)
-	return current_chord
+	var currChord = currentProgression[position];
+	position = (position + 1) % currentProgression.size();
+	if position == 0:
+		loopCount += 1;
+	chordChanged.emit(currChord);
+	return currChord;
 
-func _blended_row(idx: int) -> Array:
-	var result = []
-	for i in 7:
-		var res = lerp(MAJOR_MATRIX[idx][i], MINOR_MATRIX[idx][i], mode);
-		result.append(res);
-	return result
-
-func _weighted_sample(weights: Array) -> int:
-	var r = randf()
-	var cumulative = 0.0
-	for i in weights.size():
-		cumulative += weights[i]
-		if r <= cumulative:
-			return i
-	return weights.size() - 1
+func maybeRefresh() -> void:
+	if loopCount >= LOOPS_BEFORE_REFRESH:
+		loopCount = 0;
+		pick_progression();
