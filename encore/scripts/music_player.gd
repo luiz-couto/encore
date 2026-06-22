@@ -263,7 +263,8 @@ func _pick_patterns() -> void:
 
 func _markov_fire(table: Dictionary, subdiv_pos: int, prev_hit: bool, density: float) -> bool:
 	var probs: Array = table["h"] if prev_hit else table["n"]
-	return randf() < probs[subdiv_pos - 1] * density
+	var prob = min(probs[subdiv_pos - 1], 1.0 - novelty)
+	return randf() < prob * density
 
 const RHODES_MUTATION_CHANCE: Dictionary = {
 	Genre.HOUSE:         0.15,
@@ -275,7 +276,7 @@ const RHODES_MUTATION_CHANCE: Dictionary = {
 }
 
 func _generate_2bar_pattern(markov: Dictionary, density_table: Dictionary) -> Array:
-	var density = density_table[currentSection]
+	var density = density_table[currentSection] * densityMultiplier
 	var mutation = RHODES_MUTATION_CHANCE[currentGenre]
 	var bar1: Array = []
 	var prev = false
@@ -497,13 +498,16 @@ func _ready() -> void:
 	_generate_patterns()
 
 const GENRE_PLAYER_INSTRUMENTS: Dictionary = {
-	Genre.HOUSE:         [Instrument.RHODES],
-	Genre.TECH_HOUSE:    [Instrument.CLAP],
+	Genre.HOUSE:         [Instrument.RHODES,     Instrument.CLAP],
+	Genre.TECH_HOUSE:    [Instrument.CLAP,        Instrument.HIHAT_CLOSED],
 	Genre.TECHNO:        [Instrument.KICK],
-	Genre.MELODIC_HOUSE: [Instrument.RHODES],
-	Genre.AFRO_HOUSE:    [Instrument.CONGA_SLAP],
-	Genre.AFRO_TECHNO:   [Instrument.CONGA_SLAP],
+	Genre.MELODIC_HOUSE: [Instrument.RHODES,     Instrument.CONGA_OPEN],
+	Genre.AFRO_HOUSE:    [Instrument.CONGA_SLAP, Instrument.RHODES],
+	Genre.AFRO_TECHNO:   [Instrument.KICK,       Instrument.CONGA_SLAP],
 }
+
+var densityMultiplier: float = 1.0
+var novelty: float = 0.0
 
 func _set_random_genre() -> void:
 	var genres = Genre.values()

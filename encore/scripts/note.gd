@@ -56,7 +56,7 @@ func destroy(_score: int) -> void:
 	$Timer.start();
 	$Node2D/Label.text = "GREAT";
 	$AnimatedSprite2D.frame = 4; # empty frame
-	scoreEvent.emit(100, chord, soundId);
+	scoreEvent.emit(10, chord, soundId);
 	hit = true;
 
 func _on_timer_timeout() -> void:

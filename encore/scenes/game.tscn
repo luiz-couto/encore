@@ -44,7 +44,7 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_e1j6l"]
 font = ExtResource("19_wljb1")
-font_size = 70
+font_size = 55
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pl11u"]
 size = Vector2(524, 635)
@@ -222,7 +222,7 @@ autowrap_mode = 3
 uppercase = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OptionMenuNode2D/Option1" unique_id=1914850492]
-z_index = 2
+z_index = 3
 position = Vector2(202, 241.5)
 shape = SubResource("RectangleShape2D_pl11u")
 
@@ -242,7 +242,7 @@ autowrap_mode = 3
 uppercase = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OptionMenuNode2D/Option2" unique_id=475603057]
-z_index = 2
+z_index = 3
 position = Vector2(850, 239.5)
 shape = SubResource("RectangleShape2D_bhx41")
 
@@ -262,7 +262,7 @@ autowrap_mode = 3
 uppercase = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="OptionMenuNode2D/Option3" unique_id=1783116569]
-z_index = 2
+z_index = 3
 position = Vector2(1482.5, 246.5)
 shape = SubResource("RectangleShape2D_qnb83")
 

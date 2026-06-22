@@ -81,10 +81,6 @@ func _on_score_event(scorePoints: int, _chord_idx: int, sound_id: int) -> void:
 	hitStreak += 1
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 	$ScoreNode2D.score += int(scorePoints * gameplayHandler.scoreMultiplier * gameplayHandler.comboMultiplier * hitStreak)
-	if $ScoreNode2D.score % 1000 == 0:
-		pass
-		#paused = true
-		#_show_options_menu()
 
 func _rebuild_hearts() -> void:
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
@@ -106,7 +102,7 @@ const GAME_OVER_FLASH_ALPHA: float = 0.6
 func _on_note_missed() -> void:
 	hitStreak = 0
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
-	gameplayHandler.numberOfLives = max(0, gameplayHandler.numberOfLives - 1)
+	gameplayHandler.numberOfLives = max(0, gameplayHandler.numberOfLives - gameplayHandler.livesLostPerMiss)
 	_rebuild_hearts()
 	if gameplayHandler.numberOfLives == 0:
 		_show_game_over()
@@ -174,7 +170,12 @@ func _on_structural_engine_section_changed(section: Variant, intensity: Variant)
 	currentIntensity = intensity
 	$ChordGenerator.pick_progression()
 	$MusicPlayer.set_section(section, intensity, $StructuralEngine.cycleCount)
-	print(currentSection, " ", currentIntensity);
+	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
+	gameplayHandler.bpmIncrease += 1
+	gameplayHandler.bpm += 1
+	$Conductor.bpm = gameplayHandler.bpm
+	if section == 3:
+		_show_options_menu()
 
 func _on_conductor_subdivision(conductorPosition: Variant) -> void:
 	$MusicPlayer.play_on_subdivision(conductorPosition, currentChord)
@@ -186,32 +187,22 @@ func _sync_player_controlled_instruments() -> void:
 	var musicPlayer = $MusicPlayer
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 
-	musicPlayer.set_player_controlled(musicPlayer.Instrument.RHODES,       false)
-	musicPlayer.set_player_controlled(musicPlayer.Instrument.KICK,         false)
-	musicPlayer.set_player_controlled(musicPlayer.Instrument.HIHAT_CLOSED, false)
-	musicPlayer.set_player_controlled(musicPlayer.Instrument.HIHAT_OPEN,   false)
-	musicPlayer.set_player_controlled(musicPlayer.Instrument.CLAP,         false)
-	musicPlayer.set_player_controlled(musicPlayer.Instrument.SNARE,        false)
-	musicPlayer.set_player_controlled(musicPlayer.Instrument.SHAKER,       false)
-	musicPlayer.set_player_controlled(musicPlayer.Instrument.CONGA_OPEN,   false)
-	musicPlayer.set_player_controlled(musicPlayer.Instrument.CONGA_SLAP,   false)
-	musicPlayer.set_player_controlled(musicPlayer.Instrument.CHORD_STAB,   false)
+	for instrument in musicPlayer.Instrument.values():
+		musicPlayer.set_player_controlled(instrument, false)
 
-	for instrument in musicPlayer.GENRE_PLAYER_INSTRUMENTS[musicPlayer.currentGenre]:
-		musicPlayer.set_player_controlled(instrument, true)
-
-	if gameplayHandler.spawnNoteOnRhodes:         musicPlayer.set_player_controlled(musicPlayer.Instrument.RHODES,       true)
-	if gameplayHandler.spawnNoteOnDrumKick:       musicPlayer.set_player_controlled(musicPlayer.Instrument.KICK,         true)
-	if gameplayHandler.spawnNoteOnDrumHiHatOpen:  musicPlayer.set_player_controlled(musicPlayer.Instrument.HIHAT_OPEN,   true)
-	if gameplayHandler.spawnNoteOnDrumHiHatClose: musicPlayer.set_player_controlled(musicPlayer.Instrument.HIHAT_CLOSED, true)
-	if gameplayHandler.spawnNoteOnDrumClap:       musicPlayer.set_player_controlled(musicPlayer.Instrument.CLAP,         true)
-	if gameplayHandler.spawnNoteOnCongaOpen:      musicPlayer.set_player_controlled(musicPlayer.Instrument.CONGA_OPEN,   true)
-	if gameplayHandler.spawnNoteOnCongaSlap:      musicPlayer.set_player_controlled(musicPlayer.Instrument.CONGA_SLAP,   true)
+	var ranked: Array = musicPlayer.GENRE_PLAYER_INSTRUMENTS[musicPlayer.currentGenre]
+	var count: int = gameplayHandler.numberOfInstrumentsPlayed[musicPlayer.currentGenre]
+	for i in min(count, ranked.size()):
+		musicPlayer.set_player_controlled(ranked[i], true)
 
 	musicPlayer.set_player_controlled(
 		musicPlayer.Instrument.CHORD_STAB,
 		musicPlayer.playerControlledInstruments.get(musicPlayer.Instrument.RHODES, false)
 	)
+
+	musicPlayer.densityMultiplier = gameplayHandler.globalDensityMultiplier
+	musicPlayer.novelty = gameplayHandler.novelty
+
 	_update_instrument_icons()
 
 const HEART_CELL_SIZE: int = 44
@@ -228,10 +219,12 @@ func _update_instrument_icons() -> void:
 	$ClapIcon.modulate.a  = ICON_ACTIVE_ALPHA if controlled.get(musicPlayer.Instrument.CLAP,         false) else ICON_INACTIVE_ALPHA
 
 func _on_option_selected(option_index: int) -> void:
+	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
 	options[option_index].action.call()
-	$Conductor.bpm = $OptionMenuNode2D/GameplayHandler.bpm
+	$Conductor.bpm = gameplayHandler.bpm
 	_apply_lanes_keys()
 	_sync_player_controlled_instruments()
+	_rebuild_hearts()
 	_hide_options_menu()
 	_set_paused(false)
 
@@ -248,18 +241,13 @@ func _on_option_3_input_event(_viewport: Node, event: InputEvent, _shape_idx: in
 		_on_option_selected(2)
 
 
-func _on_music_player_genre_changed(bpm: int) -> void:
-	$OptionMenuNode2D/GameplayHandler.bpm = bpm
-	$Conductor.bpm = bpm
-	$ChordGenerator.set_genre($MusicPlayer.currentGenre)
+func _on_music_player_genre_changed(newBpm: int) -> void:
 	var gameplayHandler = $OptionMenuNode2D/GameplayHandler
-	gameplayHandler.spawnNoteOnRhodes = false
-	gameplayHandler.spawnNoteOnDrumKick = false
-	gameplayHandler.spawnNoteOnDrumHiHatOpen = false
-	gameplayHandler.spawnNoteOnDrumHiHatClose = false
-	gameplayHandler.spawnNoteOnDrumClap = false
-	gameplayHandler.spawnNoteOnCongaOpen = false
-	gameplayHandler.spawnNoteOnCongaSlap = false
+	gameplayHandler.currentGenre = $MusicPlayer.currentGenre
+	gameplayHandler.numberOfInstrumentsPlayed[$MusicPlayer.currentGenre] = 1
+	gameplayHandler.bpm = newBpm + gameplayHandler.bpmIncrease
+	$Conductor.bpm = gameplayHandler.bpm
+	$ChordGenerator.set_genre($MusicPlayer.currentGenre)
 	_sync_player_controlled_instruments()
 
 func _on_ready() -> void:
