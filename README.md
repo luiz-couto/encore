@@ -3,7 +3,7 @@ Encore is a Procedural Music Generation roguelike that blends real-time rhythm g
 
 ## How to Play
 
-Download the binary for your operating system from the `bin/` folder and run it.
+Download the binary for your operating system from the `game/` folder and run it.
 
 ## Setup (for developers)
 
