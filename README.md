@@ -7,7 +7,7 @@ Download the binary for your operating system from the `game/` folder and run it
 
 ## Setup (for developers)
 
-1. Clone the repo: `git clone https://github.com/luizz-couto/encore.git`
+1. Clone the repo: `git clone https://github.com/luiz-couto/encore.git`
 2. Install [Godot 4.6](https://godotengine.org/download/)
 3. Open the `encore/` folder as a project in Godot
 4. Hit Play
